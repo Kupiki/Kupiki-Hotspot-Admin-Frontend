@@ -1,6 +1,6 @@
 {
-  "name": "Full",
+  "name": "Kupiki",
   "version": "0.0.0",
   "private": true,
-  "main": "./Full.js"
+  "main": "./Kupiki.js"
 }

@@ -24,7 +24,7 @@ import Tabs from '../../views/Components/Tabs/';
 import FontAwesome from '../../views/Icons/FontAwesome/';
 import SimpleLineIcons from '../../views/Icons/SimpleLineIcons/';
 
-class Full extends Component {
+class Kupiki extends Component {
   render() {
     return (
       <div className="app">
@@ -60,4 +60,4 @@ class Full extends Component {
   }
 }
 
-export default Full;
+export default Kupiki;

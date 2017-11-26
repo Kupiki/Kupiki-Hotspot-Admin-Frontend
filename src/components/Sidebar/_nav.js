@@ -118,6 +118,11 @@ export default {
           icon: 'icon-star'
         },
         {
+          name: 'Logout',
+          url: '/logout',
+          icon: 'icon-star'
+        },
+        {
           name: 'Register',
           url: '/register',
           icon: 'icon-star'
