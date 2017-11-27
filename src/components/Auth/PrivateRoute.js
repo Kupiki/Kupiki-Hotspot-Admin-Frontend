@@ -29,9 +29,9 @@ export const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
   }
   
   function mapStateToProps(state) {
-    console.log(state)
     return {
-      authenticated: state.auth.authenticated
+      authenticated: state.auth.authenticated,
+      username: state.auth.username
     };
   }
   

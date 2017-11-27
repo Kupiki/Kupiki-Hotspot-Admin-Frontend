@@ -23,9 +23,10 @@ import '../scss/core/_dropdown-menu-right.scss'
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 const token = localStorage.getItem('token');
+const username = localStorage.getItem('username');
 
-if (token) {
-  store.dispatch({type: AUTH_USER})
+if (token && username) {
+  store.dispatch({type: AUTH_USER, username: username})
 }
 
 // Containers

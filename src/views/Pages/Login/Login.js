@@ -6,8 +6,6 @@ import { Redirect } from 'react-router';
 import {connect} from 'react-redux';
 import * as actions from '../../../actions';
 
-// import * as sessionActions from '../../../actions/sessionActions';
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -19,12 +17,8 @@ class Login extends Component {
         password: ''
       }
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  
-    console.log(this.props)
-    console.log(this.state)
   }
   
   getRedirectPath() {
@@ -46,7 +40,7 @@ class Login extends Component {
   handleSubmit(event){
     event.preventDefault();
   
-    var payload={
+    let payload={
       "username":this.state.user.username,
       "password":this.state.user.password
     };

@@ -12,9 +12,10 @@ export function loginUser({username, password}) {
       .then(response => {
         // -Save the JWT token
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('username', username)
         
         // -if request is good, we need to update state to indicate user is authenticated
-        dispatch({type: AUTH_USER})
+        dispatch({type: AUTH_USER, username: username})
       })
       
       // If request is bad...

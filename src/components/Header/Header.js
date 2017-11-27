@@ -9,6 +9,7 @@ import {
   Badge
 } from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
+import { connect } from 'react-redux';
 
 class Header extends Component {
 
@@ -43,9 +44,10 @@ class Header extends Component {
           <span className="navbar-toggler-icon"></span>
         </NavbarToggler>
         <NavbarBrand href="#"></NavbarBrand>
-        <NavbarToggler className="d-md-down-none" onClick={this.sidebarToggle}>
+        <NavbarToggler className="d-md-down-none" onClick={this.sidebarMinimize}>
           <span className="navbar-toggler-icon"></span>
         </NavbarToggler>
+{/*
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
             <NavLink href="#">Dashboard</NavLink>
@@ -57,7 +59,9 @@ class Header extends Component {
             <NavLink href="#">Settings</NavLink>
           </NavItem>
         </Nav>
+*/}
         <Nav className="ml-auto" navbar>
+{/*
           <NavItem className="d-md-down-none">
             <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
           </NavItem>
@@ -67,6 +71,7 @@ class Header extends Component {
           <NavItem className="d-md-down-none">
             <NavLink href="#"><i className="icon-location-pin"></i></NavLink>
           </NavItem>
+*/}
           <HeaderDropdown/>
         </Nav>
         <NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>
@@ -77,4 +82,12 @@ class Header extends Component {
   }
 }
 
-export default Header;
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    username: state.auth.username
+  }
+}
+
+export default connect(mapStateToProps)(Header)
+// export default Header;
