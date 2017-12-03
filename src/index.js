@@ -49,9 +49,9 @@ ReactDOM.render((
         <Route exact path="/login" name="Login Page" component={Login}/>
         <Route exact path="/logout" name="Logout Page" component={Logout}/>
         {/*<Route exact path="/register" name="Register Page" component={Register}/>*/}
-        <PrivateRoute exact path="/404" name="Page 404" component={Page404}/>
-        <Route exact path="/500" name="Page 500" component={Page500}/>
-        <PrivateRoute exact path="/dashboard" name="Dashboard" component={Kupiki}/>
+        {/*<PrivateRoute exact path="/404" name="Page 404" component={Page404}/>*/}
+        {/*<Route exact path="/500" name="Page 500" component={Page500}/>*/}
+        <PrivateRoute exact path="/system/dashboard" name="Dashboard" component={Kupiki}/>
         <PrivateRoute path="/" exact component={Kupiki}/>
       </Switch>
     </Router>

@@ -32,11 +32,11 @@ class Kupiki extends Component {
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className="main">
-            <Breadcrumb />
+            {/*<Breadcrumb />*/}
             <Container fluid>
               <Switch>
-                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route path="/components/buttons" name="Buttons" component={Buttons}/>
+                <Route path="/system/dashboard" name="Dashboard" component={Dashboard}/>
+{/*                <Route path="/components/buttons" name="Buttons" component={Buttons}/>
                 <Route path="/components/cards" name="Cards" component={Cards}/>
                 <Route path="/components/forms" name="Forms" component={Forms}/>
                 <Route path="/components/modals" name="Modals" component={Modals}/>
@@ -47,8 +47,8 @@ class Kupiki extends Component {
                 <Route path="/icons/font-awesome" name="Font Awesome" component={FontAwesome}/>
                 <Route path="/icons/simple-line-icons" name="Simple Line Icons" component={SimpleLineIcons}/>
                 <Route path="/widgets" name="Widgets" component={Widgets}/>
-                <Route path="/charts" name="Charts" component={Charts}/>
-                <Redirect from="/" to="/dashboard"/>
+                <Route path="/charts" name="Charts" component={Charts}/>*/}
+                <Redirect from="/" to="/system/dashboard"/>
               </Switch>
             </Container>
           </main>

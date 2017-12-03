@@ -38,6 +38,7 @@
     "history": "4.7.2",
     "react": "16.1.1",
     "react-chartjs-2": "2.6.4",
+    "react-crossfade-image": "^1.1.0",
     "react-dom": "16.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.2.2",
@@ -46,6 +47,7 @@
     "redux": "^3.7.2",
     "redux-form": "^7.1.2",
     "redux-thunk": "^2.2.0",
+    "redux-watch": "^1.1.1",
     "simple-line-icons": "2.4.1"
   },
   "scripts": {

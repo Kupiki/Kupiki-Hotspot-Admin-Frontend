@@ -1,24 +1,59 @@
 export default {
   items: [
     {
+      title: true,
+      name: 'System',
+      wrapper: {
+        element: '',
+        attributes: {}
+      },
+      class: ''
+    },
+    {
       name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW'
-      }
+      url: '/system/dashboard',
+      icon: 'icon-speedometer'
+    },
+    {
+      name: 'Administration',
+      url: '/system/administration',
+      icon: 'icon-settings'
     },
     {
       title: true,
-      name: 'UI elements',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      name: 'Configuration',
+      wrapper: {
+        element: '',
+        attributes: {}
       },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
+      class: ''
     },
     {
+      name: 'Basic',
+      url: '/configuration/basic',
+      icon: 'icon-wrench'
+    },
+    {
+      name: 'Advanced',
+      url: '/configuration/advanced',
+      icon: 'icon-rocket'
+    },
+    {
+      title: true,
+      name: 'Management',
+      wrapper: {
+        element: '',
+        attributes: {}
+      },
+      class: ''
+    },
+    {
+      name: 'Users',
+      url: '/management/users',
+      icon: 'icon-people'
+    },
+    
+  /*  {
       name: 'Components',
       url: '/components',
       icon: 'icon-puzzle',
@@ -138,19 +173,6 @@ export default {
           icon: 'icon-star'
         }
       ]
-    },
-    {
-      name: 'Download CoreUI',
-      url: 'http://coreui.io/react/',
-      icon: 'icon-cloud-download',
-      class: 'mt-auto',
-      variant: 'success'
-    },
-    {
-      name: 'Try CoreUI PRO',
-      url: 'http://coreui.io/pro/react/',
-      icon: 'icon-layers',
-      variant: 'danger'
-    }
+    }*/
   ]
 };

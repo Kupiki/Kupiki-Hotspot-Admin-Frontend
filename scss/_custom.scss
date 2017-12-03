@@ -1,1 +1,5 @@
 // Here you can add other styles
+
+.sidebar-fixed .sidebar {
+  height: calc(100% - 55px);
+}

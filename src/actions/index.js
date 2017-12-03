@@ -10,7 +10,7 @@ export function loginUser({username, password}) {
     const request = axios.post(`${ROOT_URL}/auth/local`, {username, password})
     request
       .then(response => {
-        // -Save the JWT token
+        // -Save the JWT token and username
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('username', username)
         
@@ -23,7 +23,6 @@ export function loginUser({username, password}) {
       .catch(() => {
         dispatch(authError('bad login info'))
       })
-    
   }
 }
 

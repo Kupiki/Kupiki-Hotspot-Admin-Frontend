@@ -1,17 +1,31 @@
-import React, {Component} from 'react';
-import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon} from 'reactstrap';
-import {Form, FormGroup, Label} from 'reactstrap';
+import React, { Component } from 'react';
+import { Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Form, FormGroup, Label } from 'reactstrap';
 import { Redirect } from 'react-router';
-
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import * as actions from '../../../actions';
+import BackgroundImage from '../../../components/BackgroundImage/';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-
+  
+    this.images = [
+      "img/backgrounds/0.jpg",
+      "img/backgrounds/1.jpg",
+      "img/backgrounds/2.jpg",
+      "img/backgrounds/3.jpg",
+      "img/backgrounds/4.jpg",
+      "img/backgrounds/5.jpg"
+    ];
+  
+    this.timeoutVar = null;
     this.state = {
       errors: [],
+      background: {
+      
+      },
+      imageIndex: 0,
       user: {
         username: '',
         password: ''
@@ -19,6 +33,35 @@ class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.changeImage = this.changeImage.bind(this);
+  }
+  
+  componentDidMount() {
+    document.body.style.overflow = 'hidden';
+    // document.body.classList.toggle('overrideClass', true)
+    this.timeoutVar = setTimeout(function () {
+      this.changeImage();
+    }.bind(this), 5000)
+  }
+  
+  componentWillUnmount() {
+    clearTimeout(this.timeoutVar);
+    document.body.style.overflow = 'auto';
+    // document.body.classList.remove('overrideClass')
+  }
+  
+  changeImage() {
+    if (this.state.imageIndex === this.images.length - 1) {
+      // this.state.imageIndex = 0;
+      this.setState({ imageIndex: 0 });
+    } else {
+      this.setState({ imageIndex: this.state.imageIndex + 1 });
+      // this.state.imageIndex++;
+    }
+  
+    this.timeoutVar = setTimeout(function () {
+      this.changeImage();
+    }.bind(this), 5000)
   }
   
   getRedirectPath() {
@@ -56,6 +99,7 @@ class Login extends Component {
       }}/>
       :
       <div className="app flex-row align-items-center">
+        <BackgroundImage src={this.images[this.state.imageIndex]} duration={1500} style={{ maxWidth: '', maxHeight: ''}}/>
         <Container>
           <Row className="justify-content-center">
             <Col md="8">
@@ -90,11 +134,13 @@ class Login extends Component {
                 <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: 44 + '%'}}>
                   <CardBody className="text-center">
                     <div>
+{/*
                       <h2>Sign up</h2>
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                         tempor incididunt ut
                         labore et dolore magna aliqua.</p>
                       <Button color="primary" className="mt-3" active>Register Now!</Button>
+*/}
                     </div>
                   </CardBody>
                 </Card>
