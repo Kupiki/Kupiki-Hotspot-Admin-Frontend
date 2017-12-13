@@ -22,6 +22,26 @@ import {
   Input,
   Table
 } from 'reactstrap';
+import Spinner from 'react-spinkit';
+import axios from 'axios';
+import moment from 'moment';
+import 'moment-duration-format';
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
+import i18next from 'i18next';
+import XHR from 'i18next-xhr-backend';
+
+i18next
+  .use(XHR)
+  .init({
+    initImmediate: true,
+    fallbackLng: 'en',
+    backend: {
+      loadPath: '/lang/locale-{{lng}}.json'
+    }
+  });
+
+const ROOT_URL = 'http://192.168.10.160:4000'
 
 const brandPrimary = '#20a8d8';
 const brandSuccess = '#4dbd74';
@@ -410,29 +430,133 @@ const mainChartOpts = {
   }
 }
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    this.state = {
-      dropdownOpen: false
+    const dataSetTemplate = {
+      graph: {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: 'rgba(255,255,255,.1)',
+            borderColor: 'rgba(255,255,255,.55)',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      }
     };
+    this.state = {
+      lng: localStorage.getItem('language'),
+      dropdownOpen: false,
+      cpuData: JSON.parse(JSON.stringify(dataSetTemplate)),
+      diskData: JSON.parse(JSON.stringify(dataSetTemplate)),
+      memoryData: JSON.parse(JSON.stringify(dataSetTemplate)),
+      uptimeData: JSON.parse(JSON.stringify(dataSetTemplate)),
+      servicesData: {}
+    };
+  
+    console.log(this.state.language)
+    console.log(localStorage.getItem('language'))
+    
+    this.getGraphData('cpu');
+    this.getGraphData('disk');
+    this.getGraphData('memory');
+    this.getGraphData('uptime');
+    this.getGraphData('services');
+    this.getGraphData('information');
+  
+    this.onLanguageChanged = this.onLanguageChanged.bind(this)
   }
+  
+  componentDidMount() {
+    i18next.on('languageChanged', this.onLanguageChanged)
+  }
+  
+  componentWillUnmount() {
+    i18next.off('languageChanged', this.onLanguageChanged)
+  }
+  
+  onLanguageChanged(lng) {
+    this.setState({
+      lng: lng
+    })
+  }
+  
+  getGraphData(apiRequest) {
+    let component = this;
+    const request = axios.get(`${ROOT_URL}/api/${apiRequest}`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        let eltName = apiRequest+'Data';
+        let apiData = component.state[eltName];
+  
+        apiData = Object.assign({}, apiData, response.data)
+        
+        if (response.data.chartData) {
+          let objData = JSON.parse(response.data.chartData);
+          apiData.graph.datasets[0].data = [];
+          apiData.graph.labels = [];
+          for (let i = 0; i < objData.length; i++) {
+            apiData.graph.labels.push(objData[i][0]);
+            apiData.graph.datasets[0].data.push(objData[i][1]);
+          }
+        }
+        if (apiRequest === "uptime" && response.data.uptime) {
+          let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
+          apiData.uptimeLabel = duration.format("D[d] h[h] m[m]");
+        }
+        if (apiRequest === "services" && response.data.status === "success") {
+          // apiData.services = apiData.result.message;
+/*
+          apiData.servicesRender = apiData.result.message.map(function(service, index) {
+            return (
+              <tr key={index}>
+                <td>
+                  {service.name}
+                </td>
+                <td className="text-center">
+                  <Label className="switch switch-text switch-pill switch-primary-outline-alt">
+                    {service.status && (<Input type="checkbox" disabled className="switch-input" defaultChecked/>)}
+                    {!service.status && (<Input type="checkbox" disabled className="switch-input"/>)}
+                    <span className="switch-label" data-on="On" data-off="Off"></span>
+                    <span className="switch-handle"></span>
+                  </Label>
+                </td>
+              </tr>
+            );
+          });
+*/
+        }
+        let newState = {};
+        newState[eltName] = apiData;
+        
+        console.log(apiData);
 
+        component.setState(newState);
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  };
+  
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
   }
-
-
+  
   render() {
-
     return (
       <div className="animated fadeIn">
-        <Row>
+        <br/>
+
+{/*        <Row>
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
@@ -533,8 +657,8 @@ class Dashboard extends Component {
               </div>
             </Card>
           </Col>
-        </Row>
-        <Row>
+        </Row>*/}
+{/*        <Row>
           <Col>
             <Card>
               <CardBody>
@@ -595,81 +719,75 @@ class Dashboard extends Component {
               </CardFooter>
             </Card>
           </Col>
-        </Row>
+        </Row>*/}
 
         <Row>
           <Col xs="6" sm="6" lg="3">
-            <div className="social-box facebook">
-              <i className="fa fa-facebook"></i>
-              <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(0)} options={socialChartOpts} height={90}/>
-              </div>
-              <ul>
-                <li>
-                  <strong>89k</strong>
-                  <span>friends</span>
-                </li>
-                <li>
-                  <strong>459</strong>
-                  <span>feeds</span>
-                </li>
-              </ul>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="social-box twitter">
-              <i className="fa fa-twitter"></i>
-              <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(1)} options={socialChartOpts} height={90}/>
-              </div>
-              <ul>
-                <li>
-                  <strong>973k</strong>
-                  <span>followers</span>
-                </li>
-                <li>
-                  <strong>1.792</strong>
-                  <span>tweets</span>
-                </li>
-              </ul>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-
             <div className="social-box linkedin">
-              <i className="fa fa-linkedin"></i>
+              <i className="fa fa-heartbeat"></i>
               <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(2)} options={socialChartOpts} height={90}/>
+                <Line data={this.state.cpuData.graph} options={socialChartOpts} height={90}/>
               </div>
               <ul>
                 <li>
-                  <strong>500+</strong>
-                  <span>contacts</span>
+                  <strong>{this.state.cpuData['1m']}</strong>
+                  <span>1m</span>
                 </li>
                 <li>
-                  <strong>292</strong>
-                  <span>feeds</span>
+                  <strong>{this.state.cpuData['5m']}</strong>
+                  <span>5m</span>
                 </li>
               </ul>
             </div>
           </Col>
 
           <Col xs="6" sm="6" lg="3">
-            <div className="social-box google-plus">
-              <i className="fa fa-google-plus"></i>
+            <div className="social-box linkedin">
+              <i className="fa fa-hdd-o"></i>
               <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(3)} options={socialChartOpts} height={90}/>
+                <Line data={this.state.diskData.graph} options={socialChartOpts} height={90}/>
               </div>
               <ul>
                 <li>
-                  <strong>894</strong>
-                  <span>followers</span>
+                  <strong>{this.state.diskData['free']} {this.state.diskData['freeUnit']}</strong>
+                  <span>{i18next.t('dashboard.free')}</span>
                 </li>
                 <li>
-                  <strong>92</strong>
-                  <span>circles</span>
+                  <strong>{this.state.diskData['total']} {this.state.diskData['totalUnit']}</strong>
+                  <span>{i18next.t('dashboard.total')}</span>
+                </li>
+              </ul>
+            </div>
+          </Col>
+
+          <Col xs="6" sm="6" lg="3">
+            <div className="social-box linkedin">
+              <i className="fa fa-microchip"></i>
+              <div className="chart-wrapper">
+                <Line data={this.state.memoryData.graph} options={socialChartOpts} height={90}/>
+              </div>
+              <ul>
+                <li>
+                  <strong>{this.state.memoryData['free']} {this.state.memoryData['freeUnit']}</strong>
+                  <span>{i18next.t('dashboard.free')}</span>
+                </li>
+                <li>
+                  <strong>{this.state.memoryData['total']} {this.state.memoryData['totalUnit']}</strong>
+                  <span>{i18next.t('dashboard.total')}</span>
+                </li>
+              </ul>
+            </div>
+          </Col>
+
+          <Col xs="6" sm="6" lg="3">
+            <div className="social-box social-box-single linkedin">
+              <i className="fa fa-clock-o"></i>
+              <div className="chart-wrapper">
+              </div>
+              <ul>
+                <li>
+                  <strong>{this.state.uptimeData['uptimeLabel']}</strong>
+                  <span>uptime</span>
                 </li>
               </ul>
             </div>
@@ -677,12 +795,13 @@ class Dashboard extends Component {
         </Row>
 
         <Row>
-          <Col>
+          <Col xs="12" sm="12" lg="8">
             <Card>
               <CardHeader>
-                Traffic {'&'} Sales
+                System Services
               </CardHeader>
               <CardBody>
+{/*
                 <Row>
                   <Col xs="12" md="6" xl="4">
                     <Row>
@@ -991,231 +1110,66 @@ class Dashboard extends Component {
                   </Col>
                 </Row>
                 <br/>
-                <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
-                  <thead className="thead-light">
-                  <tr>
-                    <th className="text-center"><i className="icon-people"></i></th>
-                    <th>User</th>
-                    <th className="text-center">Country</th>
-                    <th>Usage</th>
-                    <th className="text-center">Payment Method</th>
-                    <th>Activity</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-success"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Yiorgos Avraamu</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>50%</strong>
+*/}
+                {!this.state.servicesData.status && (
+                  <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                )}
+                {this.state.servicesData.status === "failed" && (
+                  <span>Error</span>
+                )}
+                {this.state.servicesData.status === "success" && (
+                  <ReactTable data={this.state.servicesData.result.message} columns={[
+                    {
+                      Header: "Service",
+                      accessor: "name"
+                    },{
+                      Header: "Status",
+                      accessor: "status",
+                      style: { align: 'center' },
+                      Cell: row => (
+                        <div style={{ width: '100%' , textAlign: 'center' }}>
+                          <Label className="switch switch-text switch-pill switch-primary-outline-alt switch-xs">
+                            {row.value && (<Input type="checkbox" disabled className="switch-input" defaultChecked/>)}
+                            {!row.value && (<Input type="checkbox" disabled className="switch-input"/>)}
+                            <span className="switch-label" data-on="On" data-off="Off"></span>
+                            <span className="switch-handle"></span>
+                          </Label>
                         </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="success" value="50"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-mastercard" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>10 sec ago</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/2.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-danger"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Avram Tarasios</div>
-                      <div className="small text-muted">
-
-                        <span>Recurring</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/Brazil.png'} alt="Brazil" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>10%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="info" value="10"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-visa" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>5 minutes ago</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/3.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-warning"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Quintin Ed</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/India.png'} alt="India" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>74%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="warning" value="74"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-stripe" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>1 hour ago</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/4.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-secondary"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Enéas Kwadwo</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/France.png'} alt="France" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>98%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="danger" value="98"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-paypal" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>Last month</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/5.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-success"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Agapetus Tadeáš</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/Spain.png'} alt="Spain" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>22%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="info" value="22"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-google-wallet" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>Last week</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                        <span className="avatar-status badge-danger"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Friderik Dávid</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <img src={'img/flags/Poland.png'} alt="Poland" style={{height: 24 + 'px'}}/>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>43%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="success" value="43"/>
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-amex" style={{fontSize: 24 + 'px'}}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>Yesterday</strong>
-                    </td>
-                  </tr>
-                  </tbody>
-                </Table>
+                      )
+                    }
+                  ]}
+                  defaultPageSize={10}
+                  className="-striped -highlight"/>
+                )}
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xs="12" sm="12" lg="4">
+            <Card>
+              <CardHeader>
+                System summary
+              </CardHeader>
+              <CardBody>
+                {!this.state.informationData && (
+                  <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                )}
+                {this.state.informationData && (
+                  <ReactTable
+                    data={this.state.informationData.information}
+                    columns={[
+                      {
+                        //Header: "Service",
+                        accessor: "name"
+                      },{
+                        //Header: "Status",
+                        accessor: "value",
+                        style: { align: 'center' }
+                      }
+                    ]}
+                    showPagination={false}
+                    defaultPageSize={this.state.informationData.information.length}
+                    className="-striped -highlight"/>
+                )}
               </CardBody>
             </Card>
           </Col>

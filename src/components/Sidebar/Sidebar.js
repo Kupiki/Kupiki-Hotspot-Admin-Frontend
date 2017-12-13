@@ -124,8 +124,8 @@ class Sidebar extends Component {
             {navList(nav.items)}
           </Nav>
         </nav>
-        <SidebarFooter/>
-        <SidebarMinimizer/>
+        {/*<SidebarFooter/>*/}
+        {/*<SidebarMinimizer/>*/}
       </div>
     )
   }

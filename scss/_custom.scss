@@ -3,3 +3,17 @@
 .sidebar-fixed .sidebar {
   height: calc(100% - 55px);
 }
+
+.social-box-single {
+  ul {
+    li {
+      display: block;
+      float: left;
+      width: 100%;
+    }
+  }
+}
+
+div#spinner {
+  margin: auto
+}

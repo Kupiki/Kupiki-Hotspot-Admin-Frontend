@@ -120,6 +120,11 @@ module.exports = (env = {}) => {
           {from: './public/img', to: 'img'}
         ],
         {copyUnmodified: false}
+      ),
+      new CopyWebpackPlugin([
+          {from: './public/lang', to: 'lang'}
+        ],
+        {copyUnmodified: false}
       )
     ]
   }

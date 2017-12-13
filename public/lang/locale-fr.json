@@ -1,0 +1,165 @@
+{
+  "user": {
+    "account": "Compte",
+    "profile": "Profil",
+    "logout": "Déconnecter",
+    "language": "Langue"
+  },
+  "sidebar": {
+    "system": "système",
+    "dashboard": "Dashboard",
+    "administration": "Administration",
+    "configuration": "configuration",
+    "basic": "Simple",
+    "advanced": "Avancée",
+    "management": "Gestion",
+    "users": "Utilisateurs"
+  },
+  "dashboard": {
+    "capacity": "Capacité",
+    "total": "Total",
+    "free": "Disponible",
+    "hours": "heures",
+    "minutes": "minutes",
+    "seconds": "secondes",
+    "up": "Up",
+    "services": "Services",
+    "service": "Service",
+    "unable": "Impossible de charger la liste des services",
+    "summary": "Information système",
+    "architecture": "Architecture",
+    "CPU": "CPU",
+    "hostname": "Hostname",
+    "OS Type": "Type de système",
+    "plateform": "Plateforme",
+    "release": "Version",
+    "update": "Mise à jour",
+    "reboot": "Redémarrer",
+    "shutdown": "Arrêter",
+    "status": "Status",
+    "issue": "Erreur système",
+    "systemshutdown": {
+      "title": "Arrêt du système",
+      "ask": "Confirmez que que vous souhaitez arrêter le système",
+      "confirm": "Le système est en cours d'arrêt",
+      "error-start": "L'arrêt du système n'a pas pu être executé",
+      "error-execution": "L'arrêt du système n'a pas pu être executé"
+    },
+    "systemreboot": {
+      "title": "Redémarrer le système",
+      "ask": "Confirmez que que vous souhaitez redémarrer le système",
+      "confirm": "Le système est en cours de relance",
+      "error-execution": "Impossible de redémarrer le système"
+    },
+    "systemupdate": {
+      "title": "Mise à jour système",
+      "available": "{{availableUpgrades}} mises à jour disponibles. Mettez votre système à jour.",
+      "ask": "Confirmez que vous souhaitez mettre à jour le système",
+      "confirm": "Le système est à jour",
+      "error-start": "La mise à jour du système ne peut pas être démarrée",
+      "error-status": "Impossible d'obtenir le statut des mises à jour",
+      "error-execution": "Impossible d'exécuter la mise à jour du système",
+      "error-information": "Impossible d'obtenir les informations de mise à jour",
+      "progress": "Mises à jour en cours",
+      "alreadyprogress": "Mises à jour déjà en cours",
+      "finished": "Mises à jour terminées"
+    },
+    "systemservices": {
+      "error-information": "Impossible d'obtenir les informations sur les services",
+      "error-start": "Impossible de démarrer le service {{service}}",
+      "error-stop": "Impossible d'arrêter le service {{service}}",
+      "success-start": "Service {{service}} démarré",
+      "success-stop": "Service {{service}} arrêté"
+    }
+  },
+  "management": {
+    "basic": {
+      "basic": {
+        "title": "Configuration simple",
+        "hotspotName": "Nom du point d'accès",
+        "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès"
+      },
+      "portalOptions": {
+        "title": "Options du portail",
+        "termsDisplay": "Afficher les conditions d'utilisation",
+        "termsMessage": "Message à confirmer",
+        "termsMessagePlaceholder": "Saisissez le message demandant la validation",
+        "termsLink": "Lien vers les conditions",
+        "termsLinkPlaceholder": "Saisissez le texte du lien vers les conditions",
+        "termsFull": "Texte des conditions",
+        "termsFullPlaceholder": "Saisissez vos conditions d'utilisation",
+        "termsError": "Message d'erreur",
+        "termsErrorPlaceholder": "Saisissez le message à afficher si les conditions ne sont pas validées",
+        "termsResult": "Résultat affiché"
+      },
+      "portalBackground": {
+        "title": "Image du fond du portail",
+        "restore": "Rétablir l'image de fond par défaut"
+      },
+      "reloadImage": {
+        "title": "Image du fond du portail",
+        "confirm": "Confirmez que vous souhaitez recharger l'image de fond par défaut du portail",
+        "success": "Image restaurée",
+        "error": "Impossible de charger l'image de fond par défaut"
+      },
+      "upload": {
+        "title": "Image de fond",
+        "error-type": "Le fichier sélectionné n'est pas une image",
+        "error-upload": "Impossible de charger le fichier",
+        "success": "Image chargée avec succès"
+      }
+    },
+    "advanced": {
+      "configuration": "Configuration",
+      "generatedFile": "Fichier généré",
+      "fields": {
+        "interface": "Interface",
+        "driver": "Driver",
+        "ssid": "SSID",
+        "hw_mode": "Mode Wifi",
+        "channel": "Canal",
+        "auth_algs": "Authentification",
+        "beacon_int": "Intervalle de balise",
+        "dtim_period": "Delivery Traffic Information Message",
+        "max_num_sta": "Nombre maximum de clients",
+        "rts_threshold": "Seuil RTS",
+        "fragm_threshold": "Seuil de fragmentation"
+      },
+      "reload": {
+        "title": "Recharger la configuration de Hostapd",
+        "confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
+      },
+      "default": {
+        "title": "Configuration par défaut de Hostapd",
+        "confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
+        "success": "Configuration chargée",
+        "error-load": "Impossible de charge la configuration par défaut"
+      },
+      "load": {
+        "error-load": "Impossible de charge la configuration actuelle"
+      },
+      "save": {
+        "title": "Configuration de Hostapd",
+        "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
+        "confirmService": "Redémarrer le service hostapd après la sauvegarde",
+        "success": "Configuration sauvegardée",
+        "error-save": "Erreur lors de la sauvegarde de la configuration"
+      }
+    }
+  },
+  "generic": {
+    "Error": "Erreur",
+    "error": "erreur",
+    "Code": "Code",
+    "code": "code"
+  },
+  "actions": {
+    "ok": "OK",
+    "cancel": "Annuler",
+    "save": "Sauver",
+    "reload": "Recharger",
+    "reset": "Reset",
+    "confirm": "Confirmer",
+    "upload": "Téléverser"
+  }
+}

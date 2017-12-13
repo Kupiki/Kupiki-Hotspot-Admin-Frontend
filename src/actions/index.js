@@ -13,6 +13,7 @@ export function loginUser({username, password}) {
         // -Save the JWT token and username
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('username', username)
+        localStorage.setItem('language', response.data.language)
         
         // -if request is good, we need to update state to indicate user is authenticated
         dispatch({type: AUTH_USER, username: username})
@@ -28,6 +29,7 @@ export function loginUser({username, password}) {
 
 export function logoutUser() {
   localStorage.removeItem('token')
+  localStorage.removeItem('username')
   return {
     type: UNAUTH_USER
   }

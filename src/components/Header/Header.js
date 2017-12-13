@@ -74,9 +74,9 @@ class Header extends Component {
 */}
           <HeaderDropdown/>
         </Nav>
-        <NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>
-          <span className="navbar-toggler-icon"></span>
-        </NavbarToggler>
+        {/*<NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>*/}
+          {/*<span className="navbar-toggler-icon"></span>*/}
+        {/*</NavbarToggler>*/}
       </header>
     );
   }
