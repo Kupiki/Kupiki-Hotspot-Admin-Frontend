@@ -3,10 +3,16 @@
     "account": "Compte",
     "profile": "Profil",
     "logout": "Déconnecter",
-    "language": "Langue"
+    "language": "Langue",
+    "password": {
+      "title": "Changer le mot de passe",
+      "current": "Mot de passe actuel",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer le mot de passe"
+    }
   },
   "sidebar": {
-    "system": "système",
+    "system": "Système",
     "dashboard": "Dashboard",
     "administration": "Administration",
     "configuration": "configuration",
@@ -26,7 +32,7 @@
     "services": "Services",
     "service": "Service",
     "unable": "Impossible de charger la liste des services",
-    "summary": "Information système",
+    "summary": "Informations système",
     "architecture": "Architecture",
     "CPU": "CPU",
     "hostname": "Hostname",
@@ -36,7 +42,7 @@
     "update": "Mise à jour",
     "reboot": "Redémarrer",
     "shutdown": "Arrêter",
-    "status": "Status",
+    "status": "Etat",
     "issue": "Erreur système",
     "systemshutdown": {
       "title": "Arrêt du système",
