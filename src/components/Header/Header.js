@@ -9,6 +9,7 @@ import {
   Badge
 } from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
+import HeaderDropdownLanguage from './HeaderDropdownLanguage';
 import { connect } from 'react-redux';
 
 class Header extends Component {
@@ -72,6 +73,7 @@ class Header extends Component {
             <NavLink href="#"><i className="icon-location-pin"></i></NavLink>
           </NavItem>
 */}
+          <HeaderDropdownLanguage/>
           <HeaderDropdown/>
         </Nav>
         {/*<NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>*/}

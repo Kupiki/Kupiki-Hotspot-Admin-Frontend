@@ -2,7 +2,7 @@ export default {
   items: [
     {
       title: true,
-      name: 'System',
+      name: 'sidebar.system',
       wrapper: {
         element: '',
         attributes: {}
@@ -10,18 +10,18 @@ export default {
       class: ''
     },
     {
-      name: 'Dashboard',
+      name: 'sidebar.dashboard',
       url: '/system/dashboard',
       icon: 'icon-speedometer'
     },
     {
-      name: 'Administration',
+      name: 'sidebar.administration',
       url: '/system/administration',
       icon: 'icon-settings'
     },
     {
       title: true,
-      name: 'Configuration',
+      name: 'sidebar.configuration',
       wrapper: {
         element: '',
         attributes: {}
@@ -29,18 +29,18 @@ export default {
       class: ''
     },
     {
-      name: 'Basic',
+      name: 'sidebar.basic',
       url: '/configuration/basic',
       icon: 'icon-wrench'
     },
     {
-      name: 'Advanced',
+      name: 'sidebar.advanced',
       url: '/configuration/advanced',
       icon: 'icon-rocket'
     },
     {
       title: true,
-      name: 'Management',
+      name: 'sidebar.management',
       wrapper: {
         element: '',
         attributes: {}
@@ -48,7 +48,7 @@ export default {
       class: ''
     },
     {
-      name: 'Users',
+      name: 'sidebar.users',
       url: '/management/users',
       icon: 'icon-people'
     },

@@ -3,12 +3,20 @@
     "account": "Compte",
     "profile": "Profil",
     "logout": "Déconnecter",
-    "language": "Langue",
+    "language": {
+      "menu": "Langue",
+      "title": "Mise à jour",
+      "success": "Langue mise à jour"
+    },
     "password": {
       "title": "Changer le mot de passe",
       "current": "Mot de passe actuel",
+      "currentMissing": "Mot de passe obligatoire",
+      "currentTooSmall": "Le mot de passe doit faire au moins 3 caractères",
+      "mismatch": "Les mots de passe ne correspondent pas",
       "new": "Nouveau mot de passe",
-      "confirm": "Confirmer le mot de passe"
+      "confirm": "Confirmer le mot de passe",
+      "success": "Mot de passe modifié avec succès"
     }
   },
   "sidebar": {
@@ -161,6 +169,7 @@
   },
   "actions": {
     "ok": "OK",
+    "submit": "Valider",
     "cancel": "Annuler",
     "save": "Sauver",
     "reload": "Recharger",

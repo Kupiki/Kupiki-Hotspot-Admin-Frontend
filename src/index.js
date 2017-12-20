@@ -7,7 +7,11 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
-import { PrivateRoute } from './components/Auth/PrivateRoute'
+import { PrivateRoute } from './components/Auth/PrivateRoute';
+import ReduxToastr from 'react-redux-toastr';
+
+import { I18nextProvider } from 'react-i18next';
+import i18n from './components/i18n';
 
 // Styles
 // Import Font Awesome Icons Set
@@ -34,24 +38,29 @@ import Kupiki from './containers/Kupiki/'
 // Views
 import Login from './views/Pages/Login/';
 import Logout from './views/Pages/Logout/';
-import Profile from './views/User/Profile/';
-
-// import Register from './views/Pages/Register/'
-// import Page404 from './views/Pages/Page404/'
-// import Page500 from './views/Pages/Page500/'
-
-// const store = configureStore();
 
 ReactDOM.render((
-  <Provider store={store}>
-    <Router>
-      <Switch>
-        <Route exact path="/login" name="Login Page" component={Login}/>
-        <Route exact path="/logout" name="Logout Page" component={Logout}/>
-        {/*<PrivateRoute exact path="/user/profile" name="User Profile" component={Profile}/>*/}
-        {/*<PrivateRoute exact path="/system/dashboard" name="Dashboard" component={Kupiki}/>*/}
-        <PrivateRoute path="/" component={Kupiki}/>
-      </Switch>
-    </Router>
-  </Provider>
+  <I18nextProvider i18n={ i18n }>
+    <Provider store={store}>
+      <div>
+        <Router>
+          <Switch>
+            <Route exact path="/login" name="Login Page" component={Login}/>
+            <Route exact path="/logout" name="Logout Page" component={Logout}/>
+            {/*<PrivateRoute exact path="/user/profile" name="User Profile" component={Profile}/>*/}
+            {/*<PrivateRoute exact path="/system/dashboard" name="Dashboard" component={Kupiki}/>*/}
+            <PrivateRoute path="/" component={Kupiki}/>
+          </Switch>
+        </Router>
+        <ReduxToastr
+          timeOut={4000}
+          newestOnTop={false}
+          preventDuplicates
+          position="top-right"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar/>
+      </div>
+    </Provider>
+  </I18nextProvider>
 ), document.getElementById('root'));

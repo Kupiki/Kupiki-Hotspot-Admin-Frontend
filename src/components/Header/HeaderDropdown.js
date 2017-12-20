@@ -26,7 +26,7 @@ class HeaderDropdown extends Component {
 
   constructor(props) {
     super(props);
-
+  
     this.toggle = this.toggle.bind(this);
     this.state = {
       lng: localStorage.getItem('language'),
@@ -60,7 +60,7 @@ class HeaderDropdown extends Component {
           {/*<DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>*/}
           {/*<DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>*/}
           {/*<DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>*/}
-          <DropdownItem divider/>
+          {/*<DropdownItem divider/>*/}
           {/*<DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>*/}
           <DropdownItem href={'/#/logout'}><i className="fa fa-lock"></i> {i18next.t('user.logout')}</DropdownItem>
         </DropdownMenu>

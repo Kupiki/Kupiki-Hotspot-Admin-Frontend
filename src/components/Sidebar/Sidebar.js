@@ -3,12 +3,21 @@ import {NavLink} from 'react-router-dom';
 import {Badge, Nav, NavItem, NavLink as RsNavLink} from 'reactstrap';
 import classNames from 'classnames';
 import nav from './_nav';
-import SidebarFooter from './../SidebarFooter';
+// import SidebarFooter from './../SidebarFooter';
 import SidebarForm from './../SidebarForm';
 import SidebarHeader from './../SidebarHeader';
-import SidebarMinimizer from './../SidebarMinimizer';
+// import SidebarMinimizer from './../SidebarMinimizer';
+
+import { translate } from 'react-i18next';
 
 class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      lng: localStorage.getItem('language'),
+    };
+  }
 
   handleClick(e) {
     e.preventDefault();
@@ -18,7 +27,6 @@ class Sidebar extends Component {
   activeRoute(routeName, props) {
     // return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
     return props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
-
   }
 
   // todo Sidebar nav secondLevel
@@ -26,9 +34,9 @@ class Sidebar extends Component {
   //   return this.props.location.pathname.indexOf(routeName) > -1 ? "nav nav-second-level collapse in" : "nav nav-second-level collapse";
   // }
 
-
   render() {
-
+  
+    const { t } = this.props;
     const props = this.props;
     const activeRoute = this.activeRoute;
     const handleClick = this.handleClick;
@@ -42,7 +50,7 @@ class Sidebar extends Component {
     };
 
     // simple wrapper for nav-title item
-    const wrapper = item => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, item.name)): item.name ) };
+    const wrapper = item => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, t(item.name))): t(item.name) ) };
 
     // nav list section title
     const title =  (title, key) => {
@@ -75,11 +83,11 @@ class Sidebar extends Component {
         <NavItem key={key} className={classes.item}>
           { isExternal(url) ?
             <RsNavLink href={url} className={classes.link} active>
-              <i className={classes.icon}></i>{item.name}{badge(item.badge)}
+              <i className={classes.icon}></i>{t(item.name)}{badge(item.badge)}
             </RsNavLink>
             :
             <NavLink to={url} className={classes.link} activeClassName="active">
-              <i className={classes.icon}></i>{item.name}{badge(item.badge)}
+              <i className={classes.icon}></i>{t(item.name)}{badge(item.badge)}
             </NavLink>
           }
         </NavItem>
@@ -90,7 +98,7 @@ class Sidebar extends Component {
     const navDropdown = (item, key) => {
       return (
         <li key={key} className={activeRoute(item.url, props)}>
-          <a className="nav-link nav-dropdown-toggle" href="#" onClick={handleClick.bind(this)}><i className={item.icon}></i>{item.name}</a>
+          <a className="nav-link nav-dropdown-toggle" href="#" onClick={handleClick.bind(this)}><i className={item.icon}></i>{i18next.t(item.name)}</a>
           <ul className="nav-dropdown-items">
             {navList(item.children)}
           </ul>
@@ -131,4 +139,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+export default translate()(Sidebar);

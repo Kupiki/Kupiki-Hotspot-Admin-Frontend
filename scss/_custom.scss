@@ -1,5 +1,7 @@
 // Here you can add other styles
 
+@import 'node_modules/react-redux-toastr/src/styles/index';
+
 .sidebar-fixed .sidebar {
   height: calc(100% - 55px);
 }
@@ -24,4 +26,8 @@
 
 div#spinner {
   margin: auto
+}
+
+.btn {
+  margin-right: 5px;
 }

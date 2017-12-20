@@ -28,20 +28,11 @@ import moment from 'moment';
 import 'moment-duration-format';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import i18next from 'i18next';
-import XHR from 'i18next-xhr-backend';
 
-i18next
-  .use(XHR)
-  .init({
-    initImmediate: true,
-    fallbackLng: 'en',
-    backend: {
-      loadPath: '/lang/locale-{{lng}}.json'
-    }
-  });
+import { translate } from 'react-i18next';
 
-const ROOT_URL = 'http://192.168.10.160:4000';
+var Config = require('Config');
+const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 // const brandPrimary = '#20a8d8';
 // const brandSuccess = '#4dbd74';
@@ -112,24 +103,24 @@ class Dashboard extends Component {
     this.getGraphData('services');
     this.getGraphData('information');
   
-    this.onLanguageChanged = this.onLanguageChanged.bind(this);
+    // this.onLanguageChanged = this.onLanguageChanged.bind(this);
     
-    i18next.changeLanguage(this.state.lng);
+    // i18next.changeLanguage(this.state.lng);
   }
   
-  componentDidMount() {
-    i18next.on('languageChanged', this.onLanguageChanged)
-  }
-  
-  componentWillUnmount() {
-    i18next.off('languageChanged', this.onLanguageChanged)
-  }
-  
-  onLanguageChanged(lng) {
-    this.setState({
-      lng: lng
-    })
-  }
+  // componentDidMount() {
+  //   i18next.on('languageChanged', this.onLanguageChanged)
+  // }
+  //
+  // componentWillUnmount() {
+  //   i18next.off('languageChanged', this.onLanguageChanged)
+  // }
+  //
+  // onLanguageChanged(lng) {
+  //   this.setState({
+  //     lng: lng
+  //   })
+  // }
   
   getGraphData(apiRequest) {
     let component = this;
@@ -173,6 +164,8 @@ class Dashboard extends Component {
   }
   
   render() {
+    const { t } = this.props;
+  
     return (
       <div className="animated fadeIn">
         <br/>
@@ -205,11 +198,11 @@ class Dashboard extends Component {
               <ul>
                 <li>
                   <strong>{this.state.diskData['free']} {this.state.diskData['freeUnit']}</strong>
-                  <span>{i18next.t('dashboard.free')}</span>
+                  <span>{t('dashboard.free')}</span>
                 </li>
                 <li>
                   <strong>{this.state.diskData['total']} {this.state.diskData['totalUnit']}</strong>
-                  <span>{i18next.t('dashboard.total')}</span>
+                  <span>{t('dashboard.total')}</span>
                 </li>
               </ul>
             </div>
@@ -224,11 +217,11 @@ class Dashboard extends Component {
               <ul>
                 <li>
                   <strong>{this.state.memoryData['free']} {this.state.memoryData['freeUnit']}</strong>
-                  <span>{i18next.t('dashboard.free')}</span>
+                  <span>{t('dashboard.free')}</span>
                 </li>
                 <li>
                   <strong>{this.state.memoryData['total']} {this.state.memoryData['totalUnit']}</strong>
-                  <span>{i18next.t('dashboard.total')}</span>
+                  <span>{t('dashboard.total')}</span>
                 </li>
               </ul>
             </div>
@@ -253,10 +246,12 @@ class Dashboard extends Component {
           <Col xs="12" sm="12" lg="8">
             <Card>
               <CardHeader>
-                {i18next.t('dashboard.services')}
-                <div className="card-actions">
-                  <a href="#" className="btn-setting"><i className="fa fa-filter"></i></a>
-                </div>
+                {t('dashboard.services')}
+                <Label className="switch switch-sm switch-text switch-info float-right mb-0">
+                  <Input type="checkbox" className="switch-input"/>
+                  <span className="switch-label" data-on="On" data-off="Off"></span>
+                  <span className="switch-handle"></span>
+                </Label>
               </CardHeader>
               <CardBody>
                 {!this.state.servicesData.status && (
@@ -268,10 +263,10 @@ class Dashboard extends Component {
                 {this.state.servicesData.status === "success" && (
                   <ReactTable data={this.state.servicesData.result.message} columns={[
                     {
-                      Header: i18next.t('dashboard.service'),
+                      Header: t('dashboard.service'),
                       accessor: "name"
                     },{
-                      Header: i18next.t('dashboard.status'),
+                      Header: t('dashboard.status'),
                       accessor: "status",
                       style: { align: 'center' },
                       Cell: row => (
@@ -295,7 +290,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="12" lg="4">
             <Card>
               <CardHeader>
-                {i18next.t('dashboard.summary')}
+                {t('dashboard.summary')}
               </CardHeader>
               <CardBody>
                 {!this.state.informationData && (
@@ -325,4 +320,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default translate()(Dashboard);

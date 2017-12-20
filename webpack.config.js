@@ -33,13 +33,16 @@ module.exports = (env = {}) => {
       path: BUILD_DIR,
       filename: '[name].bundle.js'
     },
+    externals: {
+      'Config': JSON.stringify(ENV === 'production' ? require('./config/config.prod.json') : require('./config/config.dev.json'))
+    },
     // watch: true,
     devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
     devServer: {
       contentBase: BUILD_DIR,
-        port: METADATA.port,
-        host: METADATA.host,
-        public: METADATA.PUBLIC,
+      port: METADATA.port,
+      host: METADATA.host,
+      public: METADATA.PUBLIC,
       //   port: 9001,
       compress: true,
       hot: true,
