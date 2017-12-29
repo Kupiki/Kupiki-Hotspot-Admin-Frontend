@@ -31,3 +31,12 @@ div#spinner {
 .btn {
   margin-right: 5px;
 }
+
+$blur-radius: 5px;
+
+body.modal-open #root {
+  -webkit-filter: blur($blur-radius);
+  -moz-filter:    blur($blur-radius);
+  filter:         blur($blur-radius);
+  opacity: 0.7;
+}

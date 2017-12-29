@@ -3,7 +3,8 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
-import Dashboard from '../../views/Dashboard/';
+import Dashboard from '../../views/System/Dashboard/';
+import Administration from '../../views/System/Administration/';
 import Profile from '../../views/User/Profile/';
 
 class Kupiki extends Component {
@@ -18,6 +19,7 @@ class Kupiki extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/system/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route path="/system/administration" name="Administration" component={Administration}/>
                 <Route path="/user/profile" name="User Profile" component={Profile}/>
                 <Redirect from="/" to="/system/dashboard"/>
               </Switch>

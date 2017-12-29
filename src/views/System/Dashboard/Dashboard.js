@@ -4,24 +4,26 @@ import {
   Badge,
   Row,
   Col,
-  Progress,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   CardTitle,
-  Button,
-  ButtonToolbar,
-  ButtonGroup,
-  ButtonDropdown,
   Label,
   Input,
-  Table
 } from 'reactstrap';
+// Button,
+// ButtonToolbar,
+//   ButtonGroup,
+//   ButtonDropdown,
+// Table
+// Dropdown,
+//   DropdownToggle,
+//   DropdownMenu,
+//   DropdownItem,
+// Progress,
+
+
 import Spinner from 'react-spinkit';
 import axios from 'axios';
 import moment from 'moment';
@@ -88,7 +90,7 @@ class Dashboard extends Component {
     };
     this.state = {
       lng: localStorage.getItem('language'),
-      dropdownOpen: false,
+      servicesFiltered: false,
       cpuData: JSON.parse(JSON.stringify(dataSetTemplate)),
       diskData: JSON.parse(JSON.stringify(dataSetTemplate)),
       memoryData: JSON.parse(JSON.stringify(dataSetTemplate)),
@@ -102,25 +104,7 @@ class Dashboard extends Component {
     this.getGraphData('uptime');
     this.getGraphData('services');
     this.getGraphData('information');
-  
-    // this.onLanguageChanged = this.onLanguageChanged.bind(this);
-    
-    // i18next.changeLanguage(this.state.lng);
   }
-  
-  // componentDidMount() {
-  //   i18next.on('languageChanged', this.onLanguageChanged)
-  // }
-  //
-  // componentWillUnmount() {
-  //   i18next.off('languageChanged', this.onLanguageChanged)
-  // }
-  //
-  // onLanguageChanged(lng) {
-  //   this.setState({
-  //     lng: lng
-  //   })
-  // }
   
   getGraphData(apiRequest) {
     let component = this;
@@ -147,6 +131,14 @@ class Dashboard extends Component {
           let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
           apiData.uptimeLabel = duration.format("D[d] h[h] m[m]");
         }
+        if (apiRequest === "services") {
+          apiData.fullData = response.data.result.message;
+          let filterByName = function(service) {
+            return Config.servicesFilters.includes(service.name);
+          };
+          apiData.filteredData = apiData.fullData.filter(filterByName);
+          apiData.currentData = apiData.fullData;
+        }
         let newState = {};
         newState[eltName] = apiData;
         
@@ -159,8 +151,9 @@ class Dashboard extends Component {
   
   toggle() {
     this.setState({
-      dropdownOpen: !this.state.dropdownOpen
+      servicesFiltered: !this.state.servicesFiltered
     });
+    (this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData : this.state.servicesData.currentData = this.state.servicesData.filteredData;
   }
   
   render() {
@@ -248,7 +241,7 @@ class Dashboard extends Component {
               <CardHeader>
                 {t('dashboard.services')}
                 <Label className="switch switch-sm switch-text switch-info float-right mb-0">
-                  <Input type="checkbox" className="switch-input"/>
+                  <Input type="checkbox" className="switch-input" onChange={this.toggle.bind(this)}/>
                   <span className="switch-label" data-on="On" data-off="Off"></span>
                   <span className="switch-handle"></span>
                 </Label>
@@ -261,26 +254,28 @@ class Dashboard extends Component {
                   <span>Error</span>
                 )}
                 {this.state.servicesData.status === "success" && (
-                  <ReactTable data={this.state.servicesData.result.message} columns={[
-                    {
-                      Header: t('dashboard.service'),
-                      accessor: "name"
-                    },{
-                      Header: t('dashboard.status'),
-                      accessor: "status",
-                      style: { align: 'center' },
-                      Cell: row => (
-                        <div style={{ width: '100%' , textAlign: 'center' }}>
-                          <Label className="switch switch-text switch-pill switch-primary-outline-alt switch-xs">
-                            {row.value && (<Input type="checkbox" disabled className="switch-input" defaultChecked/>)}
-                            {!row.value && (<Input type="checkbox" disabled className="switch-input"/>)}
-                            <span className="switch-label" data-on="On" data-off="Off"></span>
-                            <span className="switch-handle"></span>
-                          </Label>
-                        </div>
-                      )
-                    }
-                  ]}
+                  <ReactTable
+                    data={this.state.servicesData.currentData}
+                    columns={[
+                      {
+                        Header: t('dashboard.service'),
+                        accessor: "name"
+                      },{
+                        Header: t('dashboard.status'),
+                        accessor: "status",
+                        style: { align: 'center' },
+                        Cell: row => (
+                          <div style={{ width: '100%' , textAlign: 'center' }}>
+                            <Label className="switch switch-text switch-pill switch-primary-outline-alt switch-xs">
+                              {row.value && (<Input type="checkbox" disabled className="switch-input" defaultChecked/>)}
+                              {!row.value && (<Input type="checkbox" disabled className="switch-input"/>)}
+                              <span className="switch-label" data-on="On" data-off="Off"></span>
+                              <span className="switch-handle"></span>
+                            </Label>
+                          </div>
+                        )
+                      }
+                    ]}
                   defaultPageSize={10}
                   className="-striped -highlight"/>
                 )}
