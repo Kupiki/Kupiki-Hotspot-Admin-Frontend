@@ -42,12 +42,14 @@ class Administration extends Component {
       updateModal: false,
       rebootModal: false,
       shutdownModal: false,
+      availableUpgrades: 0,
       filterByName: function(service) {
         return Config.servicesFilters.includes(service.name);
       }
     };
     
     this.getGraphData('services');
+    this.getAvailableUpgrades();
     this.refreshServices = this.refreshServices.bind(this);
     
     this.toggleUpdate = this.toggleUpdate.bind(this);
@@ -55,7 +57,36 @@ class Administration extends Component {
     this.toggleShutdown = this.toggleShutdown.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.toggleService = this.toggleService.bind(this);
+    
+  }
   
+  getAvailableUpgrades() {
+    const { t } = this.props;
+    const request = axios.get(`${ROOT_URL}/api/system/upgrade`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        switch (response.data.status) {
+          case 'success' :
+            if (parseInt(response.data.result.message) !== 0) {
+              this.setState({
+                availableUpgrades: parseInt(response.data.result.message)
+              });
+              toastr.info(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.available', { availableUpgrades: this.state.availableUpgrades }));
+            } else {
+              toastr.info(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.confirm'));
+            }
+            break;
+          case 'failed' :
+            toastr.error(t('dashboard.systemupdate.error-information')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, t('dashboard.systemupdate.title'));
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('dashboard.service')+' ' + name, message);
+      });
   }
   
   toggleUpdate() {
@@ -80,14 +111,48 @@ class Administration extends Component {
     return (event) => {
       const { t } = this.props;
   
-      console.log('* Service');
-      let { name, status } = service.original;
-      toastr.success(t('user.password.title'), t('user.password.success'));
-      console.log(name + " / " + status);
-      console.log(this.state.servicesData);
+      let {name, status} = service.original;
+      
+      const request = axios.post(`${ROOT_URL}/api/services`, {
+        service: name,
+        status: !status
+      }, {
+        headers: {'Authorization': `Bearer ${localStorage.token}`}
+      });
+      request
+        .then(response => {
+          let message = '';
+          switch (response.data.status) {
+            case 'success' :
+              let index = this.state.servicesData.fullData.indexOf(service.original)
+              let servicesDataTmp = this.state.servicesData;
+              servicesDataTmp.fullData[index].status = !servicesDataTmp.fullData[index].status;
+              this.setState({
+                servicesData: servicesDataTmp
+              });
+              this.refreshServices();
+              message = t('dashboard.systemservices.success-start', { service: name });
+              if (status) message = t('dashboard.systemservices.success-stop', { service: name });
+              toastr.success(t('dashboard.service')+' ' + name, message);
+              break;
+            case 'failed' :
+              message = t('dashboard.systemservices.error-start', { service: name });
+              if (status) message = t('dashboard.systemservices.error-stop', { service: name });
+              message += '<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message;
+              toastr.error(t('dashboard.service')+' ' + name, message);
+              break;
+          }
+          this.refreshServices();
+        })
+        .catch(error => {
+          console.log(error)
+          let message = t('dashboard.systemservices.error-start', { service: name });
+          if (status) message = t('dashboard.systemservices.error-stop', { service: name });
+          toastr.error(t('dashboard.service')+' ' + name, message);
+        });
     }
   }
-
+  
   toggleFilter(e) {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
@@ -96,7 +161,7 @@ class Administration extends Component {
   }
   
   refreshServices() {
-    (this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData : this.state.servicesData.currentData = this.state.servicesData.fullData.filter(this.state.filterByName);
+    (this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.currentData = this.state.servicesData.fullData;
   }
   
   getGraphData(apiRequest) {
