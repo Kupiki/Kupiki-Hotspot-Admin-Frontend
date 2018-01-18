@@ -24,7 +24,7 @@
     "dashboard": "Dashboard",
     "administration": "Administration",
     "configuration": "configuration",
-    "basic": "Simple",
+    "simple": "Simple",
     "advanced": "Avancée",
     "management": "Gestion",
     "users": "Utilisateurs"
@@ -54,6 +54,7 @@
     "issue": "Erreur système",
     "systemshutdown": {
       "title": "Arrêt du système",
+      "buttonTitle": "Arrêt",
       "ask": "Confirmez que que vous souhaitez arrêter le système",
       "confirm": "Le système est en cours d'arrêt",
       "error-start": "L'arrêt du système n'a pas pu être executé",
@@ -61,12 +62,14 @@
     },
     "systemreboot": {
       "title": "Redémarrer le système",
-      "ask": "Confirmez que que vous souhaitez redémarrer le système",
+      "buttonTitle": "Redémarrer",
+      "ask": "Confirmez que vous souhaitez redémarrer le système",
       "confirm": "Le système est en cours de relance",
       "error-execution": "Impossible de redémarrer le système"
     },
     "systemupdate": {
       "title": "Mise à jour système",
+      "buttonTitle": "Mise à jour",
       "available": "{{availableUpgrades}} mises à jour disponibles. Mettez votre système à jour.",
       "ask": "Confirmez que vous souhaitez mettre à jour le système",
       "confirm": "Le système est à jour",

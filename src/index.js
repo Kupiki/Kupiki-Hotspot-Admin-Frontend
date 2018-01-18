@@ -9,6 +9,7 @@ import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 import { PrivateRoute } from './components/Auth/PrivateRoute';
 import ReduxToastr from 'react-redux-toastr';
+import ReduxSocket from './components/ReduxSocket/ReduxSocket';
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './components/i18n';
@@ -47,8 +48,6 @@ ReactDOM.render((
           <Switch>
             <Route exact path="/login" name="Login Page" component={Login}/>
             <Route exact path="/logout" name="Logout Page" component={Logout}/>
-            {/*<PrivateRoute exact path="/user/profile" name="User Profile" component={Profile}/>*/}
-            {/*<PrivateRoute exact path="/system/dashboard" name="Dashboard" component={Kupiki}/>*/}
             <PrivateRoute path="/" component={Kupiki}/>
           </Switch>
         </Router>
@@ -60,6 +59,7 @@ ReactDOM.render((
           transitionIn="fadeIn"
           transitionOut="fadeOut"
           progressBar/>
+        <ReduxSocket/>
       </div>
     </Provider>
   </I18nextProvider>

@@ -29,8 +29,8 @@ export default {
       class: ''
     },
     {
-      name: 'sidebar.basic',
-      url: '/configuration/basic',
+      name: 'sidebar.simple',
+      url: '/configuration/simple',
       icon: 'icon-wrench'
     },
     {

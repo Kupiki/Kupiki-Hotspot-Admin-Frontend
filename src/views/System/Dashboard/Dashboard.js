@@ -95,6 +95,7 @@ class Dashboard extends Component {
       diskData: JSON.parse(JSON.stringify(dataSetTemplate)),
       memoryData: JSON.parse(JSON.stringify(dataSetTemplate)),
       uptimeData: JSON.parse(JSON.stringify(dataSetTemplate)),
+      temperatureData: {},
       servicesData: {}
     };
   
@@ -104,6 +105,7 @@ class Dashboard extends Component {
     this.getGraphData('uptime');
     this.getGraphData('services');
     this.getGraphData('information');
+    this.getGraphData('temperature');
   }
   
   getGraphData(apiRequest) {
@@ -138,6 +140,10 @@ class Dashboard extends Component {
           };
           apiData.filteredData = apiData.fullData.filter(filterByName);
           apiData.currentData = apiData.fullData;
+        }
+        if (apiRequest === "temperature") {
+          apiData.value=response.data.result.message;
+          console.log(apiData)
         }
         let newState = {};
         newState[eltName] = apiData;
@@ -220,7 +226,7 @@ class Dashboard extends Component {
             </div>
           </Col>
 
-          <Col xs="6" sm="6" lg="3">
+          <Col xs="6" sm="6" lg="2">
             <div className="social-box social-box-single linkedin">
               <i className="fa fa-clock-o"></i>
               <div className="chart-wrapper">
@@ -229,6 +235,20 @@ class Dashboard extends Component {
                 <li>
                   <strong>{this.state.uptimeData['uptimeLabel']}</strong>
                   <span>uptime</span>
+                </li>
+              </ul>
+            </div>
+          </Col>
+  
+          <Col xs="6" sm="6" lg="1">
+            <div className="social-box social-box-single linkedin">
+              <i className="fa fa-thermometer-empty"></i>
+              <div className="chart-wrapper">
+              </div>
+              <ul>
+                <li>
+                  <strong>{this.state.temperatureData['value']}</strong>
+                  <span>°C</span>
                 </li>
               </ul>
             </div>

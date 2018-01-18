@@ -45,18 +45,21 @@ class Administration extends Component {
       availableUpgrades: 0,
       filterByName: function(service) {
         return Config.servicesFilters.includes(service.name);
-      }
+      },
+      servicesFiltered: false
     };
     
     this.getGraphData('services');
     this.getAvailableUpgrades();
-    this.refreshServices = this.refreshServices.bind(this);
-    
+    // this.refreshServices = this.refreshServices.bind(this);
     this.toggleUpdate = this.toggleUpdate.bind(this);
     this.toggleReboot = this.toggleReboot.bind(this);
     this.toggleShutdown = this.toggleShutdown.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.toggleService = this.toggleService.bind(this);
+    this.executeUpgrade = this.executeUpgrade.bind(this);
+    this.executeReboot = this.executeReboot.bind(this);
+    this.executeShutdown = this.executeShutdown.bind(this);
     
   }
   
@@ -85,7 +88,76 @@ class Administration extends Component {
       })
       .catch(error => {
         console.log(error);
-        toastr.error(t('dashboard.service')+' ' + name, message);
+        toastr.error(t('dashboard.service')+' ' + name, error.message);
+      });
+  }
+  
+  executeReboot() {
+    this.toggleReboot();
+    const { t } = this.props;
+    const request = axios.get(`${ROOT_URL}/api/system/reboot`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        switch (response.data.status) {
+          case 'success':
+            toastr.success(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.confirm'));
+            break;
+          case 'failed':
+            toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-start')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, {
+              closeButton: true,
+              allowHtml: true,
+              timeOut: 0
+            });
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-execution'));
+      });
+  }
+  
+  executeShutdown() {
+    this.toggleShutdown();
+    const { t } = this.props;
+    const request = axios.get(`${ROOT_URL}/api/system/shutdown`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        switch (response.data.status) {
+          case 'success':
+            toastr.success(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.confirm'));
+            break;
+          case 'failed':
+            toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-start')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, {
+              closeButton: true,
+              allowHtml: true,
+              timeOut: 0
+            });
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-execution'));
+      });
+  }
+  
+  executeUpgrade() {
+    this.toggleUpdate();
+    const { t } = this.props;
+    const request = axios.get(`${ROOT_URL}/api/system/update`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.error-start'));
       });
   }
   
@@ -145,7 +217,7 @@ class Administration extends Component {
           this.refreshServices();
         })
         .catch(error => {
-          console.log(error)
+          console.log(error);
           let message = t('dashboard.systemservices.error-start', { service: name });
           if (status) message = t('dashboard.systemservices.error-stop', { service: name });
           toastr.error(t('dashboard.service')+' ' + name, message);
@@ -161,7 +233,7 @@ class Administration extends Component {
   }
   
   refreshServices() {
-    (this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.currentData = this.state.servicesData.fullData;
+    (!this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.currentData = this.state.servicesData.fullData;
   }
   
   getGraphData(apiRequest) {
@@ -266,27 +338,43 @@ class Administration extends Component {
               <CardBody>
                 <Row>
                   <Col xs="12" sm="12" lg="4">
-                    <Button onClick={this.toggleUpdate} color="primary"><i className="fa fa-chevron-circle-up"></i> Update</Button>
-                    <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} className={this.props.className}>
-                      <ModalHeader toggle={this.toggleUpdate}>Modal title</ModalHeader>
+                    <Button onClick={this.toggleUpdate} color="primary" className={"btn-block"}><i className="fa fa-chevron-circle-up"></i> {t('dashboard.systemupdate.buttonTitle')}</Button>
+                    <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} className={'modal-primary ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleUpdate}>{t('dashboard.systemupdate.title')}</ModalHeader>
                       <ModalBody>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
+                        {t('dashboard.systemupdate.ask')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="primary" onClick={this.toggleUpdate}>Do Something</Button>{' '}
-                        <Button color="secondary" onClick={this.toggleUpdate}>Cancel</Button>
+                        <Button color="primary" onClick={this.executeUpgrade}>{t('actions.submit')}</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleUpdate}>{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
                   <Col xs="12" sm="12" lg="4">
-                    <Button color="danger"><i className="fa fa-refresh"></i> Reboot</Button>
+                    <Button onClick={this.toggleReboot} color="danger" className={"btn-block"}><i className="fa fa-refresh"></i> {t('dashboard.systemreboot.buttonTitle')}</Button>
+                    <Modal isOpen={this.state.rebootModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleReboot}>{t('dashboard.systemreboot.title')}</ModalHeader>
+                      <ModalBody>
+                        {t('dashboard.systemreboot.ask')}
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color="danger" onClick={this.executeReboot}>{t('actions.submit')}</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleReboot}>{t('actions.cancel')}</Button>
+                      </ModalFooter>
+                    </Modal>
                   </Col>
                   <Col xs="12" sm="12" lg="4">
-                    <Button color="danger"><i className="fa fa-power-off"></i> Shutdown</Button>
+                    <Button onClick={this.toggleShutdown} color="danger" className={"btn-block"}><i className="fa fa-power-off"></i> {t('dashboard.systemshutdown.buttonTitle')}</Button>
+                    <Modal isOpen={this.state.shutdownModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleShutdown}>{t('dashboard.systemshutdown.title')}</ModalHeader>
+                      <ModalBody>
+                        {t('dashboard.systemshutdown.ask')}
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color="danger" onClick={this.executeShutdown}>{t('actions.submit')}</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleShutdown}>{t('actions.cancel')}</Button>
+                      </ModalFooter>
+                    </Modal>
                   </Col>
                 </Row>
               </CardBody>

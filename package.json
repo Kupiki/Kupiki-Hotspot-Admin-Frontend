@@ -1,12 +1,12 @@
 {
-  "name": "@coreui/react",
-  "version": "1.0.6",
-  "description": "Open Source Bootstrap Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "http://coreui.io",
-  "copyright": "Copyright 2017 creativeLabs Łukasz Holeczek",
+  "name": "@kupiki/frontend",
+  "version": "0.1",
+  "description": "Kupiki Hotspot Frontend",
+  "author": "Pi Home Server",
+  "homepage": "http://www.pihomeserver.fr",
+  "copyright": "Copyright",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
@@ -57,7 +57,8 @@
     "redux-form": "^7.2.0",
     "redux-thunk": "^2.2.0",
     "redux-watch": "^1.1.1",
-    "simple-line-icons": "2.4.1"
+    "simple-line-icons": "2.4.1",
+    "socket.io-client": "^2.0.4"
   },
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
