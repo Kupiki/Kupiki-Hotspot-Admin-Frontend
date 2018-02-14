@@ -36,33 +36,30 @@ class Profile extends Component {
   }
   
   handleSubmit(event, errors, values) {
-    if (!errors.length) {
-      const { t } = this.props;
+    const { t } = this.props;
 
-      const request = axios.put(`${ROOT_URL}/api/users/${this.state._id}/password`, {
-        oldPassword: values.currentPassword,
-        newPassword: values.newPassword
-      }, {
-        headers: { 'Authorization': `Bearer ${localStorage.token}` }
-      });
-      request
-        .then(response => {
-          toastr.success(t('user.password.title'), t('user.password.success'));
-          // console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-          if (error.response) {
-            if (error.response.status === 403) {
-              toastr.error('Authorization error', 'Invalid password');
-            } else {
-              toastr.error('Authorization error', error.response.status + ' ' + error.response.statusText);
-            }
+    const request = axios.put(`${ROOT_URL}/api/users/${this.state._id}/password`, {
+      oldPassword: values.currentPassword,
+      newPassword: values.newPassword
+    }, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        toastr.success(t('user.password.title'), t('user.password.success'));
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.response) {
+          if (error.response.status === 403) {
+            toastr.error('Authorization error', 'Invalid password');
           } else {
-            toastr.error('Unknown error', '');
+            toastr.error('Authorization error', error.response.status + ' ' + error.response.statusText);
           }
-        });
-    }
+        } else {
+          toastr.error('Unknown error', '');
+        }
+      });
   }
   
   render() {
@@ -74,7 +71,7 @@ class Profile extends Component {
         <Row>
           <Col xs="12" sm="12" lg="12">
             <Card>
-              <AvForm onSubmit={this.handleSubmit}>
+              <AvForm onValidSubmit={this.handleSubmit}>
                 <CardHeader>
                   {t('user.password.title')}
                 </CardHeader>

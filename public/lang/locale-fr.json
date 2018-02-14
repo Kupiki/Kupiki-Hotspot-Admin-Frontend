@@ -91,10 +91,16 @@
   },
   "management": {
     "basic": {
-      "basic": {
+      "load-success": "Configuration chargée avec succès",
+      "load-error": "Impossible de charger la configuration",
+      "hotspotSSID": {
         "title": "Configuration simple",
         "hotspotName": "Nom du point d'accès",
-        "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès"
+        "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès",
+        "error-hotspotNameMissing": "Le nom du hotspot est obligatoire",
+        "error-hotspotNameLength": "Le nom du hotspot est trop court",
+        "error-hotspotNameSave": "Erreur de sauvegarde",
+        "success-hotspotName": "Le nom du hotspot a été mis à jour"
       },
       "portalOptions": {
         "title": "Options du portail",

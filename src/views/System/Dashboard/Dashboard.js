@@ -12,25 +12,13 @@ import {
   Label,
   Input,
 } from 'reactstrap';
-// Button,
-// ButtonToolbar,
-//   ButtonGroup,
-//   ButtonDropdown,
-// Table
-// Dropdown,
-//   DropdownToggle,
-//   DropdownMenu,
-//   DropdownItem,
-// Progress,
-
-
 import Spinner from 'react-spinkit';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment-duration-format';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-
+import { toastr } from 'react-redux-toastr'
 import { translate } from 'react-i18next';
 
 var Config = require('Config');
@@ -109,6 +97,7 @@ class Dashboard extends Component {
   }
   
   getGraphData(apiRequest) {
+    const { t } = this.props;
     let component = this;
     const request = axios.get(`${ROOT_URL}/api/${apiRequest}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
@@ -143,7 +132,6 @@ class Dashboard extends Component {
         }
         if (apiRequest === "temperature") {
           apiData.value=response.data.result.message;
-          console.log(apiData)
         }
         let newState = {};
         newState[eltName] = apiData;
@@ -152,6 +140,7 @@ class Dashboard extends Component {
       })
       .catch(error => {
         console.log(error)
+        toastr.error(t('dashboard.service')+' ' + name, error.message);
       })
   };
   
