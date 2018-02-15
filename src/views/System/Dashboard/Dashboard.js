@@ -24,12 +24,6 @@ import { translate } from 'react-i18next';
 var Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
-// const brandPrimary = '#20a8d8';
-// const brandSuccess = '#4dbd74';
-// const brandInfo = '#63c2de';
-// const brandWarning = '#f8cb00';
-// const brandDanger = '#f86c6b';
-
 const kupikiChartOpts = {
   responsive: true,
   maintainAspectRatio: false,
@@ -61,7 +55,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
+    this.toggleServicesFilter = this.toggleServicesFilter.bind(this);
     const dataSetTemplate = {
       graph: {
         labels: [],
@@ -84,19 +78,21 @@ class Dashboard extends Component {
       memoryData: JSON.parse(JSON.stringify(dataSetTemplate)),
       uptimeData: JSON.parse(JSON.stringify(dataSetTemplate)),
       temperatureData: {},
-      servicesData: {}
+      servicesData: {},
+      netflowData: {}
     };
   
-    this.getGraphData('cpu');
-    this.getGraphData('disk');
-    this.getGraphData('memory');
-    this.getGraphData('uptime');
-    this.getGraphData('services');
-    this.getGraphData('information');
-    this.getGraphData('temperature');
+    this.getData('cpu', 'cpuData');
+    this.getData('disk', 'diskData');
+    this.getData('memory', 'memoryData');
+    this.getData('uptime', 'uptimeData');
+    this.getData('services', 'servicesData');
+    this.getData('information', 'informationData');
+    this.getData('temperature', 'temperatureData');
+    this.getData('netflow/stats', 'netflowData');
   }
   
-  getGraphData(apiRequest) {
+  getData(apiRequest, stateValue) {
     const { t } = this.props;
     let component = this;
     const request = axios.get(`${ROOT_URL}/api/${apiRequest}`, {
@@ -104,11 +100,10 @@ class Dashboard extends Component {
     });
     request
       .then(response => {
-        let eltName = apiRequest+'Data';
-        let apiData = component.state[eltName];
-  
+        let apiData = component.state[stateValue];
+      
         apiData = Object.assign({}, apiData, response.data)
-        
+      
         if (response.data.chartData) {
           let objData = JSON.parse(response.data.chartData);
           apiData.graph.datasets[0].data = [];
@@ -133,18 +128,22 @@ class Dashboard extends Component {
         if (apiRequest === "temperature") {
           apiData.value=response.data.result.message;
         }
+        if (apiRequest === "netflow/stats") {
+          apiData.fullData = response.data.result.message;
+        }
         let newState = {};
-        newState[eltName] = apiData;
-        
+        newState[stateValue] = apiData;
+      
         component.setState(newState);
       })
       .catch(error => {
         console.log(error)
         toastr.error(t('dashboard.service')+' ' + name, error.message);
       })
-  };
   
-  toggle() {
+  }
+  
+  toggleServicesFilter() {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
     });
@@ -250,7 +249,7 @@ class Dashboard extends Component {
               <CardHeader>
                 {t('dashboard.services')}
                 <Label className="switch switch-sm switch-text switch-info float-right mb-0">
-                  <Input type="checkbox" className="switch-input" onChange={this.toggle.bind(this)}/>
+                  <Input type="checkbox" className="switch-input" onChange={this.toggleServicesFilter.bind(this)}/>
                   <span className="switch-label" data-on="On" data-off="Off"></span>
                   <span className="switch-handle"></span>
                 </Label>
@@ -317,6 +316,28 @@ class Dashboard extends Component {
                 )}
               </CardBody>
             </Card>
+            {this.state.netflowData.fullData && (
+              <Card>
+                <CardHeader>
+                  {t('dashboard.netflow-title')}
+                </CardHeader>
+                <CardBody>
+                  <ReactTable
+                    data={this.state.netflowData.fullData}
+                    columns={[
+                      {
+                        accessor: "name"
+                      },{
+                        accessor: "value",
+                        style: { align: 'center' }
+                      }
+                    ]}
+                    showPagination={false}
+                    defaultPageSize={this.state.netflowData.fullData.length}
+                    className="-striped -highlight"/>
+                </CardBody>
+              </Card>
+            )}
           </Col>
         </Row>
       </div>

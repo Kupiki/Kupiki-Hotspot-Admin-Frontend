@@ -52,6 +52,7 @@
     "shutdown": "Arrêter",
     "status": "Etat",
     "issue": "Erreur système",
+    "netflow-title": "Informations Netflow",
     "systemshutdown": {
       "title": "Arrêt du système",
       "buttonTitle": "Arrêt",
