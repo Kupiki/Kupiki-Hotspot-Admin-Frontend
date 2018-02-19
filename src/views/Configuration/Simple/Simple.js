@@ -28,14 +28,14 @@ import axios from 'axios';
 var Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
-class Administration extends Component {
+class SimpleAdministration extends Component {
   constructor(props) {
     super(props);
   
     this.state = {
       configuration: {},
       ssid: ''
-    }
+    };
   
     this.handleSubmitSSID = this.handleSubmitSSID.bind(this);
 
@@ -84,7 +84,6 @@ class Administration extends Component {
     });
     request
       .then(response => {
-        console.log(response)
         if (response.data && response.data.status) {
           switch (response.data.status) {
             case 'success' :
@@ -141,4 +140,4 @@ class Administration extends Component {
   }
 }
 
-export default translate()(Administration);
+export default translate()(SimpleAdministration);

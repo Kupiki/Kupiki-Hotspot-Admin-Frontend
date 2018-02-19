@@ -2,7 +2,7 @@ const routes = {
   '/': 'Dashboard',
   '/system/dashboard': 'Dashboard',
   '/system/administration': 'Administration',
-  '/configuration/basic': 'Basic configuration',
+  '/configuration/basic': 'Simple configuration',
   '/configuration/advanced': 'Advanced configuration',
   // '/charts': 'Charts',
   // '/components/buttons': 'Buttons',

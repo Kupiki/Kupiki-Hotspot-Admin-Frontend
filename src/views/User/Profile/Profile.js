@@ -23,7 +23,7 @@ import { translate, i18next } from 'react-i18next';
 var Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
-class Profile extends Component {
+class UserProfile extends Component {
   constructor(props) {
     super(props);
     
@@ -111,6 +111,6 @@ class Profile extends Component {
   }
 }
 
-export default translate()(Profile);
+export default translate()(UserProfile);
 
 

@@ -40,3 +40,11 @@ body.modal-open #root {
   filter:         blur($blur-radius);
   opacity: 0.7;
 }
+
+.kupiki-logo {
+  background-image: url('../img/kupiki-logo.png');
+  -webkit-background-origin:border;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

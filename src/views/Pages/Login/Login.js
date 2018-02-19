@@ -104,10 +104,11 @@ class Login extends Component {
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>
-                <Card className="p-4">
+                <Card className="p-4 bg-primary">
                   <CardBody>
                     <h1>Login</h1>
-                    <p className="text-muted">Sign In to your account</p>
+                    {/*<p className="text-muted">Sign In to your account</p>*/}
+                    <p>Sign In to your account</p>
                     <Form onSubmit={this.handleSubmit}>
                       <FormGroup>
                         <InputGroup className="mb-3">
@@ -124,24 +125,15 @@ class Login extends Component {
                       <Row>
                         <FormGroup check row>
                           <Col sm={{ size: 10, offset: 2 }}>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit">Login</Button>
                           </Col>
                         </FormGroup>
                       </Row>
                     </Form>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: 44 + '%'}}>
-                  <CardBody className="text-center">
-                    <div>
-{/*
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
-*/}
-                    </div>
+                <Card className="text-white py-5 d-md-down-none" style={{width: 44 + '%'}}>
+                  <CardBody className="text-center kupiki-logo">
                   </CardBody>
                 </Card>
               </CardGroup>

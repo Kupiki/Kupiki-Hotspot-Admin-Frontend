@@ -1,0 +1,6 @@
+{
+  "name": "Advanced",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Advanced.js"
+}
