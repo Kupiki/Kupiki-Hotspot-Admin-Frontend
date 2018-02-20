@@ -20,6 +20,7 @@ import {
   ModalFooter
 } from 'reactstrap';
 import "react-table/react-table.css";
+import Spinner from 'react-spinkit';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
@@ -33,12 +34,10 @@ class SimpleAdministration extends Component {
     super(props);
   
     this.state = {
-      configuration: {},
-      ssid: ''
+      configuration: {}
     };
   
     this.handleSubmitSSID = this.handleSubmitSSID.bind(this);
-
   }
   
   componentDidMount() {
@@ -48,7 +47,7 @@ class SimpleAdministration extends Component {
   handleChange(e) {
     let configuration = this.state.configuration;
     configuration[2].value = e.target.value;
-    this.setState({ ssid: e.target.value });
+    // this.setState({ ssid: e.target.value });
     this.setState({ configuration: configuration });
   }
   
@@ -63,13 +62,12 @@ class SimpleAdministration extends Component {
         if (response.data && response.data.status && response.data.status === "success") {
           toastr.info(t('management.basic.load-success'));
           this.setState({ configuration: response.data.result.message });
-          this.setState({ ssid: this.state.configuration[2].value });
+          // this.setState({ ssid: this.state.configuration[2].value });
         } else {
           toastr.error(t('management.basic.load-error'));
         }
       })
       .catch(error => {
-        console.log(error);
         toastr.error(t('management.basic.load-error')+' ' + name, error.message);
       });
   }
@@ -118,18 +116,24 @@ class SimpleAdministration extends Component {
                   {t('management.basic.basic.title')}
                 </CardHeader>
                 <CardBody>
-                  <AvGroup>
-                    <Label htmlFor="ssid">{t('management.basic.hotspotSSID.hotspotName')}</Label>
-                    <AvField id="ssid" name="ssid" value={this.state.ssid} onChange={ this.handleChange.bind(this) }
-                     validate={{
-                       minLength: {value: 3, errorMessage: t('management.basic.hotspotSSID.error-hotspotNameLength')},
-                       required: {errorMessage: t('management.basic.hotspotSSID.error-hotspotNameMissing')}
-                    }}/>
-                    <AvFeedback>This is an error!</AvFeedback>
-                  </AvGroup>
+                  {!this.state.configuration[2] && (
+                    <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                  )}
+                  {this.state.configuration[2] && (
+                    <AvGroup>
+                      <Label htmlFor="ssid">{t('management.basic.hotspotSSID.hotspotName')}</Label>
+                      <AvField id="ssid" name="ssid" value={this.state.configuration[2].value} onChange={ this.handleChange.bind(this) }
+                       validate={{
+                         minLength: {value: 3, errorMessage: t('management.basic.hotspotSSID.error-hotspotNameLength')},
+                         required: {errorMessage: t('management.basic.hotspotSSID.error-hotspotNameMissing')}
+                      }}/>
+                    </AvGroup>
+                  )}
                 </CardBody>
                 <CardFooter>
-                  <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                  {this.state.configuration[2] && (
+                    <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                  )}
                 </CardFooter>
               </AvForm>
             </Card>

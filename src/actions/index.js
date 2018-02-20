@@ -34,6 +34,7 @@ export function loginUser({username, password}) {
       // If request is bad...
       // -Show an error to the user
       .catch(() => {
+        console.log('Error authentication')
         dispatch(authError('bad login info'))
       })
   }

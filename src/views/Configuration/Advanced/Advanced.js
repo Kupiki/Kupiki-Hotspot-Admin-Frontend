@@ -37,26 +37,40 @@ class AdvancedAdministration extends Component {
       configuration: {},
     };
   
-    this.handleSubmit = this.handleSubmit.bind(this);
-  
+    this.saveHostapdConfiguration = this.saveHostapdConfiguration.bind(this);
   }
   
   componentDidMount() {
     this.loadHostapdConfiguration();
   }
   
-  loadHostapdConfiguration () {
+  saveHostapdConfiguration () {
     const { t } = this.props;
-    
+  
+    const request = axios.post(`${ROOT_URL}/api/hotspot/configuration`, {
+      configuration: this.state.configuration,
+      restart: false
+    }, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        toastr.success(t('management.basic.save-success'));
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('management.basic.save-error')+' ' + name, error.message);
+      });
+  }
+  
+  loadHostapdConfiguration () {
     const request = axios.get(`${ROOT_URL}/api/hotspot/configuration`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === "success") {
-          toastr.info(t('management.basic.load-success'));
           this.setState({ configuration: response.data.result.message });
-          // this.setState({ ssid: this.state.configuration[2].value });
           this.extendConfiguration();
         } else {
           toastr.error(t('management.basic.load-error'));
@@ -69,6 +83,8 @@ class AdvancedAdministration extends Component {
   }
   
   extendConfiguration () {
+    const { t } = this.props;
+  
     const request = axios.get(`${ROOT_URL}/api/hotspot/configurationFields`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -84,18 +100,17 @@ class AdvancedAdministration extends Component {
           }
         }
         this.setState({ content: this.buildDisplayConfiguration() });
+        toastr.info(t('management.basic.load-success'));
       });
   }
   
   buildDisplayConfiguration() {
     let contentDisplay = [];
     for (let i = 0; i < this.state.configuration.length; i++ ) {
-      // console.log(this.state.configuration[i]);
-      // console.log(this.state.configuration[i]["field"])
       contentDisplay.push(
         <AvGroup key={i}>
           <Label htmlFor="{this.state.configuration[i]['field']}">{this.state.configuration[i]['display']}</Label>
-          {this.renderField(i)}
+          { this.renderField(i) }
         </AvGroup>
       )
     }
@@ -106,9 +121,15 @@ class AdvancedAdministration extends Component {
     );
   }
   
+  handleChange(e, fieldId) {
+    const index = this.state.configuration.findIndex(item => item.field === e.target.id);
+    let configuration = this.state.configuration;
+    configuration[index].value = e.target.value;
+    this.setState({ configuration: configuration });
+  }
+  
   renderField(fieldId) {
     var displayedField = this.state.configuration[fieldId];
-    console.log(displayedField);
     if (displayedField.type == "select") {
       let options = [];
       for (var i in displayedField.data) {
@@ -117,37 +138,55 @@ class AdvancedAdministration extends Component {
         )
       }
       return (
-        <AvField type="select" id={displayedField.field} name={displayedField.field} value={displayedField.value}>
+        <AvField
+          type="select"
+          id={displayedField.field}
+          name={displayedField.field}
+          value={displayedField.value}
+          onChange={ this.handleChange.bind(this) }>
           { options }
         </AvField>
       )
     }
     if (displayedField.type == "number") {
       return (
-        <AvField id={displayedField.field} type="number" max={displayedField.data.max} min={displayedField.data.min} name={displayedField.field} value={displayedField.value} helpMessage={displayedField.help}>
+        <AvField
+          id={displayedField.field}
+          type="number"
+          max={displayedField.data.max}
+          min={displayedField.data.min}
+          name={displayedField.field}
+          value={displayedField.value}
+          helpMessage={displayedField.help}
+          onChange={ this.handleChange.bind(this) }>
       
         </AvField>
       )
     }
     if (displayedField.type == "text") {
       return (
-        <AvField id={displayedField.field} type="text" name={displayedField.field} value={displayedField.value} helpMessage={displayedField.help} validate={displayedField.data}>
+        <AvField
+          id={displayedField.field}
+          type="text"
+          name={displayedField.field}
+          value={displayedField.value}
+          helpMessage={displayedField.help}
+          validate={displayedField.data}
+          onChange={ this.handleChange.bind(this) }>
       
         </AvField>
       )
     }
     return (
-      <AvField id={displayedField.field} name={displayedField.field} value={displayedField.value} helpMessage={displayedField.help}>
+      <AvField
+          id={displayedField.field}
+          name={displayedField.field}
+          value={displayedField.value}
+          helpMessage={displayedField.help}
+          onChange={ this.handleChange.bind(this) }>
       
       </AvField>
     )
-  }
-  
-  handleChange(e) {
-  }
-  
-  handleSubmit () {
-    const { t } = this.props;
   }
   
   render() {
@@ -158,7 +197,7 @@ class AdvancedAdministration extends Component {
         <Row>
           <Col xs="12" sm="12" lg="12">
             <Card>
-              <AvForm>
+              <AvForm onValidSubmit={this.saveHostapdConfiguration}>
                 <CardHeader>
                   {t('management.basic.basic.title')}
                 </CardHeader>
@@ -171,20 +210,11 @@ class AdvancedAdministration extends Component {
                       { this.state.content }
                     </div>
                   )}
-{/*
-                  <AvGroup>
-                    <Label htmlFor="ssid">{t('management.basic.hotspotSSID.hotspotName')}</Label>
-                    <AvField id="ssid" name="ssid" value={this.state.ssid} onChange={ this.handleChange.bind(this) }
-                             validate={{
-                               minLength: {value: 3, errorMessage: t('management.basic.hotspotSSID.error-hotspotNameLength')},
-                               required: {errorMessage: t('management.basic.hotspotSSID.error-hotspotNameMissing')}
-                             }}/>
-                    <AvFeedback>This is an error!</AvFeedback>
-                  </AvGroup>
-*/}
                 </CardBody>
                 <CardFooter>
-                  <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                  {this.state.content && (
+                    <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                  )}
                 </CardFooter>
               </AvForm>
             </Card>

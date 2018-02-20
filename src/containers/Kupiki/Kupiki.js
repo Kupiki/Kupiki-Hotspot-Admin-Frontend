@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
+import { PrivateRoute } from '../../components/Auth/PrivateRoute';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Dashboard from '../../views/System/Dashboard/';
@@ -20,11 +21,11 @@ class Kupiki extends Component {
             {/*<Breadcrumb />*/}
             <Container fluid>
               <Switch>
-                <Route path="/system/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route path="/system/administration" name="Administration" component={Administration}/>
-                <Route path="/configuration/simple" name="Simple" component={SimpleAdministration}/>
-                <Route path="/configuration/advanced" name="Advanced" component={AdvancedAdministration}/>
-                <Route path="/user/profile" name="User Profile" component={UserProfile}/>
+                <PrivateRoute path="/system/dashboard" name="Dashboard" component={Dashboard}/>
+                <PrivateRoute path="/system/administration" name="Administration" component={Administration}/>
+                <PrivateRoute path="/configuration/simple" name="Simple" component={SimpleAdministration}/>
+                <PrivateRoute path="/configuration/advanced" name="Advanced" component={AdvancedAdministration}/>
+                <PrivateRoute path="/user/profile" name="User Profile" component={UserProfile}/>
                 <Redirect from="/" to="/system/dashboard"/>
               </Switch>
             </Container>

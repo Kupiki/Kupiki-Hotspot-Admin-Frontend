@@ -94,6 +94,8 @@
     "basic": {
       "load-success": "Configuration chargée avec succès",
       "load-error": "Impossible de charger la configuration",
+      "save-success": "Configuration sauvegardée avec succès",
+      "save-error": "Impossible de sauvegarder la configuration",
       "hotspotSSID": {
         "title": "Configuration simple",
         "hotspotName": "Nom du point d'accès",
