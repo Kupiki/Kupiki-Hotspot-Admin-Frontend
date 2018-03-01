@@ -11,12 +11,12 @@ class Login extends Component {
     super(props);
   
     this.images = [
-      "img/backgrounds/0.jpg",
-      "img/backgrounds/1.jpg",
-      "img/backgrounds/2.jpg",
-      "img/backgrounds/3.jpg",
-      "img/backgrounds/4.jpg",
-      "img/backgrounds/5.jpg"
+      'img/backgrounds/0.jpg',
+      'img/backgrounds/1.jpg',
+      'img/backgrounds/2.jpg',
+      'img/backgrounds/3.jpg',
+      'img/backgrounds/4.jpg',
+      'img/backgrounds/5.jpg'
     ];
   
     this.timeoutVar = null;
@@ -84,8 +84,8 @@ class Login extends Component {
     event.preventDefault();
   
     let payload={
-      "username":this.state.user.username,
-      "password":this.state.user.password
+      'username':this.state.user.username,
+      'password':this.state.user.password
     };
     this.props.loginUser(payload);
   }
@@ -98,42 +98,42 @@ class Login extends Component {
         }
       }}/>
       :
-      <div className="app flex-row align-items-center">
+      <div className='app flex-row align-items-center'>
         <BackgroundImage src={this.images[this.state.imageIndex]} duration={1500} style={{ maxWidth: '', maxHeight: ''}}/>
         <Container>
-          <Row className="justify-content-center">
-            <Col md="8">
+          <Row className='justify-content-center'>
+            <Col md='8'>
               <CardGroup>
-                <Card className="p-4 bg-primary">
+                <Card className='p-4 bg-primary'>
                   <CardBody>
                     <h1>Login</h1>
-                    {/*<p className="text-muted">Sign In to your account</p>*/}
+                    {/*<p className='text-muted'>Sign In to your account</p>*/}
                     <p>Sign In to your account</p>
                     <Form onSubmit={this.handleSubmit}>
                       <FormGroup>
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon><i className="icon-user"></i></InputGroupAddon>
-                          <Input type="text" name="username" placeholder="Username" required onChange={this.handleChange}/>
+                        <InputGroup className='mb-3'>
+                          <InputGroupAddon><i className='icon-user'></i></InputGroupAddon>
+                          <Input type='text' name='username' placeholder='Username' required onChange={this.handleChange}/>
                         </InputGroup>
                       </FormGroup>
                       <FormGroup>
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon><i className="icon-lock"></i></InputGroupAddon>
-                          <Input type="password" name="password" placeholder="Password" required onChange={this.handleChange}/>
+                        <InputGroup className='mb-3'>
+                          <InputGroupAddon><i className='icon-lock'></i></InputGroupAddon>
+                          <Input type='password' name='password' placeholder='Password' required onChange={this.handleChange}/>
                         </InputGroup>
                       </FormGroup>
                       <Row>
                         <FormGroup check row>
                           <Col sm={{ size: 10, offset: 2 }}>
-                            <Button type="submit">Login</Button>
+                            <Button type='submit'>Login</Button>
                           </Col>
                         </FormGroup>
                       </Row>
                     </Form>
                   </CardBody>
                 </Card>
-                <Card className="text-white py-5 d-md-down-none" style={{width: 44 + '%'}}>
-                  <CardBody className="text-center kupiki-logo">
+                <Card className='text-white py-5 d-md-down-none' style={{width: 44 + '%'}}>
+                  <CardBody className='text-center kupiki-logo'>
                   </CardBody>
                 </Card>
               </CardGroup>

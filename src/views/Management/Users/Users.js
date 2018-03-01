@@ -26,7 +26,7 @@ import {
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import axios from 'axios';
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
 import { translate, i18next } from 'react-i18next';
 import UserEdit from './UserEdit';
 

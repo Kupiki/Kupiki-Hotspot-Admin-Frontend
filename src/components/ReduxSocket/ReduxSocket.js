@@ -30,7 +30,7 @@ class ReduxSocket extends Component {
   }
   
   render() {
-    return false
+    return false;
   }
 }
 

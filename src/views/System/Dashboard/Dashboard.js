@@ -17,8 +17,8 @@ import axios from 'axios';
 import moment from 'moment';
 import 'moment-duration-format';
 import ReactTable from 'react-table';
-import "react-table/react-table.css";
-import { toastr } from 'react-redux-toastr'
+import 'react-table/react-table.css';
+import { toastr } from 'react-redux-toastr';
 import { translate } from 'react-i18next';
 
 var Config = require('Config');
@@ -113,11 +113,11 @@ class Dashboard extends Component {
             apiData.graph.datasets[0].data.push(objData[i][1]);
           }
         }
-        if (apiRequest === "uptime" && response.data.uptime) {
+        if (apiRequest === 'uptime' && response.data.uptime) {
           let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
-          apiData.uptimeLabel = duration.format("D[d] h[h] m[m]");
+          apiData.uptimeLabel = duration.format('D[d] h[h] m[m]');
         }
-        if (apiRequest === "services") {
+        if (apiRequest === 'services') {
           apiData.fullData = response.data.result.message;
           let filterByName = function(service) {
             return Config.servicesFilters.includes(service.name);
@@ -125,10 +125,10 @@ class Dashboard extends Component {
           apiData.filteredData = apiData.fullData.filter(filterByName);
           apiData.currentData = apiData.fullData;
         }
-        if (apiRequest === "temperature") {
+        if (apiRequest === 'temperature') {
           apiData.value=response.data.result.message;
         }
-        if (apiRequest === "netflow/stats") {
+        if (apiRequest === 'netflow/stats') {
           apiData.fullData = response.data.result.message;
         }
         let newState = {};
@@ -154,13 +154,13 @@ class Dashboard extends Component {
     const { t } = this.props;
   
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <br/>
         <Row>
-          <Col xs="6" sm="6" lg="3">
-            <div className="social-box linkedin">
-              <i className="fa fa-heartbeat"></i>
-              <div className="chart-wrapper">
+          <Col xs='6' sm='6' lg='3'>
+            <div className='social-box linkedin'>
+              <i className='fa fa-heartbeat'></i>
+              <div className='chart-wrapper'>
                 <Line data={this.state.cpuData.graph} options={kupikiChartOpts} height={90}/>
               </div>
               <ul>
@@ -176,10 +176,10 @@ class Dashboard extends Component {
             </div>
           </Col>
 
-          <Col xs="6" sm="6" lg="3">
-            <div className="social-box linkedin">
-              <i className="fa fa-hdd-o"></i>
-              <div className="chart-wrapper">
+          <Col xs='6' sm='6' lg='3'>
+            <div className='social-box linkedin'>
+              <i className='fa fa-hdd-o'></i>
+              <div className='chart-wrapper'>
                 <Line data={this.state.diskData.graph} options={kupikiChartOpts} height={90}/>
               </div>
               <ul>
@@ -195,10 +195,10 @@ class Dashboard extends Component {
             </div>
           </Col>
 
-          <Col xs="6" sm="6" lg="3">
-            <div className="social-box linkedin">
-              <i className="fa fa-microchip"></i>
-              <div className="chart-wrapper">
+          <Col xs='6' sm='6' lg='3'>
+            <div className='social-box linkedin'>
+              <i className='fa fa-microchip'></i>
+              <div className='chart-wrapper'>
                 <Line data={this.state.memoryData.graph} options={kupikiChartOpts} height={90}/>
               </div>
               <ul>
@@ -214,10 +214,10 @@ class Dashboard extends Component {
             </div>
           </Col>
 
-          <Col xs="6" sm="6" lg="2">
-            <div className="social-box social-box-single linkedin">
-              <i className="fa fa-clock-o"></i>
-              <div className="chart-wrapper">
+          <Col xs='6' sm='6' lg='2'>
+            <div className='social-box social-box-single linkedin'>
+              <i className='fa fa-clock-o'></i>
+              <div className='chart-wrapper'>
               </div>
               <ul>
                 <li>
@@ -228,10 +228,10 @@ class Dashboard extends Component {
             </div>
           </Col>
   
-          <Col xs="6" sm="6" lg="1">
-            <div className="social-box social-box-single linkedin">
-              <i className="fa fa-thermometer-empty"></i>
-              <div className="chart-wrapper">
+          <Col xs='6' sm='6' lg='1'>
+            <div className='social-box social-box-single linkedin'>
+              <i className='fa fa-thermometer-empty'></i>
+              <div className='chart-wrapper'>
               </div>
               <ul>
                 <li>
@@ -244,75 +244,75 @@ class Dashboard extends Component {
         </Row>
 
         <Row>
-          <Col xs="12" sm="12" lg="8">
+          <Col xs='12' sm='12' lg='8'>
             <Card>
               <CardHeader>
                 {t('dashboard.services')}
-                <Label className="switch switch-sm switch-text switch-info float-right mb-0">
-                  <Input type="checkbox" className="switch-input" onChange={this.toggleServicesFilter.bind(this)}/>
-                  <span className="switch-label" data-on="On" data-off="Off"></span>
-                  <span className="switch-handle"></span>
+                <Label className='switch switch-sm switch-text switch-info float-right mb-0'>
+                  <Input type='checkbox' className='switch-input' onChange={this.toggleServicesFilter.bind(this)}/>
+                  <span className='switch-label' data-on='On' data-off='Off'></span>
+                  <span className='switch-handle'></span>
                 </Label>
               </CardHeader>
               <CardBody>
                 {!this.state.servicesData.status && (
-                  <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                  <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                 )}
-                {this.state.servicesData.status === "failed" && (
+                {this.state.servicesData.status === 'failed' && (
                   <span>Error</span>
                 )}
-                {this.state.servicesData.status === "success" && (
+                {this.state.servicesData.status === 'success' && (
                   <ReactTable
                     data={this.state.servicesData.currentData}
                     columns={[
                       {
                         Header: t('dashboard.service'),
-                        accessor: "name"
+                        accessor: 'name'
                       },{
                         Header: t('dashboard.status'),
-                        accessor: "status",
+                        accessor: 'status',
                         style: { align: 'center' },
                         Cell: row => (
                           <div style={{ width: '100%' , textAlign: 'center' }}>
-                            <Label className="switch switch-text switch-pill switch-primary-outline-alt switch-xs">
-                              {row.value && (<Input type="checkbox" disabled className="switch-input" defaultChecked/>)}
-                              {!row.value && (<Input type="checkbox" disabled className="switch-input"/>)}
-                              <span className="switch-label" data-on="On" data-off="Off"></span>
-                              <span className="switch-handle"></span>
+                            <Label className='switch switch-text switch-pill switch-primary-outline-alt switch-xs'>
+                              {row.value && (<Input type='checkbox' disabled className='switch-input' defaultChecked/>)}
+                              {!row.value && (<Input type='checkbox' disabled className='switch-input'/>)}
+                              <span className='switch-label' data-on='On' data-off='Off'></span>
+                              <span className='switch-handle'></span>
                             </Label>
                           </div>
                         )
                       }
                     ]}
                   defaultPageSize={10}
-                  className="-striped -highlight"/>
+                  className='-striped -highlight'/>
                 )}
               </CardBody>
             </Card>
           </Col>
-          <Col xs="12" sm="12" lg="4">
+          <Col xs='12' sm='12' lg='4'>
             <Card>
               <CardHeader>
                 {t('dashboard.summary')}
               </CardHeader>
               <CardBody>
                 {!this.state.informationData && (
-                  <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                  <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                 )}
                 {this.state.informationData && (
                   <ReactTable
                     data={this.state.informationData.information}
                     columns={[
                       {
-                        accessor: "name"
+                        accessor: 'name'
                       },{
-                        accessor: "value",
+                        accessor: 'value',
                         style: { align: 'center' }
                       }
                     ]}
                     showPagination={false}
                     defaultPageSize={this.state.informationData.information.length}
-                    className="-striped -highlight"/>
+                    className='-striped -highlight'/>
                 )}
               </CardBody>
             </Card>
@@ -326,15 +326,15 @@ class Dashboard extends Component {
                     data={this.state.netflowData.fullData}
                     columns={[
                       {
-                        accessor: "name"
+                        accessor: 'name'
                       },{
-                        accessor: "value",
+                        accessor: 'value',
                         style: { align: 'center' }
                       }
                     ]}
                     showPagination={false}
                     defaultPageSize={this.state.netflowData.fullData.length}
-                    className="-striped -highlight"/>
+                    className='-striped -highlight'/>
                 </CardBody>
               </Card>
             )}

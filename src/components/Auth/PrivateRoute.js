@@ -35,6 +35,6 @@ export const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
     };
   }
   
-  const AuthenticationContainer = connect(mapStateToProps)(Authentication)
+  const AuthenticationContainer = connect(mapStateToProps)(Authentication);
   return <AuthenticationContainer/>
-}
+};

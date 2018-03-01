@@ -53,6 +53,6 @@ export function loginUser({username, password}) {
       .catch(() => {
         console.log('Error authentication');
         dispatch(authError('bad login info'))
-      })
+      });
   }
 }

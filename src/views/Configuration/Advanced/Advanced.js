@@ -112,7 +112,7 @@ class AdvancedAdministration extends Component {
   }
   
   loadDefaultHostapdConfiguration (e) {
-    this.loadHostapdConfiguration(e, true)
+    this.loadHostapdConfiguration(e, true);
   }
   
   loadHostapdConfiguration (e, reset) {
@@ -281,9 +281,9 @@ class AdvancedAdministration extends Component {
   
   handleChange(e) {
     const index = this.state.configuration.findIndex(item => item.field === e.target.id);
-    let configuration = this.state.configuration;
-    configuration[index].value = e.target.value;
-    this.setState({ configuration: configuration });
+    let configurationTmp = this.state.configuration;
+    configurationTmp[index].value = e.target.value;
+    this.setState({ configuration: configurationTmp });
   }
   
   render() {

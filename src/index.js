@@ -20,9 +20,9 @@ import 'font-awesome/css/font-awesome.min.css';
 // Import Simple Line Icons Set
 import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
-import '../scss/style.scss'
+import '../scss/style.scss';
 // Temp fix for reactstrap
-import "../scss/core/_dropdown-menu-right.scss"
+import '../scss/core/_dropdown-menu-right.scss';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -42,12 +42,11 @@ axios.interceptors.response.use(undefined, function (error) {
 });
 
 if (token && username) {
-  store.dispatch({type: AUTH_USER, username: username})
+  store.dispatch({type: AUTH_USER, username: username});
 }
 
 // Containers
-import Kupiki from './containers/Kupiki/'
-
+import Kupiki from './containers/Kupiki/';
 // Views
 import Login from './views/Pages/Login/';
 import Logout from './views/Pages/Logout/';

@@ -6,11 +6,11 @@ import { Redirect } from 'react-router';
 class Logout extends Component {
   
   componentWillMount() {
-    this.props.logoutUser()
+    this.props.logoutUser();
   }
   
   render() {
-    return <Redirect to={'/'}/>
+    return <Redirect to={'/'}/>;
   }
 }
 
