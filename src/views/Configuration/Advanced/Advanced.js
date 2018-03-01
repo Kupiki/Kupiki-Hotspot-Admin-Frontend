@@ -19,7 +19,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
-import "react-table/react-table.css";
+import 'react-table/react-table.css';
 import Spinner from 'react-spinkit';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
@@ -96,7 +96,7 @@ class AdvancedAdministration extends Component {
     request
       .then(response => {
         if (response.data && response.data.status) {
-          if (response.data.status === "success") {
+          if (response.data.status === 'success') {
             toastr.success(t('management.advanced.save.success-save'));
           } else {
             toastr.error(t('management.advanced.save.error-save'), response.data.result.message);
@@ -123,9 +123,9 @@ class AdvancedAdministration extends Component {
       this.setState({ content: undefined });
     }
     
-    let apiURL = ROOT_URL + "/api/hotspot/configuration";
+    let apiURL = ROOT_URL + '/api/hotspot/configuration';
     if (reset) {
-      apiURL = ROOT_URL + "/api/hotspot/default";
+      apiURL = ROOT_URL + '/api/hotspot/default';
     }
     
     const request = axios.get(`${apiURL}`, {
@@ -133,7 +133,7 @@ class AdvancedAdministration extends Component {
     });
     request
       .then(response => {
-        if (response.data && response.data.status === "success") {
+        if (response.data && response.data.status === 'success') {
           this.setState({ configuration: response.data.result.message });
           this.extendConfiguration();
         } else {
@@ -185,7 +185,7 @@ class AdvancedAdministration extends Component {
     this.state.configuration.forEach((elt, i) => {
       contentDisplay.push(
         <AvGroup key={i}>
-          <Label htmlFor="{elt['field']}">{elt['display']}</Label>
+          <Label htmlFor='{elt["field"]}'>{elt['display']}</Label>
           { this.renderField(i) }
         </AvGroup>
       )
@@ -209,7 +209,7 @@ class AdvancedAdministration extends Component {
   
   renderField(fieldId) {
     let displayedField = this.state.configuration[fieldId];
-    if (displayedField.type === "select") {
+    if (displayedField.type === 'select') {
       let options = [];
       displayedField.data.forEach((elt, i) => {
         options.push(
@@ -225,7 +225,7 @@ class AdvancedAdministration extends Component {
 */
       return (
         <AvField
-          type="select"
+          type='select'
           id={displayedField.field}
           name={displayedField.field}
           value={displayedField.value}
@@ -234,11 +234,11 @@ class AdvancedAdministration extends Component {
         </AvField>
       )
     }
-    if (displayedField.type === "number") {
+    if (displayedField.type === 'number') {
       return (
         <AvField
           id={displayedField.field}
-          type="number"
+          type='number'
           max={displayedField.data.max}
           min={displayedField.data.min}
           name={displayedField.field}
@@ -249,11 +249,11 @@ class AdvancedAdministration extends Component {
         </AvField>
       )
     }
-    if (displayedField.type === "text") {
+    if (displayedField.type === 'text') {
       return (
         <AvField
           id={displayedField.field}
-          type="text"
+          type='text'
           name={displayedField.field}
           value={displayedField.value}
           helpMessage={displayedField.help}
@@ -289,12 +289,12 @@ class AdvancedAdministration extends Component {
   render() {
     const { t } = this.props;
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <br/>
         <Row>
-          <Col xs="12" sm="12" lg="12">
+          <Col xs='12' sm='12' lg='12'>
             <Card>
-              <AvForm color="warning" onValidSubmit={this.toggleSave}>
+              <AvForm color='warning' onValidSubmit={this.toggleSave}>
                 <CardHeader>
                   {t('management.basic.basic.title')}
                 </CardHeader>
@@ -304,16 +304,16 @@ class AdvancedAdministration extends Component {
                     <ModalBody>
                       <p>{t('management.advanced.save.confirm')}</p>
                       <p style={{marginLeft:20+'px'}}>
-                        <Input type="checkbox" id="restart" name="restart" defaultChecked={this.state.restartService} onChange={ this.handleChangeRestart.bind(this) }/>{' '}{t('management.advanced.save.confirmService')}
+                        <Input type='checkbox' id='restart' name='restart' defaultChecked={this.state.restartService} onChange={ this.handleChangeRestart.bind(this) }/>{' '}{t('management.advanced.save.confirmService')}
                       </p>
                     </ModalBody>
                     <ModalFooter>
-                      <Button color="primary" size="sm" onClick={ this.saveHostapdConfiguration }><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
-                      <Button color="secondary" size="sm" onClick={ this.toggleSave }><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                      <Button color='primary' size='sm' onClick={ this.saveHostapdConfiguration }><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
+                      <Button color='secondary' size='sm' onClick={ this.toggleSave }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
                     </ModalFooter>
                   </Modal>
                   { !this.state.content && (
-                    <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                    <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                   )}
                   { this.state.content && (
                     <div>
@@ -323,9 +323,9 @@ class AdvancedAdministration extends Component {
                 </CardBody>
                 { this.state.content && (
                   <CardFooter>
-                    <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                    <Button type='submit' size='sm' color='primary'><i className='fa fa-dot-circle-o'></i> {t('actions.submit')}</Button>
                     
-                    <Button size="sm" color="secondary" onClick={this.toggleReload}><i className="fa fa-ban"></i> {t('actions.reload')}</Button>
+                    <Button size='sm' color='secondary' onClick={this.toggleReload}><i className='fa fa-ban'></i> {t('actions.reload')}</Button>
                     <Modal isOpen={ this.state.modalReload } toggle={this.toggleReload}
                            className={'modal-secondary ' + this.props.className}>
                       <ModalHeader toggle={this.toggleReload}>{t('management.advanced.reload.title')}</ModalHeader>
@@ -333,12 +333,12 @@ class AdvancedAdministration extends Component {
                         {t('management.advanced.reload.confirm')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="primary" size="sm" onClick={this.loadHostapdConfiguration}><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
-                        <Button color="secondary" size="sm" onClick={this.toggleReload}><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                        <Button color='primary' size='sm' onClick={this.loadHostapdConfiguration}><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
+                        <Button color='secondary' size='sm' onClick={this.toggleReload}><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                     
-                    <Button size="sm" color="danger" onClick={this.toggleReset}><i className="fa fa-download"></i> {t('actions.reset')}</Button>
+                    <Button size='sm' color='danger' onClick={this.toggleReset}><i className='fa fa-download'></i> {t('actions.reset')}</Button>
                     <Modal isOpen={ this.state.modalReset } toggle={this.toggleReset}
                            className={'modal-danger ' + this.props.className}>
                       <ModalHeader toggle={this.toggleReset}>{t('management.advanced.default.title')}</ModalHeader>
@@ -346,8 +346,8 @@ class AdvancedAdministration extends Component {
                         {t('management.advanced.default.confirm')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="danger" size="sm" onClick={this.loadDefaultHostapdConfiguration}><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
-                        <Button color="secondary" size="sm" onClick={this.toggleReset}><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                        <Button color='danger' size='sm' onClick={this.loadDefaultHostapdConfiguration}><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
+                        <Button color='secondary' size='sm' onClick={this.toggleReset}><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </CardFooter>

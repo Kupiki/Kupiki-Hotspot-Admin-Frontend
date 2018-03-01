@@ -73,7 +73,7 @@ class UsersMgmt extends Component {
     });
     request
       .then(response => {
-        if (response.data && response.data.status && response.data.status === "success") {
+        if (response.data && response.data.status && response.data.status === 'success') {
           this.setState({ users: response.data.result.message });
           this.setState({ content: this.buildDisplayUsersList() });
           toastr.info(t('freeradius.users.success-load'));
@@ -98,8 +98,8 @@ class UsersMgmt extends Component {
           <td>{ user.firstname }</td>
           <td>{ user.lastname }</td>
           <td>
-            <Button color="danger" className={"float-right"} size="sm"><i className="fa fa-trash-o"/></Button>
-            <Button color="primary" className={"float-right"} size="sm" onClick={ () => this.toggleUserModal("edit", userId) }><i className="fa fa-edit"/></Button>
+            <Button color='danger' className={'float-right'} size='sm'><i className='fa fa-trash-o'/></Button>
+            <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('edit', userId) }><i className='fa fa-edit'/></Button>
           </td>
         </tr>
       )
@@ -130,18 +130,18 @@ class UsersMgmt extends Component {
     const { t } = this.props;
     
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <br/>
         <Row>
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-users"/>{' '}{t('freeradius.users.list-header')}
-                <Button color="primary" className={"float-right"} size="sm" onClick={ () => this.toggleUserModal("create") }><i className="fa fa-user-plus"></i></Button>
+                <i className='fa fa-users'/>{' '}{t('freeradius.users.list-header')}
+                <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('create') }><i className='fa fa-user-plus'></i></Button>
                 <UserEdit action={ this.state.modalUserAction } userId={ this.state.modalUserId } existingUsers={ this.state.users } modalUserOpen={ this.state.modalUserOpen } callback={ this.toggleUserModal }/>
               </CardHeader>
               <CardBody>
-                <Table hover striped responsive size="sm">
+                <Table hover striped responsive size='sm'>
                   <thead>
                   <tr>
                     <th>{t('freeradius.users.list-username')}</th>

@@ -23,12 +23,12 @@ import Spinner from 'react-spinkit';
 
 import axios from 'axios';
 import ReactTable from 'react-table';
-import "react-table/react-table.css";
+import 'react-table/react-table.css';
 
 import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
 
-var Config = require('Config');
+let Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 class Administration extends Component {
@@ -274,7 +274,7 @@ class Administration extends Component {
         //   let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
         //   apiData.uptimeLabel = duration.format("D[d] h[h] m[m]");
         // }
-        if (apiRequest === "services") {
+        if (apiRequest === 'services') {
           apiData.fullData = response.data.result.message;
           apiData.currentData = apiData.fullData;
         }
@@ -284,53 +284,53 @@ class Administration extends Component {
         component.setState(newState);
       })
       .catch(error => {
-        console.log(error)
-      })
-  };
+        console.log(error);
+      });
+  }
   
   render() {
     const { t } = this.props;
   
     return (
-      <div className="animated fadeIn">
+      <div className='animated fadeIn'>
         <br/>
         <Row>
-          <Col xs="12" sm="12" lg="8">
+          <Col xs='12' sm='12' lg='8'>
             <Card>
               <CardHeader>
                 {t('dashboard.services')}
-                <Label className="switch switch-sm switch-text switch-info float-right mb-0">
-                  <Input type="checkbox" className="switch-input" onChange={this.toggleFilter}/>
-                  <span className="switch-label" data-on="On" data-off="Off"></span>
-                  <span className="switch-handle"></span>
+                <Label className='switch switch-sm switch-text switch-info float-right mb-0'>
+                  <Input type='checkbox' className='switch-input' onChange={this.toggleFilter}/>
+                  <span className='switch-label' data-on='On' data-off='Off'></span>
+                  <span className='switch-handle'></span>
                 </Label>
               </CardHeader>
               <CardBody>
                 {!this.state.servicesData.status && (
-                  <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
+                  <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                 )}
-                {this.state.servicesData.status === "failed" && (
+                {this.state.servicesData.status === 'failed' && (
                   <span>Error</span>
                 )}
-                {this.state.servicesData.status === "success" && (
+                {this.state.servicesData.status === 'success' && (
                   <ReactTable
                     defaultPageSize={10}
-                    className="-striped -highlight"
+                    className='-striped -highlight'
                     data={this.state.servicesData.currentData}
                     columns={[
                       {
                         Header: t('dashboard.service'),
-                        accessor: "name"
+                        accessor: 'name'
                       },{
                         Header: t('dashboard.status'),
-                        accessor: "status",
+                        accessor: 'status',
                         style: { align: 'center' },
-                        Cell: row => (
+                        Cell: (row) => (
                           <div style={{ width: '100%' , textAlign: 'center' }}>
-                            <Label className="switch switch-text switch-pill switch-primary-outline-alt switch-xs">
-                              <Input type="checkbox" checked={row.value} className="switch-input" onChange={this.toggleService(row)}/>
-                              <span className="switch-label" data-on="On" data-off="Off"></span>
-                              <span className="switch-handle"></span>
+                            <Label className='switch switch-text switch-pill switch-primary-outline-alt switch-xs'>
+                              <Input type='checkbox' checked={row.value} className='switch-input' onChange={this.toggleService(row)}/>
+                              <span className='switch-label' data-on='On' data-off='Off'></span>
+                              <span className='switch-handle'></span>
                             </Label>
                           </div>
                         )
@@ -341,49 +341,49 @@ class Administration extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col xs="12" sm="12" lg="4">
+          <Col xs='12' sm='12' lg='4'>
             <Card>
               <CardHeader>
                 {t('sidebar.system')}
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col xs="12" sm="12" lg="4">
-                    <Button onClick={this.toggleUpdate} color="primary" className={"btn-block"}><i className="fa fa-chevron-circle-up"></i> {t('dashboard.systemupdate.buttonTitle')}</Button>
+                  <Col xs='12' sm='12' lg='4'>
+                    <Button onClick={this.toggleUpdate} color='primary' className={'btn-block'}><i className='fa fa-chevron-circle-up'></i> {t('dashboard.systemupdate.buttonTitle')}</Button>
                     <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} className={'modal-primary ' + this.props.className}>
                       <ModalHeader toggle={this.toggleUpdate}>{t('dashboard.systemupdate.title')}</ModalHeader>
                       <ModalBody>
                         {t('dashboard.systemupdate.ask')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="primary" onClick={this.executeUpgrade}>{t('actions.submit')}</Button>{' '}
-                        <Button color="secondary" onClick={this.toggleUpdate}>{t('actions.cancel')}</Button>
+                        <Button color='primary' onClick={this.executeUpgrade}>{t('actions.submit')}</Button>{' '}
+                        <Button color='secondary' onClick={this.toggleUpdate}>{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
-                  <Col xs="12" sm="12" lg="4">
-                    <Button onClick={this.toggleReboot} color="danger" className={"btn-block"}><i className="fa fa-refresh"></i> {t('dashboard.systemreboot.buttonTitle')}</Button>
+                  <Col xs='12' sm='12' lg='4'>
+                    <Button onClick={this.toggleReboot} color='danger' className={'btn-block'}><i className='fa fa-refresh'></i> {t('dashboard.systemreboot.buttonTitle')}</Button>
                     <Modal isOpen={this.state.rebootModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
                       <ModalHeader toggle={this.toggleReboot}>{t('dashboard.systemreboot.title')}</ModalHeader>
                       <ModalBody>
                         {t('dashboard.systemreboot.ask')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="danger" onClick={this.executeReboot}>{t('actions.submit')}</Button>{' '}
-                        <Button color="secondary" onClick={this.toggleReboot}>{t('actions.cancel')}</Button>
+                        <Button color='danger' onClick={this.executeReboot}>{t('actions.submit')}</Button>{' '}
+                        <Button color='secondary' onClick={this.toggleReboot}>{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
-                  <Col xs="12" sm="12" lg="4">
-                    <Button onClick={this.toggleShutdown} color="danger" className={"btn-block"}><i className="fa fa-power-off"></i> {t('dashboard.systemshutdown.buttonTitle')}</Button>
+                  <Col xs='12' sm='12' lg='4'>
+                    <Button onClick={this.toggleShutdown} color='danger' className={'btn-block'}><i className='fa fa-power-off'></i> {t('dashboard.systemshutdown.buttonTitle')}</Button>
                     <Modal isOpen={this.state.shutdownModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
                       <ModalHeader toggle={this.toggleShutdown}>{t('dashboard.systemshutdown.title')}</ModalHeader>
                       <ModalBody>
                         {t('dashboard.systemshutdown.ask')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="danger" onClick={this.executeShutdown}>{t('actions.submit')}</Button>{' '}
-                        <Button color="secondary" onClick={this.toggleShutdown}>{t('actions.cancel')}</Button>
+                        <Button color='danger' onClick={this.executeShutdown}>{t('actions.submit')}</Button>{' '}
+                        <Button color='secondary' onClick={this.toggleShutdown}>{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
@@ -393,7 +393,7 @@ class Administration extends Component {
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
 
