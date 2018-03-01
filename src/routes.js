@@ -4,6 +4,7 @@ const routes = {
   '/system/administration': 'Administration',
   '/configuration/basic': 'Simple configuration',
   '/configuration/advanced': 'Advanced configuration',
+  '/management/users': 'Users management',
   // '/charts': 'Charts',
   // '/components/buttons': 'Buttons',
   // '/components/social-buttons': 'Social Buttons',

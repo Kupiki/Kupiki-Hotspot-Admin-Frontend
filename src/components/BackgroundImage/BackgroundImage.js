@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+const defaultStyle = { maxWidth: "100%", maxHeight: "100%" };
+
 export default class BackgroundImage extends Component {
   constructor(props) {
     super(props);
@@ -67,8 +69,6 @@ export default class BackgroundImage extends Component {
     );
   }
 }
-
-const defaultStyle = { maxWidth: "100%", maxHeight: "100%" };
 
 BackgroundImage.propTypes = {
   src: PropTypes.string.isRequired,

@@ -91,5 +91,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Header)
-// export default Header;
+export default connect(mapStateToProps)(Header);

@@ -8,6 +8,7 @@ import Dashboard from '../../views/System/Dashboard/';
 import Administration from '../../views/System/Administration/';
 import SimpleAdministration from '../../views/Configuration/Simple';
 import AdvancedAdministration from '../../views/Configuration/Advanced';
+import UsersManagement from '../../views/Management/Users/';
 import UserProfile from '../../views/User/Profile/';
 
 class Kupiki extends Component {
@@ -25,6 +26,7 @@ class Kupiki extends Component {
                 <PrivateRoute path="/system/administration" name="Administration" component={Administration}/>
                 <PrivateRoute path="/configuration/simple" name="Simple" component={SimpleAdministration}/>
                 <PrivateRoute path="/configuration/advanced" name="Advanced" component={AdvancedAdministration}/>
+                <PrivateRoute path="/management/users" name="Users Management" component={UsersManagement}/>
                 <PrivateRoute path="/user/profile" name="User Profile" component={UserProfile}/>
                 <Redirect from="/" to="/system/dashboard"/>
               </Switch>

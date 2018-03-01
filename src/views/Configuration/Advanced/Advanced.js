@@ -35,50 +35,112 @@ class AdvancedAdministration extends Component {
     
     this.state = {
       configuration: {},
+      restartService : false,
+      modalSave: false,
+      modalReset: false,
+      modalReload: false
     };
   
     this.saveHostapdConfiguration = this.saveHostapdConfiguration.bind(this);
+    this.loadHostapdConfiguration = this.loadHostapdConfiguration.bind(this);
+    this.loadDefaultHostapdConfiguration = this.loadDefaultHostapdConfiguration.bind(this);
+    
+    this.toggleSave = this.toggleSave.bind(this);
+    this.toggleReset = this.toggleReset.bind(this);
+    this.toggleReload = this.toggleReload.bind(this);
+
+    this.toggleAll = this.toggleAll.bind(this);
+  
   }
   
   componentDidMount() {
     this.loadHostapdConfiguration();
   }
   
+  toggleAll(status) {
+    this.setState({
+      modalSave: status,
+      modalReset: status,
+      modalReload: status
+    });
+  }
+  
+  toggleSave() {
+    this.setState({
+      modalSave: !this.state.modalSave
+    });
+  }
+  
+  toggleReset() {
+    this.setState({
+      modalReset: !this.state.modalReset
+    });
+  }
+  
+  toggleReload() {
+    this.setState({
+      modalReload: !this.state.modalReload
+    });
+  }
+  
   saveHostapdConfiguration () {
     const { t } = this.props;
   
+    this.toggleAll(false);
     const request = axios.post(`${ROOT_URL}/api/hotspot/configuration`, {
       configuration: this.state.configuration,
-      restart: false
+      restart: this.state.restartService
     }, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
       .then(response => {
-        toastr.success(t('management.basic.save-success'));
-      })
-      .catch(error => {
-        console.log(error);
-        toastr.error(t('management.basic.save-error')+' ' + name, error.message);
-      });
-  }
-  
-  loadHostapdConfiguration () {
-    const request = axios.get(`${ROOT_URL}/api/hotspot/configuration`, {
-      headers: { 'Authorization': `Bearer ${localStorage.token}` }
-    });
-    request
-      .then(response => {
-        if (response.data && response.data.status && response.data.status === "success") {
-          this.setState({ configuration: response.data.result.message });
-          this.extendConfiguration();
+        if (response.data && response.data.status) {
+          if (response.data.status === "success") {
+            toastr.success(t('management.advanced.save.success-save'));
+          } else {
+            toastr.error(t('management.advanced.save.error-save'), response.data.result.message);
+          }
         } else {
-          toastr.error(t('management.basic.load-error'));
+          toastr.success(t('management.advanced.save.success-save'));
         }
       })
       .catch(error => {
         console.log(error);
-        toastr.error(t('management.basic.load-error')+' ' + name, error.message);
+        toastr.error(t('management.advanced.save.error-save'), error.message);
+      });
+  }
+  
+  loadDefaultHostapdConfiguration (e) {
+    this.loadHostapdConfiguration(e, true)
+  }
+  
+  loadHostapdConfiguration (e, reset) {
+    const { t } = this.props;
+  
+    if (e) {
+      this.toggleAll(false);
+      this.setState({ content: undefined });
+    }
+    
+    let apiURL = ROOT_URL + "/api/hotspot/configuration";
+    if (reset) apiURL = ROOT_URL + "/api/hotspot/default";
+    
+    const request = axios.get(`${apiURL}`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        if (response.data && response.data.status === "success") {
+          this.setState({ configuration: response.data.result.message });
+          this.extendConfiguration();
+        } else {
+          toastr.error(t('management.advanced.load.load-error'));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        toastr.error(t('management.advanced.load.load-error'), error.message);
       });
   }
   
@@ -92,7 +154,8 @@ class AdvancedAdministration extends Component {
       .then(response => {
         this.setState({ hotspotConfFields: response.data.result.message });
         parent.hotspotConfFields = response.data.result.message;
-        for (let i = 0; i < this.state.configuration.length; i++) {
+        // for (let i = 0; i < this.state.configuration.length; i++) {
+        for (let i in this.state.configuration) {
           let elt = this.state.configuration[i];
           if (this.state.hotspotConfFields[elt.field]) {
             this.state.configuration[i] = Object.assign({},elt, this.state.hotspotConfFields[elt.field]);
@@ -100,13 +163,14 @@ class AdvancedAdministration extends Component {
           }
         }
         this.setState({ content: this.buildDisplayConfiguration() });
-        toastr.info(t('management.basic.load-success'));
+        toastr.info(t('management.advanced.load.success-load'));
       });
   }
   
   buildDisplayConfiguration() {
     let contentDisplay = [];
-    for (let i = 0; i < this.state.configuration.length; i++ ) {
+    for (let i in this.state.configuration) {
+    // for (let i = 0; i < this.state.configuration.length; i++ ) {
       contentDisplay.push(
         <AvGroup key={i}>
           <Label htmlFor="{this.state.configuration[i]['field']}">{this.state.configuration[i]['display']}</Label>
@@ -121,18 +185,11 @@ class AdvancedAdministration extends Component {
     );
   }
   
-  handleChange(e, fieldId) {
-    const index = this.state.configuration.findIndex(item => item.field === e.target.id);
-    let configuration = this.state.configuration;
-    configuration[index].value = e.target.value;
-    this.setState({ configuration: configuration });
-  }
-  
   renderField(fieldId) {
-    var displayedField = this.state.configuration[fieldId];
-    if (displayedField.type == "select") {
+    let displayedField = this.state.configuration[fieldId];
+    if (displayedField.type === "select") {
       let options = [];
-      for (var i in displayedField.data) {
+      for (let i in displayedField.data) {
         options.push(
           <option key={i} value={displayedField.data[i]['value']}>{displayedField.data[i]['text']}</option>
         )
@@ -148,7 +205,7 @@ class AdvancedAdministration extends Component {
         </AvField>
       )
     }
-    if (displayedField.type == "number") {
+    if (displayedField.type === "number") {
       return (
         <AvField
           id={displayedField.field}
@@ -163,7 +220,7 @@ class AdvancedAdministration extends Component {
         </AvField>
       )
     }
-    if (displayedField.type == "text") {
+    if (displayedField.type === "text") {
       return (
         <AvField
           id={displayedField.field}
@@ -189,6 +246,17 @@ class AdvancedAdministration extends Component {
     )
   }
   
+  handleChangeRestart(e) {
+    this.setState({ restartService: !this.state.restartService });
+  }
+  
+  handleChange(e) {
+    const index = this.state.configuration.findIndex(item => item.field === e.target.id);
+    let configuration = this.state.configuration;
+    configuration[index].value = e.target.value;
+    this.setState({ configuration: configuration });
+  }
+  
   render() {
     const { t } = this.props;
     return (
@@ -197,25 +265,64 @@ class AdvancedAdministration extends Component {
         <Row>
           <Col xs="12" sm="12" lg="12">
             <Card>
-              <AvForm onValidSubmit={this.saveHostapdConfiguration}>
+              <AvForm color="warning" onValidSubmit={this.toggleSave}>
                 <CardHeader>
                   {t('management.basic.basic.title')}
                 </CardHeader>
                 <CardBody>
-                  {!this.state.content && (
+                  <Modal isOpen={ this.state.modalSave } toggle={ this.toggleSave } className={'modal-danger'}>
+                    <ModalHeader toggle={ this.toggleSave }>{t('management.advanced.save.title')}</ModalHeader>
+                    <ModalBody>
+                      <p>{t('management.advanced.save.confirm')}</p>
+                      <p style={{marginLeft:20+'px'}}>
+                        <Input type="checkbox" id="restart" name="restart" defaultChecked={this.state.restartService} onChange={ this.handleChangeRestart.bind(this) }/>{' '}{t('management.advanced.save.confirmService')}
+                      </p>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" size="sm" onClick={ this.saveHostapdConfiguration }><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
+                      <Button color="secondary" size="sm" onClick={ this.toggleSave }><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                    </ModalFooter>
+                  </Modal>
+                  { !this.state.content && (
                     <Spinner id="spinner" name="ball-grid-pulse" color="#4875b4"/>
                   )}
-                  {this.state.content && (
+                  { this.state.content && (
                     <div>
                       { this.state.content }
                     </div>
                   )}
                 </CardBody>
-                <CardFooter>
-                  {this.state.content && (
+                { this.state.content && (
+                  <CardFooter>
                     <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
-                  )}
-                </CardFooter>
+                    
+                    <Button size="sm" color="secondary" onClick={this.toggleReload}><i className="fa fa-ban"></i> {t('actions.reload')}</Button>
+                    <Modal isOpen={ this.state.modalReload } toggle={this.toggleReload}
+                           className={'modal-secondary ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleReload}>{t('management.advanced.reload.title')}</ModalHeader>
+                      <ModalBody>
+                        {t('management.advanced.reload.confirm')}
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color="primary" size="sm" onClick={this.loadHostapdConfiguration}><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
+                        <Button color="secondary" size="sm" onClick={this.toggleReload}><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                      </ModalFooter>
+                    </Modal>
+                    
+                    <Button size="sm" color="danger" onClick={this.toggleReset}><i className="fa fa-download"></i> {t('actions.reset')}</Button>
+                    <Modal isOpen={ this.state.modalReset } toggle={this.toggleReset}
+                           className={'modal-danger ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleReset}>{t('management.advanced.default.title')}</ModalHeader>
+                      <ModalBody>
+                        {t('management.advanced.default.confirm')}
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color="danger" size="sm" onClick={this.loadDefaultHostapdConfiguration}><i className="fa fa-dot-circle-o"></i>{' '}{t('actions.confirm')}</Button>{' '}
+                        <Button color="secondary" size="sm" onClick={this.toggleReset}><i className="fa fa-times"></i>{' '}{t('actions.cancel')}</Button>
+                      </ModalFooter>
+                    </Modal>
+                  </CardFooter>
+                )}
               </AvForm>
             </Card>
           </Col>

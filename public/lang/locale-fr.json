@@ -92,10 +92,10 @@
   },
   "management": {
     "basic": {
-      "load-success": "Configuration chargée avec succès",
-      "load-error": "Impossible de charger la configuration",
-      "save-success": "Configuration sauvegardée avec succès",
-      "save-error": "Impossible de sauvegarder la configuration",
+      "success-load": "Configuration chargée avec succès",
+      "error-load": "Impossible de charger la configuration",
+      "success-save": "Configuration sauvegardée avec succès",
+      "error-save": "Impossible de sauvegarder la configuration",
       "hotspotSSID": {
         "title": "Configuration simple",
         "hotspotName": "Nom du point d'accès",
@@ -158,19 +158,49 @@
       "default": {
         "title": "Configuration par défaut de Hostapd",
         "confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
-        "success": "Configuration chargée",
+        "success-load": "Configuration par défaut chargée",
         "error-load": "Impossible de charge la configuration par défaut"
       },
       "load": {
+        "success-load": "Configuration par défaut chargée",
         "error-load": "Impossible de charge la configuration actuelle"
       },
       "save": {
         "title": "Configuration de Hostapd",
         "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
         "confirmService": "Redémarrer le service hostapd après la sauvegarde",
-        "success": "Configuration sauvegardée",
+        "success-save": "Configuration sauvegardée",
         "error-save": "Erreur lors de la sauvegarde de la configuration"
       }
+    }
+  },
+  "freeradius": {
+    "users": {
+      "success-load": "Liste des utilisateurs chargée avec succès",
+      "error-load": "Erreur lors du chargement des utilisateurs",
+      "list-header": "Liste des utilisateurs",
+      "list-username": "Identifiant",
+      "list-firstname": "Prénom",
+      "list-lastname": "Nom",
+      "list-actions": ""
+    },
+    "user": {
+      "create": "Créer un nouvel utilisateur",
+      "username-label": "Identifiant de connexion",
+      "error-username-length": "Identifiant trop court. Minimum {{lenUsername}} caractères.",
+      "error-username-mandatory": "Identifiant obligatoire",
+      "error-username-exists": "L'identifiant existe déjà",
+      "passwordtype-label": "Type de mot de passe",
+      "password-label": "Mot de passe",
+      "error-password-length": "Mot de passe trop court. Minimum {{lenPassword}} caractères.",
+      "error-password-mandatory": "Mot de passe obligatoire",
+      "advancedconfiguration": "Configuration avancée",
+      "firstname-label": "Prénom",
+      "lastname-label": "Nom",
+      "email-label": "E-mail",
+      "error-email-format": "Format de l'e-mail incorrect",
+      "department-label": "Département",
+      "company-label": "Entreprise"
     }
   },
   "generic": {

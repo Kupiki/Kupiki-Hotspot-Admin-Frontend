@@ -47,7 +47,6 @@ class SimpleAdministration extends Component {
   handleChange(e) {
     let configuration = this.state.configuration;
     configuration[2].value = e.target.value;
-    // this.setState({ ssid: e.target.value });
     this.setState({ configuration: configuration });
   }
   

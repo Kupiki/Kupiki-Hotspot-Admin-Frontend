@@ -4,6 +4,23 @@ import { UNAUTH_USER, AUTH_USER, AUTH_ERROR, FETCH_MESSAGE } from './types'
 var Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
+export function authError(error) {
+  return {
+    type: AUTH_ERROR,
+    payload: error
+  }
+}
+
+export function logoutUser() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  localStorage.removeItem('language');
+  localStorage.removeItem('_id');
+  return {
+    type: UNAUTH_USER
+  }
+}
+
 export function loginUser({username, password}) {
   
   return function (dispatch) {
@@ -37,22 +54,5 @@ export function loginUser({username, password}) {
         console.log('Error authentication')
         dispatch(authError('bad login info'))
       })
-  }
-}
-
-export function logoutUser() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('username');
-  localStorage.removeItem('language');
-  localStorage.removeItem('_id');
-  return {
-    type: UNAUTH_USER
-  }
-}
-
-export function authError(error) {
-  return {
-    type: AUTH_ERROR,
-    payload: error
   }
 }

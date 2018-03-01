@@ -48,3 +48,29 @@ body.modal-open #root {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.kupiki-collapse-line {
+  border-bottom: 1px solid $gray-200;
+  margin-bottom: 1rem
+}
+
+.kupiki-collapse-title {
+  color: $gray-900;
+  position: relative;
+  top: .75em;
+  left: 2em;
+  background-color: $white;
+}
+
+.kupiki-collapse-chevron {
+  color: $gray-900;
+  position: relative;
+  top: .5em;
+  right: 1em;
+  display: inline-block;
+  border: solid 1px $gray-200;
+  border-radius: 60px;
+  //box-shadow: 0px 0px 2px $gray-200;
+  padding: 0.5em 0.6em;
+  background-color: $white;
+}
