@@ -42,15 +42,15 @@ class Sidebar extends Component {
     const handleClick = this.handleClick;
 
     // badge addon to NavItem
-    const badge = (badge) => {
+    const badge = badge => {
       if (badge) {
         const classes = classNames( badge.class );
-        return (<Badge className={ classes } color={ badge.variant }>{ badge.text }</Badge>)
+        return (<Badge className={ classes } color={ badge.variant }>{ badge.text }</Badge>);
       }
     };
 
     // simple wrapper for nav-title item
-    const wrapper = item => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, t(item.name))): t(item.name) ) };
+    const wrapper = item => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, t(item.name))): t(item.name) ); };
 
     // nav list section title
     const title =  (title, key) => {
@@ -84,7 +84,7 @@ class Sidebar extends Component {
             </NavLink>
           }
         </NavItem>
-      )
+      );
     };
   
     // nav item with nav link

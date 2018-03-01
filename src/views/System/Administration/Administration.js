@@ -179,7 +179,7 @@ class Administration extends Component {
   }
   
   toggleService(service) {
-    return (event) => {
+    return event => {
       const { t } = this.props;
   
       let {name, status} = service.original;
@@ -203,22 +203,10 @@ class Administration extends Component {
               });
               this.refreshServices();
               (status) ? message = t('dashboard.systemservices.success-stop', { service: name }) : message = t('dashboard.systemservices.success-start', { service: name });
-/*
-              message = t('dashboard.systemservices.success-start', { service: name });
-              if (status) {
-                message = t('dashboard.systemservices.success-stop', { service: name });
-              }
-*/
               toastr.success(t('dashboard.service')+' ' + name, message);
               break;
             case 'failed' :
               (status) ? message = t('dashboard.systemservices.error-stop', { service: name }) : message = t('dashboard.systemservices.error-start', { service: name });
-/*
-              message = t('dashboard.systemservices.error-start', { service: name });
-              if (status) {
-                message = t('dashboard.systemservices.error-stop', { service: name });
-              }
-*/
               message += '<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message;
               toastr.error(t('dashboard.service')+' ' + name, message);
               break;
@@ -256,24 +244,7 @@ class Administration extends Component {
       .then(response => {
         let eltName = apiRequest+'Data';
         let apiData = component.state[eltName];
-        
         apiData.status = response.data.status;
-        
-        // apiData = Object.assign({}, apiData, response.data)
-        
-        // if (response.data.chartData) {
-        //   let objData = JSON.parse(response.data.chartData);
-        //   apiData.graph.datasets[0].data = [];
-        //   apiData.graph.labels = [];
-        //   for (let i = 0; i < objData.length; i++) {
-        //     apiData.graph.labels.push(objData[i][0]);
-        //     apiData.graph.datasets[0].data.push(objData[i][1]);
-        //   }
-        // }
-        // if (apiRequest === "uptime" && response.data.uptime) {
-        //   let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
-        //   apiData.uptimeLabel = duration.format("D[d] h[h] m[m]");
-        // }
         if (apiRequest === 'services') {
           apiData.fullData = response.data.result.message;
           apiData.currentData = apiData.fullData;

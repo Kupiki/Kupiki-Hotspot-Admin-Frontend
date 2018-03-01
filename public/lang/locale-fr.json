@@ -136,7 +136,7 @@
       }
     },
     "advanced": {
-      "configuration": "Configuration",
+      "title": "Configuration avancée",
       "generatedFile": "Fichier généré",
       "fields": {
         "interface": "Interface",

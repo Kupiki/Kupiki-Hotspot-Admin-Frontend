@@ -17,14 +17,14 @@ export const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
           }
         }}/>
       } else {
-        return <ComposedComponent {...props}/>
+        return <ComposedComponent {...props}/>;
       }
     }
     
     render() {
       return (
         <Route {...rest} render={this.handleRender.bind(this)}/>
-      )
+      );
     }
   }
   
@@ -36,5 +36,5 @@ export const PrivateRoute = ({component: ComposedComponent, ...rest}) => {
   }
   
   const AuthenticationContainer = connect(mapStateToProps)(Authentication);
-  return <AuthenticationContainer/>
+  return <AuthenticationContainer/>;
 };

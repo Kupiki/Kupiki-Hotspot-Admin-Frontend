@@ -21,7 +21,6 @@ import {
   Collapse
 } from 'reactstrap';
 import 'react-table/react-table.css';
-import Spinner from 'react-spinkit';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
@@ -100,7 +99,7 @@ class UserEdit extends Component {
     let user = this.props.existingUsers.find(function(element) {
       return element.username === value;
     });
-    cb((user !== undefined) ? t('freeradius.user.error-username-exists') : true)
+    cb((typeof user !== 'undefined') ? t('freeradius.user.error-username-exists') : true)
   }
   
   toggleAdvanced() {
@@ -117,7 +116,7 @@ class UserEdit extends Component {
           <ModalBody>
             <AvGroup>
               <Label htmlFor='username'>{t('freeradius.user.username-label')}</Label>
-              <AvField id='username' name='username' onChange={ this.handleChange.bind(this) }
+              <AvField id='username' name='username' onChange={ this.handleChange.bind(this) } disabled={ this.props.action !== 'create' }
                        validate={{
                          minLength: { value: 3, errorMessage: t('freeradius.user.error-username-length', { lenUsername: 3 }) },
                          required: { errorMessage: t('freeradius.user.error-username-mandatory') },
@@ -187,7 +186,7 @@ class UserEdit extends Component {
           </ModalFooter>
         </AvForm>
       </Modal>
-    )
+    );
   }
 }
 

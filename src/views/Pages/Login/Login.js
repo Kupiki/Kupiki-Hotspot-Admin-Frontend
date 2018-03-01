@@ -75,9 +75,9 @@ class Login extends Component {
   
   handleChange(event) {
     const field = event.target.name;
-    const user = this.state.user;
-    user[field] = event.target.value;
-    return this.setState({user: user});
+    const userTmp = this.state.user;
+    userTmp[field] = event.target.value;
+    return this.setState({user: userTmp});
   }
   
   handleSubmit(event){
@@ -151,4 +151,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(Login)
+export default connect(mapStateToProps, actions)(Login);

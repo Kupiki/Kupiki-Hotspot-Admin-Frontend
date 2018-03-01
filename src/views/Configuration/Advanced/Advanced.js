@@ -296,7 +296,7 @@ class AdvancedAdministration extends Component {
             <Card>
               <AvForm color='warning' onValidSubmit={this.toggleSave}>
                 <CardHeader>
-                  {t('management.basic.basic.title')}
+                  {t('management.advanced.title')}
                 </CardHeader>
                 <CardBody>
                   <Modal isOpen={ this.state.modalSave } toggle={ this.toggleSave } className={'modal-danger'}>

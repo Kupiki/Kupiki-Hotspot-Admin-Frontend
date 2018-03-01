@@ -44,7 +44,7 @@ export function loginUser({username, password}) {
           })
           .catch(function (error) {
             console.log(error);
-            dispatch(authError('bad login info'))
+            dispatch(authError('bad login info'));
           });
       })
       
