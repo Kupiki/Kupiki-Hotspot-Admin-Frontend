@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/83b2ebb8ca3f46a9a2b08975ff714cd4)](https://www.codacy.com/app/pihomeserver/Kupiki-Hotspot-Admin-Frontend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kupiki/Kupiki-Hotspot-Admin-Frontend&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/Kupiki/Kupiki-Hotspot-Admin-Frontend.svg?branch=master)](https://travis-ci.org/Kupiki/Kupiki-Hotspot-Admin-Frontend) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/83b2ebb8ca3f46a9a2b08975ff714cd4)](https://www.codacy.com/app/pihomeserver/Kupiki-Hotspot-Admin-Frontend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kupiki/Kupiki-Hotspot-Admin-Frontend&amp;utm_campaign=Badge_Grade)
 
 What is Kupiki Hotspot Admin
 ==================
