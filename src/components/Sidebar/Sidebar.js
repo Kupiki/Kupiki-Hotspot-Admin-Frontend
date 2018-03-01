@@ -3,9 +3,9 @@ import {NavLink} from 'react-router-dom';
 import {Badge, Nav, NavItem, NavLink as RsNavLink} from 'reactstrap';
 import classNames from 'classnames';
 import nav from './_nav';
-// import SidebarFooter from './../SidebarFooter';
 import SidebarForm from './../SidebarForm';
 import SidebarHeader from './../SidebarHeader';
+// import SidebarFooter from './../SidebarFooter';
 // import SidebarMinimizer from './../SidebarMinimizer';
 
 import { translate } from 'react-i18next';
@@ -63,19 +63,12 @@ class Sidebar extends Component {
       const classes = classNames( 'divider', divider.class);
       return (<li key={key} className={ classes }></li>);
     };
-
-    // nav item with nav link
-    const navItem = (item, key) => {
-      const classes = {
-        item: classNames( item.class) ,
-        link: classNames( 'nav-link', item.variant ? `nav-link-${item.variant}` : ''),
-        icon: classNames( item.icon )
-      };
-      return (
-        navLink(item, key, classes)
-      )
+  
+    const isExternal = (url) => {
+      const link = url ? url.substring(0, 4) : '';
+      return link === 'http';
     };
-
+    
     // nav link
     const navLink = (item, key, classes) => {
       const url = item.url ? item.url : '';
@@ -93,7 +86,24 @@ class Sidebar extends Component {
         </NavItem>
       )
     };
-
+  
+    // nav list
+    const navList = (items) => {
+      return items.map( (item, index) => navType(item, index) );
+    };
+  
+    // nav item with nav link
+    const navItem = (item, key) => {
+      const classes = {
+        item: classNames( item.class) ,
+        link: classNames( 'nav-link', item.variant ? `nav-link-${item.variant}` : ''),
+        icon: classNames( item.icon )
+      };
+      return (
+        navLink(item, key, classes)
+      )
+    };
+  
     // nav dropdown
     const navDropdown = (item, key) => {
       return (
@@ -111,17 +121,7 @@ class Sidebar extends Component {
       item.divider ? divider(item, idx) :
       item.children ? navDropdown(item, idx)
                     : navItem(item, idx) ;
-
-    // nav list
-    const navList = (items) => {
-      return items.map( (item, index) => navType(item, index) );
-    };
-
-    const isExternal = (url) => {
-      const link = url ? url.substring(0, 4) : '';
-      return link === 'http';
-    };
-
+    
     // sidebar-nav root
     return (
       <div className="sidebar">
