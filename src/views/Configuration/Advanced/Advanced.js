@@ -156,7 +156,15 @@ class AdvancedAdministration extends Component {
       .then(response => {
         this.setState({ hotspotConfFields: response.data.result.message });
         parent.hotspotConfFields = response.data.result.message;
-        // for (let i = 0; i < this.state.configuration.length; i++) {
+        this.state.configuration.forEach((elt, i) => {
+          if (this.state.hotspotConfFields[elt.field]) {
+            this.state.configuration[i] = Object.assign({},elt, this.state.hotspotConfFields[elt.field]);
+            if (this.state.configuration[i].type === 'number') {
+              this.state.configuration[i].value = parseInt(this.state.configuration[i].value);
+            }
+          }
+        });
+/*
         for (let i in this.state.configuration) {
           let elt = this.state.configuration[i];
           if (this.state.hotspotConfFields[elt.field]) {
@@ -166,6 +174,7 @@ class AdvancedAdministration extends Component {
             }
           }
         }
+*/
         this.setState({ content: this.buildDisplayConfiguration() });
         toastr.info(t('management.advanced.load.success-load'));
       });
@@ -173,8 +182,16 @@ class AdvancedAdministration extends Component {
   
   buildDisplayConfiguration() {
     let contentDisplay = [];
+    this.state.configuration.forEach((elt, i) => {
+      contentDisplay.push(
+        <AvGroup key={i}>
+          <Label htmlFor="{elt['field']}">{elt['display']}</Label>
+          { this.renderField(i) }
+        </AvGroup>
+      )
+    });
+/*
     for (let i in this.state.configuration) {
-    // for (let i = 0; i < this.state.configuration.length; i++ ) {
       contentDisplay.push(
         <AvGroup key={i}>
           <Label htmlFor="{this.state.configuration[i]['field']}">{this.state.configuration[i]['display']}</Label>
@@ -182,6 +199,7 @@ class AdvancedAdministration extends Component {
         </AvGroup>
       )
     }
+*/
     return (
       <div>
         { contentDisplay }
@@ -193,11 +211,18 @@ class AdvancedAdministration extends Component {
     let displayedField = this.state.configuration[fieldId];
     if (displayedField.type === "select") {
       let options = [];
+      displayedField.data.forEach((elt, i) => {
+        options.push(
+          <option key={i} value={elt['value']}>{elt['text']}</option>
+        )
+      });
+/*
       for (let i in displayedField.data) {
         options.push(
           <option key={i} value={displayedField.data[i]['value']}>{displayedField.data[i]['text']}</option>
         )
       }
+*/
       return (
         <AvField
           type="select"

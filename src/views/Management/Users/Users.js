@@ -88,8 +88,7 @@ class UsersMgmt extends Component {
   
   buildDisplayUsersList () {
     let contentDisplay = [];
-    for (let userId in this.state.users) {
-      let user = this.state.users[userId];
+    this.state.users.forEach((user, userId) => {
       contentDisplay.push(
         <tr key={userId}>
           <td>
@@ -104,7 +103,26 @@ class UsersMgmt extends Component {
           </td>
         </tr>
       )
+    });
+/*
+    for (let userId in this.state.users) {
+      let user = this.state.users[userId];
+      contentDisplay.push(
+        <tr key={userId}>
+          <td>
+            { user.username }
+            {/!*{'  '}<Badge color="success">Active</Badge>*!/}
+          </td>
+          <td>{ user.firstname }</td>
+          <td>{ user.lastname }</td>
+          <td>
+            <Button color="danger" className={"float-right"} size="sm"><i className="fa fa-trash-o"/></Button>
+            <Button color="primary" className={"float-right"} size="sm" onClick={ () => this.toggleUserModal("edit", userId) }><i className="fa fa-edit"/></Button>
+          </td>
+        </tr>
+      )
     }
+*/
     return contentDisplay;
   }
   

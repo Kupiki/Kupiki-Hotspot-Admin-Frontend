@@ -202,17 +202,23 @@ class Administration extends Component {
                 servicesData: servicesDataTmp
               });
               this.refreshServices();
+              (status) ? message = t('dashboard.systemservices.success-stop', { service: name }) : message = t('dashboard.systemservices.success-start', { service: name });
+/*
               message = t('dashboard.systemservices.success-start', { service: name });
               if (status) {
                 message = t('dashboard.systemservices.success-stop', { service: name });
               }
+*/
               toastr.success(t('dashboard.service')+' ' + name, message);
               break;
             case 'failed' :
+              (status) ? message = t('dashboard.systemservices.error-stop', { service: name }) : message = t('dashboard.systemservices.error-start', { service: name });
+/*
               message = t('dashboard.systemservices.error-start', { service: name });
               if (status) {
                 message = t('dashboard.systemservices.error-stop', { service: name });
               }
+*/
               message += '<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message;
               toastr.error(t('dashboard.service')+' ' + name, message);
               break;
@@ -222,7 +228,9 @@ class Administration extends Component {
         .catch(error => {
           console.log(error);
           let message = t('dashboard.systemservices.error-start', { service: name });
-          if (status) message = t('dashboard.systemservices.error-stop', { service: name });
+          if (status) {
+            message = t('dashboard.systemservices.error-stop', { service: name });
+          }
           toastr.error(t('dashboard.service')+' ' + name, message);
         });
     }
