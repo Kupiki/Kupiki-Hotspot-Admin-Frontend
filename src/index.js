@@ -22,7 +22,7 @@ import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
 import '../scss/style.scss'
 // Temp fix for reactstrap
-import '../scss/core/_dropdown-menu-right.scss'
+import "../scss/core/_dropdown-menu-right.scss"
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -35,7 +35,9 @@ axios.interceptors.response.use(undefined, function (error) {
     if(error.response.status === 401) {
       store.dispatch({type: UNAUTH_USER})
       return Promise.reject(error);
-    } else return Promise.reject(error);
+    } else {
+      return Promise.reject(error);
+    }
   }
 });
 

@@ -17,8 +17,14 @@ class ReduxSocket extends Component {
     const { t } = this.props;
   
     socket.on('system:update', function(data) {
-      if (data.status === 'progress') toastr.info(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.progress'));
-      if (data.status === 'finished') toastr.success(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.finished'));
+      switch (data.status) {
+        case "progress":
+          toastr.info(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.progress'));
+          break;
+        case "finished":
+          toastr.success(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.finished'));
+          break;
+      }
     });
   
   }

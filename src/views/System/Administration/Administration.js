@@ -51,7 +51,6 @@ class Administration extends Component {
     
     this.getGraphData('services');
     this.getAvailableUpgrades();
-    // this.refreshServices = this.refreshServices.bind(this);
     this.toggleUpdate = this.toggleUpdate.bind(this);
     this.toggleReboot = this.toggleReboot.bind(this);
     this.toggleShutdown = this.toggleShutdown.bind(this);
@@ -204,12 +203,16 @@ class Administration extends Component {
               });
               this.refreshServices();
               message = t('dashboard.systemservices.success-start', { service: name });
-              if (status) message = t('dashboard.systemservices.success-stop', { service: name });
+              if (status) {
+                message = t('dashboard.systemservices.success-stop', { service: name });
+              }
               toastr.success(t('dashboard.service')+' ' + name, message);
               break;
             case 'failed' :
               message = t('dashboard.systemservices.error-start', { service: name });
-              if (status) message = t('dashboard.systemservices.error-stop', { service: name });
+              if (status) {
+                message = t('dashboard.systemservices.error-stop', { service: name });
+              }
               message += '<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message;
               toastr.error(t('dashboard.service')+' ' + name, message);
               break;

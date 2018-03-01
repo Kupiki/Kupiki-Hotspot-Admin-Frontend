@@ -25,7 +25,9 @@ export default class BackgroundImage extends Component {
           () => {
             // One of the few times setTimeout does wonders, this is for
             // getting fade out transition without css keyframe
-            if (!this.timeout) clearTimeout(this.timeout);
+            if (!this.timeout) {
+              clearTimeout(this.timeout);
+            }
             this.timeout = setTimeout(
               () => this.setState({ bottomOpacity: 0 }),
               20

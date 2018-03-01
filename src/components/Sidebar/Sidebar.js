@@ -87,11 +87,6 @@ class Sidebar extends Component {
       )
     };
   
-    // nav list
-    const navList = (items) => {
-      return items.map( (item, index) => navType(item, index) );
-    };
-  
     // nav item with nav link
     const navItem = (item, key) => {
       const classes = {
@@ -104,6 +99,11 @@ class Sidebar extends Component {
       )
     };
   
+    // nav list
+    const navList = (items) => {
+      return items.map( (item, index) => navType(item, index) );
+    };
+    
     // nav dropdown
     const navDropdown = (item, key) => {
       return (

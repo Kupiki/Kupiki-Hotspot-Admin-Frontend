@@ -29,7 +29,7 @@ class HeaderDropdown extends Component {
   
     this.toggle = this.toggle.bind(this);
     this.state = {
-      lng: localStorage.getItem('language'),
+      lng: localStorage.getItem("language"),
       dropdownOpen: false,
       username: props.username
     };

@@ -124,7 +124,9 @@ class AdvancedAdministration extends Component {
     }
     
     let apiURL = ROOT_URL + "/api/hotspot/configuration";
-    if (reset) apiURL = ROOT_URL + "/api/hotspot/default";
+    if (reset) {
+      apiURL = ROOT_URL + "/api/hotspot/default";
+    }
     
     const request = axios.get(`${apiURL}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
@@ -159,7 +161,9 @@ class AdvancedAdministration extends Component {
           let elt = this.state.configuration[i];
           if (this.state.hotspotConfFields[elt.field]) {
             this.state.configuration[i] = Object.assign({},elt, this.state.hotspotConfFields[elt.field]);
-            if (this.state.configuration[i].type === 'number') this.state.configuration[i].value = parseInt(this.state.configuration[i].value);
+            if (this.state.configuration[i].type === 'number') {
+              this.state.configuration[i].value = parseInt(this.state.configuration[i].value);
+            }
           }
         }
         this.setState({ content: this.buildDisplayConfiguration() });
