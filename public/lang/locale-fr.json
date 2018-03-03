@@ -190,6 +190,8 @@
       "error-username-length": "Identifiant trop court. Minimum {{lenUsername}} caractères.",
       "error-username-mandatory": "Identifiant obligatoire",
       "error-username-exists": "L'identifiant existe déjà",
+      "success-save": "Utilisateur sauvegardé",
+      "error-save": "Erreur lors de la sauvegarde",
       "passwordtype-label": "Type de mot de passe",
       "password-label": "Mot de passe",
       "error-password-length": "Mot de passe trop court. Minimum {{lenPassword}} caractères.",

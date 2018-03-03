@@ -79,17 +79,17 @@ class UserEdit extends Component {
       .then(response => {
         if (response.data && response.data.status) {
           if (response.data.status === 'success') {
-            toastr.success(t('management.advanced.save.success-save'));
+            toastr.success(t('freeradius.user.success-save'));
           } else {
-            toastr.error(t('management.advanced.save.error-save'), response.data.result.message);
+            toastr.error(t('freeradius.user.error-save'), response.data.result.message);
           }
         } else {
-          toastr.success(t('management.advanced.save.success-save'));
+          toastr.success(t('freeradius.user.success-save'));
         }
       })
       .catch(error => {
         console.log(error);
-        toastr.error(t('management.advanced.save.error-save'), error.message);
+        toastr.error(t('freeradius.user.error-save'), error.message);
       });
     // this.props.callback();
   }
