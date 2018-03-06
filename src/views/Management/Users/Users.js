@@ -39,30 +39,37 @@ class UsersMgmt extends Component {
     
     this.state = {
       users: [],
-      modalUserOpen: false
+      modalUserOpen: false,
+      modalDeleteUserOpen: false
     };
   
     this.toggleUserModal = this.toggleUserModal.bind(this);
-    // this.toggleEditUser = this.toggleEditUser.bind(this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
   }
   
   componentDidMount() {
     this.loadUsers();
   }
   
-  // toggleEditUser() {
-  //   console.log(this.state.modalEditUser)
-  //   this.setState({
-  //     modalEditUser: !this.state.modalEditUser
-  //   });
-  // }
+  toggleDeleteModal(username) {
+    this.setState({
+      modalDeleteUserOpen: !this.state.modalDeleteUserOpen,
+      deleteUser: username
+    });
+  }
   
-  toggleUserModal(action, userId) {
+  toggleUserModal(action, username) {
+    let user = this.state.users.find(function(element) {
+      return element.username === username;
+    });
     this.setState({
       modalUserAction: action,
-      modalUserId: userId,
+      modalUser: user,
       modalUserOpen: !this.state.modalUserOpen
     });
+    if (!this.state.modalUserOpen) {
+      this.loadUsers();
+    }
   }
   
   loadUsers () {
@@ -76,7 +83,7 @@ class UsersMgmt extends Component {
         if (response.data && response.data.status && response.data.status === 'success') {
           this.setState({ users: response.data.result.message });
           this.setState({ content: this.buildDisplayUsersList() });
-          toastr.info(t('freeradius.users.success-load'));
+          // toastr.info(t('freeradius.users.success-load'));
         } else {
           toastr.error(t('freeradius.users.error-load'));
         }
@@ -84,6 +91,30 @@ class UsersMgmt extends Component {
       .catch(error => {
         toastr.error(t('freeradius.users.error-load')+' ' + name, error.message);
       });
+  }
+  
+  deleteUser( username ) {
+    const { t } = this.props;
+  
+    const request = axios.post(`${ROOT_URL}/api/freeradius/user/delete`, {
+      username: username,
+    }, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        if (response.data && response.data.status && response.data.status === 'success') {
+          this.toggleDeleteModal();
+          this.loadUsers();
+          toastr.info(t('freeradius.user.success-delete'));
+        } else {
+          toastr.error(t('freeradius.user.error-delete'));
+        }
+      })
+      .catch(error => {
+        toastr.error(t('freeradius.user.error-delete')+' ' + name, error.message);
+      });
+  
   }
   
   buildDisplayUsersList () {
@@ -98,31 +129,12 @@ class UsersMgmt extends Component {
           <td>{ user.firstname }</td>
           <td>{ user.lastname }</td>
           <td>
-            <Button color='danger' className={'float-right'} size='sm'><i className='fa fa-trash-o'/></Button>
-            <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('edit', userId) }><i className='fa fa-edit'/></Button>
+            <Button color='danger' className={'float-right'} size='sm'onClick={ () => this.toggleDeleteModal(user.username) }><i className='fa fa-trash-o'/></Button>
+            <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('edit', user.username) }><i className='fa fa-edit'/></Button>
           </td>
         </tr>
       )
     });
-/*
-    for (let userId in this.state.users) {
-      let user = this.state.users[userId];
-      contentDisplay.push(
-        <tr key={userId}>
-          <td>
-            { user.username }
-            {/!*{'  '}<Badge color="success">Active</Badge>*!/}
-          </td>
-          <td>{ user.firstname }</td>
-          <td>{ user.lastname }</td>
-          <td>
-            <Button color="danger" className={"float-right"} size="sm"><i className="fa fa-trash-o"/></Button>
-            <Button color="primary" className={"float-right"} size="sm" onClick={ () => this.toggleUserModal("edit", userId) }><i className="fa fa-edit"/></Button>
-          </td>
-        </tr>
-      )
-    }
-*/
     return contentDisplay;
   }
   
@@ -138,7 +150,7 @@ class UsersMgmt extends Component {
               <CardHeader>
                 <i className='fa fa-users'/>{' '}{t('freeradius.users.list-header')}
                 <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('create') }><i className='fa fa-user-plus'></i></Button>
-                <UserEdit action={ this.state.modalUserAction } userId={ this.state.modalUserId } existingUsers={ this.state.users } modalUserOpen={ this.state.modalUserOpen } callback={ this.toggleUserModal }/>
+                <UserEdit action={ this.state.modalUserAction } user={ this.state.modalUser } existingUsers={ this.state.users } modalUserOpen={ this.state.modalUserOpen } callback={ this.toggleUserModal }/>
               </CardHeader>
               <CardBody>
                 <Table hover striped responsive size='sm'>
@@ -170,6 +182,18 @@ class UsersMgmt extends Component {
             </Card>
           </Col>
         </Row>
+        <Modal size='lg' isOpen={ this.state.modalDeleteUserOpen } toggle={ this.toggleDeleteModal } className={'modal-danger'}>
+          <ModalHeader toggle={ this.toggleDeleteModal }>
+            {t('freeradius.user.delete', { username: this.state.deleteUser })}
+          </ModalHeader>
+          <ModalBody>
+            {t('freeradius.user.delete-confirm', { username: this.state.deleteUser })}
+          </ModalBody>
+          <ModalFooter>
+            <Button color='danger' size='sm' onClick={ () => this.deleteUser(this.state.deleteUser) }><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
+            <Button color='secondary' size='sm' onClick={ this.toggleDeleteModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     )
   }

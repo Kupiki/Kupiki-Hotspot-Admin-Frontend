@@ -187,6 +187,10 @@
     "user": {
       "create": "Créer un nouvel utilisateur",
       "username-label": "Identifiant de connexion",
+      "delete": "Suppression de l'utilisateur {{username}}",
+      "delete-confirm": "Etes vous sur de vouloir supprimer l'utilisateur {{username}} ?",
+      "error-delete": "Erreur lors de la suppression de l'utilisateur",
+      "success-delete": "Utilisateur supprimé",
       "error-username-length": "Identifiant trop court. Minimum {{lenUsername}} caractères.",
       "error-username-mandatory": "Identifiant obligatoire",
       "error-username-exists": "L'identifiant existe déjà",
@@ -202,7 +206,16 @@
       "email-label": "E-mail",
       "error-email-format": "Format de l'e-mail incorrect",
       "department-label": "Département",
-      "company-label": "Entreprise"
+      "company-label": "Entreprise",
+      "workphone-label": "Téléphone professionnel",
+      "homephone-label": "Téléphone personnel",
+      "mobilephone-label": "Téléphone mobile",
+      "address-label": "Adresse",
+      "city-label": "Ville",
+      "state-label": "Etat",
+      "country-label": "Pays",
+      "zip-label": "Code postal",
+      "notes-label": "Notes"
     }
   },
   "generic": {

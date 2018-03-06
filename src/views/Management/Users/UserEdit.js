@@ -40,13 +40,16 @@ class UserEdit extends Component {
       collapseAdvanced: false
     };
   
-    console.log(this.props.action);
-    console.log(this.props.userId);
-    
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.validateUniqueUser = this.validateUniqueUser.bind(this);
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
+      this.setState({ user: nextProps.user });
+    }
   }
   
   toggleModal() {
@@ -61,8 +64,6 @@ class UserEdit extends Component {
   
   handleSubmit () {
     const { t } = this.props;
-  
-    console.log(this.state.user);
   
     const request = axios.post(`${ROOT_URL}/api/freeradius/user/radcheck`, {
       username: this.state.user.username,
@@ -79,19 +80,40 @@ class UserEdit extends Component {
       .then(response => {
         if (response.data && response.data.status) {
           if (response.data.status === 'success') {
-            toastr.success(t('freeradius.user.success-save'));
+            // Save userinfo record
+            const requestInfo = axios.post(`${ROOT_URL}/api/freeradius//user/userinfo`, {
+              userinfo: this.state.user
+            }, {
+              headers: { 'Authorization': `Bearer ${localStorage.token}` }
+            });
+            requestInfo
+              .then(response => {
+                if (response.data && response.data.status) {
+                  if (response.data.status === 'success') {
+                    toastr.success(t('freeradius.user.success-save'));
+                    this.props.callback();
+                  } else {
+                    toastr.error(t('freeradius.user.error-save'), response.data.result.message);
+                  }
+                } else {
+                  toastr.error(t('freeradius.user.error-save'), response.data.result.message)
+                }
+              })
+              .catch(error => {
+                console.log(error);
+                toastr.error(t('freeradius.user.error-save'), error.message);
+              });
           } else {
             toastr.error(t('freeradius.user.error-save'), response.data.result.message);
           }
         } else {
-          toastr.success(t('freeradius.user.success-save'));
+          toastr.error(t('freeradius.user.error-save'), response.data.result.message)
         }
       })
       .catch(error => {
         console.log(error);
         toastr.error(t('freeradius.user.error-save'), error.message);
       });
-    // this.props.callback();
   }
   
   validateUniqueUser (value, ctx, input, cb) {
@@ -99,7 +121,7 @@ class UserEdit extends Component {
     let user = this.props.existingUsers.find(function(element) {
       return element.username === value;
     });
-    cb((typeof user !== 'undefined') ? t('freeradius.user.error-username-exists') : true)
+    cb((typeof user !== 'undefined' && this.props.action === 'create') ? t('freeradius.user.error-username-exists') : true)
   }
   
   toggleAdvanced() {
@@ -107,16 +129,17 @@ class UserEdit extends Component {
   }
   
   render() {
-    const { t } = this.props;
-    console.log(this.props)
+    const { t, action, modalUserOpen } = this.props;
+
     return (
-      <Modal size='lg' isOpen={ this.props.modalUserOpen } toggle={ this.toggleModal } className={'modal-primary'}>
+      <Modal size='lg' isOpen={ modalUserOpen } toggle={ this.toggleModal } className={'modal-primary'}>
         <AvForm onValidSubmit={ this.handleSubmit }>
           <ModalHeader toggle={ this.toggleModal }>{t('freeradius.user.create')}</ModalHeader>
           <ModalBody>
             <AvGroup>
               <Label htmlFor='username'>{t('freeradius.user.username-label')}</Label>
-              <AvField id='username' name='username' onChange={ this.handleChange.bind(this) } disabled={ this.props.action !== 'create' }
+              <AvField id='username' name='username' onChange={ this.handleChange.bind(this) } disabled={ action !== 'create' }
+                       value={ this.state.user.username || '' }
                        validate={{
                          minLength: { value: 3, errorMessage: t('freeradius.user.error-username-length', { lenUsername: 3 }) },
                          required: { errorMessage: t('freeradius.user.error-username-mandatory') },
@@ -136,6 +159,7 @@ class UserEdit extends Component {
                 <AvGroup>
                   <Label htmlFor='password'>{t('freeradius.user.password-label')}</Label>
                   <AvField id='password' name='password' onChange={ this.handleChange.bind(this) }
+                       value={ this.state.user.password }
                        validate={{
                          minLength: { value: 3, errorMessage: t('freeradius.user.error-password-length', { lenPassword: 3 }) },
                          required: { errorMessage: t('freeradius.user.error-password-mandatory') }
@@ -157,26 +181,62 @@ class UserEdit extends Component {
             <Collapse isOpen={this.state.collapseAdvanced}>
               <AvGroup>
                 <Label htmlFor='firstname'>{t('freeradius.user.firstname-label')}</Label>
-                <AvField id='firstname' name='firstname' onChange={ this.handleChange.bind(this) }/>
+                <AvField id='firstname' name='firstname' onChange={ this.handleChange.bind(this) } value={ this.state.user.firstname }/>
               </AvGroup>
               <AvGroup>
                 <Label htmlFor='lastname'>{t('freeradius.user.lastname-label')}</Label>
-                <AvField id='lastname' name='lastname' onChange={ this.handleChange.bind(this) }/>
+                <AvField id='lastname' name='lastname' onChange={ this.handleChange.bind(this) } value={ this.state.user.lastname }/>
               </AvGroup>
               <AvGroup>
                 <Label htmlFor='email'>{t('freeradius.user.email-label')}</Label>
-                <AvField id='email' name='email' onChange={ this.handleChange.bind(this) }
+                <AvField id='email' name='email' onChange={ this.handleChange.bind(this) } value={ this.state.user.email }
                          validate={{
                            email: { errorMessage: t('freeradius.user.error-email-format') }
                          }}/>
               </AvGroup>
               <AvGroup>
                 <Label htmlFor='department'>{t('freeradius.user.department-label')}</Label>
-                <AvField id='department' name='department' onChange={ this.handleChange.bind(this) }/>
+                <AvField id='department' name='department' onChange={ this.handleChange.bind(this) } value={ this.state.user.department }/>
               </AvGroup>
               <AvGroup>
                 <Label htmlFor='company'>{t('freeradius.user.company-label')}</Label>
-                <AvField id='company' name='company' onChange={ this.handleChange.bind(this) }/>
+                <AvField id='company' name='company' onChange={ this.handleChange.bind(this) } value={ this.state.user.company }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='workphone'>{t('freeradius.user.workphone-label')}</Label>
+                <AvField id='workphone' name='workphone' onChange={ this.handleChange.bind(this) } value={ this.state.user.workphone }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='homephone'>{t('freeradius.user.homephone-label')}</Label>
+                <AvField id='homephone' name='homephone' onChange={ this.handleChange.bind(this) } value={ this.state.user.homephone }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='mobilephone'>{t('freeradius.user.mobilephone-label')}</Label>
+                <AvField id='mobilephone' name='mobilephone' onChange={ this.handleChange.bind(this) } value={ this.state.user.mobilephone }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='address'>{t('freeradius.user.address-label')}</Label>
+                <AvField id='address' name='address' onChange={ this.handleChange.bind(this) } value={ this.state.user.address }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='city'>{t('freeradius.user.city-label')}</Label>
+                <AvField id='city' name='city' onChange={ this.handleChange.bind(this) } value={ this.state.user.city }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='state'>{t('freeradius.user.state-label')}</Label>
+                <AvField id='state' name='state' onChange={ this.handleChange.bind(this) } value={ this.state.user.state }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='country'>{t('freeradius.user.country-label')}</Label>
+                <AvField id='country' name='country' onChange={ this.handleChange.bind(this) } value={ this.state.user.country }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='zip'>{t('freeradius.user.zip-label')}</Label>
+                <AvField id='zip' name='zip' onChange={ this.handleChange.bind(this) } value={ this.state.user.zip }/>
+              </AvGroup>
+              <AvGroup>
+                <Label htmlFor='notes'>{t('freeradius.user.notes-label')}</Label>
+                <AvInput type="textarea" name="notes" id="notes" placeholder="Notes" onChange={ this.handleChange.bind(this) }/>
               </AvGroup>
             </Collapse>
           </ModalBody>
