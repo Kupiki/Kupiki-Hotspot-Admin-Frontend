@@ -18,10 +18,10 @@ const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 
 const METADATA = Object.assign({}, {
-    host: HOST,
-    port: PORT,
-    ENV: ENV,
-    PUBLIC: process.env.PUBLIC_DEV || HOST + ':' + PORT
+  host: HOST,
+  port: PORT,
+  ENV: ENV,
+  PUBLIC: process.env.PUBLIC_DEV || HOST + ':' + PORT
 });
 
 module.exports = (env = {}) => {

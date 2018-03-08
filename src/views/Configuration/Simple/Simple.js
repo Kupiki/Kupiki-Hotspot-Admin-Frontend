@@ -59,15 +59,15 @@ class SimpleAdministration extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          toastr.info(t('management.basic.load-success'));
+          toastr.info(t('management.basic.success-load'));
           this.setState({ configuration: response.data.result.message });
           // this.setState({ ssid: this.state.configuration[2].value });
         } else {
-          toastr.error(t('management.basic.load-error'));
+          toastr.error(t('management.basic.error-load'));
         }
       })
       .catch(error => {
-        toastr.error(t('management.basic.load-error')+' ' + name, error.message);
+        toastr.error(t('management.basic.error-load')+' ' + name, error.message);
       });
   }
   
