@@ -4,17 +4,27 @@
     "profile": "Profil",
     "logout": "Disconnect",
     "language": {
-      "language": "Language",
+      "menu": "Language",
       "title": "Update",
       "success": "Language updated"
+    },
+    "password": {
+      "title": "Update your password",
+      "current": "Current password",
+      "currentMissing": "Mandatory password",
+      "currentTooSmall": "Password minimal length is 3 characters",
+      "mismatch": "Passwords do not match",
+      "new": "New password",
+      "confirm": "Confirm password",
+      "success": "Password updated successfully"
     }
   },
   "sidebar": {
     "system": "System",
     "dashboard": "Dashboard",
     "administration": "Administration",
-    "configuration": "configuration",
-    "basic": "Simple",
+    "configuration": "Configuration",
+    "simple": "Simple",
     "advanced": "Advanced",
     "management": "Management",
     "users": "Users"
@@ -29,7 +39,7 @@
     "up": "Up",
     "services": "Services",
     "service": "Service",
-    "unable": "Impossible de charger la liste des services",
+    "unable": "Unable to load services",
     "summary": "System information",
     "architecture": "Architecture",
     "CPU": "CPU",
@@ -37,133 +47,191 @@
     "OS Type": "OS Type",
     "plateform": "Plateform",
     "release": "Version",
-    "update": "Mise à jour",
-    "reboot": "Redémarrer",
-    "shutdown": "Arrêter",
+    "update": "Update",
+    "reboot": "Reboot",
+    "shutdown": "Shutdown",
     "status": "Status",
-    "issue": "Erreur système",
+    "issue": "System error",
+    "netflow-title": "Netflow informations",
     "systemshutdown": {
-      "title": "Arrêt du système",
-      "ask": "Confirmez que que vous souhaitez arrêter le système",
-      "confirm": "Le système est en cours d'arrêt",
-      "error-start": "L'arrêt du système n'a pas pu être executé",
-      "error-execution": "L'arrêt du système n'a pas pu être executé"
+      "title": "System shutdown",
+      "buttonTitle": "Shutdown",
+      "ask": "Please confirm that you want to shutdown the system",
+      "confirm": "Shutdown in progress",
+      "error-start": "Unable to start the system shutdown",
+      "error-execution": "Unable to execute system shutdown"
     },
     "systemreboot": {
-      "title": "Redémarrer le système",
-      "ask": "Confirmez que que vous souhaitez redémarrer le système",
-      "confirm": "Le système est en cours de relance",
-      "error-execution": "Impossible de redémarrer le système"
+      "title": "Reboot system",
+      "buttonTitle": "Reboot",
+      "ask": "Please confirm that you want to reboot the system",
+      "confirm": "Reboot system",
+      "error-execution": "Unable to restart the system"
     },
     "systemupdate": {
-      "title": "Mise à jour système",
-      "available": "{{availableUpgrades}} mises à jour disponibles. Mettez votre système à jour.",
-      "ask": "Confirmez que vous souhaitez mettre à jour le système",
-      "confirm": "Le système est à jour",
-      "error-start": "La mise à jour du système ne peut pas être démarrée",
-      "error-status": "Impossible d'obtenir le statut des mises à jour",
-      "error-execution": "Impossible d'exécuter la mise à jour du système",
-      "error-information": "Impossible d'obtenir les informations de mise à jour",
-      "progress": "Mises à jour en cours",
-      "alreadyprogress": "Mises à jour déjà en cours",
-      "finished": "Mises à jour terminées"
+      "title": "System update",
+      "buttonTitle": "Update",
+      "available": "{{availableUpgrades}} updates available. Update your system.",
+      "ask": "Confirm that you want to update your system",
+      "confirm": "System up to date",
+      "error-start": "System update cannot be started",
+      "error-status": "Unable to get updates",
+      "error-execution": "Unable to execute updates",
+      "error-information": "Unable to get updates",
+      "progress": "Updates in progress",
+      "alreadyprogress": "Updates already in progress",
+      "finished": "Updates finished"
     },
     "systemservices": {
-      "error-information": "Impossible d'obtenir les informations sur les services",
-      "error-start": "Impossible de démarrer le service {{service}}",
-      "error-stop": "Impossible d'arrêter le service {{service}}",
-      "success-start": "Service {{service}} démarré",
-      "success-stop": "Service {{service}} arrêté"
+      "error-information": "Unable to get services information",
+      "error-start": "Unable to start service {{service}}",
+      "error-stop": "Unable to stop service {{service}}",
+      "success-start": "Service {{service}} started",
+      "success-stop": "Service {{service}} stopped"
     }
   },
   "management": {
     "basic": {
-      "basic": {
-        "title": "Configuration simple",
-        "hotspotName": "Nom du point d'accès",
-        "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès"
+      "success-load": "Configuration loaded successfully",
+      "error-load": "Unable to load configuration",
+      "success-save": "Configuration saved",
+      "error-save": "Unable to save configuration",
+      "hotspotSSID": {
+        "title": "Configuration",
+        "hotspotName": "Access point name",
+        "hotspotNamePlaceholder": "Name of your hotspot",
+        "error-hotspotNameMissing": "Hotspot name is mandatory",
+        "error-hotspotNameLength": "Hotspot name too short",
+        "error-hotspotNameSave": "Error while saving",
+        "success-hotspotName": "Hotspot name updated"
       },
       "portalOptions": {
-        "title": "Options du portail",
-        "termsDisplay": "Afficher les conditions d'utilisation",
-        "termsMessage": "Message à confirmer",
-        "termsMessagePlaceholder": "Saisissez le message demandant la validation",
-        "termsLink": "Lien vers les conditions",
-        "termsLinkPlaceholder": "Saisissez le texte du lien vers les conditions",
-        "termsFull": "Texte des conditions",
-        "termsFullPlaceholder": "Saisissez vos conditions d'utilisation",
-        "termsError": "Message d'erreur",
-        "termsErrorPlaceholder": "Saisissez le message à afficher si les conditions ne sont pas validées",
-        "termsResult": "Résultat affiché"
+        "title": "Portal options",
+        "termsDisplay": "Display terms",
+        "termsMessage": "Message to ask validation",
+        "termsMessagePlaceholder": "Input message that will ask confirmation",
+        "termsLink": "Link to display terms",
+        "termsLinkPlaceholder": "Text that will link to the terms",
+        "termsFull": "Terms",
+        "termsFullPlaceholder": "Terms content",
+        "termsError": "Error message",
+        "termsErrorPlaceholder": "Message if terms are not validated",
+        "termsResult": "Result"
       },
       "portalBackground": {
-        "title": "Image du fond du portail",
-        "restore": "Rétablir l'image de fond par défaut"
+        "title": "Background portal image",
+        "restore": "Restore background portal image"
       },
       "reloadImage": {
-        "title": "Image du fond du portail",
-        "confirm": "Confirmez que vous souhaitez recharger l'image de fond par défaut du portail",
-        "success": "Image restaurée",
-        "error": "Impossible de charger l'image de fond par défaut"
+        "title": "Portal background image",
+        "confirm": "Do you want to reload default background image",
+        "success": "Background image restored",
+        "error": "Unable to load default background image"
       },
       "upload": {
-        "title": "Image de fond",
-        "error-type": "Le fichier sélectionné n'est pas une image",
-        "error-upload": "Impossible de charger le fichier",
-        "success": "Image chargée avec succès"
+        "title": "Background image",
+        "error-type": "Selected file is incorrect type",
+        "error-upload": "Unable to load image",
+        "success": "Image successfully loaded"
       }
     },
     "advanced": {
-      "configuration": "Configuration",
-      "generatedFile": "Fichier généré",
+      "title": "Advanced configuration",
+      "generatedFile": "Generated file",
       "fields": {
         "interface": "Interface",
         "driver": "Driver",
         "ssid": "SSID",
-        "hw_mode": "Mode Wifi",
-        "channel": "Canal",
-        "auth_algs": "Authentification",
-        "beacon_int": "Intervalle de balise",
+        "hw_mode": "Wifi mode",
+        "channel": "Channel",
+        "auth_algs": "Authentication",
+        "beacon_int": "Beacon interval",
         "dtim_period": "Delivery Traffic Information Message",
-        "max_num_sta": "Nombre maximum de clients",
-        "rts_threshold": "Seuil RTS",
-        "fragm_threshold": "Seuil de fragmentation"
+        "max_num_sta": "Maximum clients",
+        "rts_threshold": "RTS threshold",
+        "fragm_threshold": "Fragmentation threshold"
       },
       "reload": {
-        "title": "Recharger la configuration de Hostapd",
-        "confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
+        "title": "Reload hostapd configuration",
+        "confirm": "Confirm that you want to reload current Hostapd configuration"
       },
       "default": {
-        "title": "Configuration par défaut de Hostapd",
-        "confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
-        "success": "Configuration chargée",
-        "error-load": "Impossible de charge la configuration par défaut"
+        "title": "Hostapd default configuration",
+        "confirm": "Confirm that you want to load default configuration",
+        "success-load": "Configuration loaded",
+        "error-load": "Unable to load default configuration"
       },
       "load": {
-        "error-load": "Impossible de charge la configuration actuelle"
+        "success-load": "Configuration loaded",
+        "error-load": "Unable to load current configuration"
       },
       "save": {
-        "title": "Configuration de Hostapd",
-        "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
-        "confirmService": "Redémarrer le service hostapd après la sauvegarde",
-        "success": "Configuration sauvegardée",
-        "error-save": "Erreur lors de la sauvegarde de la configuration"
+        "title": "Hostapd configuration",
+        "confirm": "Save new parameters",
+        "confirmService": "Restart hostapd service",
+        "success-save": "Configuration saved",
+        "error-save": "Error while saving the configuration"
       }
     }
   },
+  "freeradius": {
+    "users": {
+      "success-load": "Users loaded",
+      "error-load": "Unable to load users",
+      "list-header": "Users",
+      "list-username": "Username",
+      "list-firstname": "Firstname",
+      "list-lastname": "Lastname",
+      "list-actions": ""
+    },
+    "user": {
+      "create": "Add user",
+      "username-label": "Username",
+      "delete": "Delete user {{username}}",
+      "delete-confirm": "Are you sure that you want delete user {{username}} ?",
+      "error-delete": "Unable to delete user",
+      "success-delete": "User deleted",
+      "error-username-length": "Username too small. Minimum {{lenUsername}} caractères.",
+      "error-username-mandatory": "Username mandatory",
+      "error-username-exists": "Username already exists",
+      "success-save": "User saved",
+      "error-save": "Error",
+      "passwordtype-label": "Password mode",
+      "password-label": "Password",
+      "error-password-length": "Password too small. Minimum {{lenPassword}} caractères.",
+      "error-password-mandatory": "Password mandatory",
+      "advancedconfiguration": "Advanced configuration",
+      "firstname-label": "Firstname",
+      "lastname-label": "Lastname",
+      "email-label": "E-mail",
+      "error-email-format": "Wrong e-mail format",
+      "department-label": "Departement",
+      "company-label": "Company",
+      "workphone-label": "Work phone",
+      "homephone-label": "Home phone",
+      "mobilephone-label": "Mobile phone",
+      "address-label": "Address",
+      "city-label": "City",
+      "state-label": "State",
+      "country-label": "Country",
+      "zip-label": "Zip code",
+      "notes-label": "Notes"
+    }
+  },
   "generic": {
-    "Error": "Erreur",
-    "error": "erreur",
+    "Error": "Error",
+    "error": "error",
     "Code": "Code",
     "code": "code"
   },
   "actions": {
     "ok": "OK",
-    "cancel": "Annuler",
-    "save": "Sauver",
-    "reload": "Recharger",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "reload": "Reload",
     "reset": "Reset",
-    "confirm": "Confirmer",
-    "upload": "Téléverser"
+    "confirm": "Confirm",
+    "upload": "Upload"
   }
 }
