@@ -106,6 +106,10 @@
         "success-hotspotName": "Le nom du hotspot a été mis à jour"
       },
       "portalOptions": {
+        "success-load": "Options du portail chargées avec succès",
+        "error-load": "Impossible de charger les options du portail",
+        "success-save": "Options du portail sauvegardées",
+        "error-save": "Impossible de sauvegarder les options du portail",
         "title": "Options du portail",
         "termsDisplay": "Afficher les conditions d'utilisation",
         "termsMessage": "Message à confirmer",
