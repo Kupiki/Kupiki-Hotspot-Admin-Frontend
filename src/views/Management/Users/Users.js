@@ -81,7 +81,7 @@ class UsersMgmt extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          this.setState({ users: response.data.result.message });
+          this.setState({ users: response.data.message });
           this.setState({ content: this.buildDisplayUsersList() });
           // toastr.info(t('freeradius.users.success-load'));
         } else {
@@ -96,9 +96,10 @@ class UsersMgmt extends Component {
   deleteUser( username ) {
     const { t } = this.props;
   
-    const request = axios.post(`${ROOT_URL}/api/freeradius/user/delete`, {
-      username: username,
-    }, {
+    // const request = axios.delete(`${ROOT_URL}/api/freeradius/${username}`, {
+    //   username: username,
+    // }, {
+    const request = axios.delete(`${ROOT_URL}/api/freeradius/${username}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request

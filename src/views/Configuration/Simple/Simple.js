@@ -55,28 +55,21 @@ class SimpleAdministration extends Component {
   
   handleTermsChange(e) {
     let portal = this.state.portal;
-    // console.log(portal)
-    // console.log(e.target)
-    // console.log(e.target.type)
-    // console.log(e.target.checked)
-    // console.log(e.target.value)
     portal.options.terms[e.target.name] = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
     this.setState({ portal: portal });
-    console.log(this.state.portal)
   }
   
   loadPortalConfiguration () {
     const { t } = this.props;
   
-    const request = axios.get(`${ROOT_URL}/api/portal/configuration`, {
+    const request = axios.get(`${ROOT_URL}/api/portal`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
           toastr.info(t('management.basic.portalOptions.success-load'));
-          this.setState({ portal: response.data.result.message });
-          console.log(response.data.result.message)
+          this.setState({ portal: response.data.message });
         } else {
           toastr.error(t('management.basic.portalOptions.error-load'));
         }
@@ -89,14 +82,14 @@ class SimpleAdministration extends Component {
   loadHostapdConfiguration () {
     const { t } = this.props;
   
-    const request = axios.get(`${ROOT_URL}/api/hotspot/configuration`, {
+    const request = axios.get(`${ROOT_URL}/api/hotspot`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
           toastr.info(t('management.basic.success-load'));
-          this.setState({ hostapd: response.data.result.message });
+          this.setState({ hostapd: response.data.message });
           let index = this.state.hostapd.findIndex(elt => {
             return elt.field === 'ssid'
           });
@@ -113,31 +106,30 @@ class SimpleAdministration extends Component {
   handleSubmitSSID () {
     const { t } = this.props;
   
-    const request = axios.post(`${ROOT_URL}/api/hotspot/configuration`, {
+    const request = axios.put(`${ROOT_URL}/api/hotspot/configuration`, {
       configuration: this.state.hostapd
     }, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
       .then(response => {
-        console.log( response )
         if (response.data && response.data.status) {
           switch (response.data.status) {
             case 'success' :
-              toastr.success(t('management.basic.hotspotSSID.success-hotspotName'));
+              toastr.success(t('management.basic.hotspotSSID.success-save'));
               break;
             case 'failed' :
-              toastr.error(t('management.basic.hotspotSSID.hotspotNameSave'), response.data.result.code+'<br/>'+response.data.result.message);
+              toastr.error(t('management.basic.hotspotSSID.error-save'), response.data.code+'<br/>'+response.data.message);
               break;
           }
         } else {
-          toastr.error(t('management.basic.hotspotSSID.hotspotNameSave'), '');
+          toastr.error(t('management.basic.hotspotSSID.error-save'), '');
         }
       })
       .catch(error => {
         console.log(error);
         if (error.response) {
-          toastr.error(t('management.basic.hotspotSSID.hotspotNameSave'), '');
+          toastr.error(t('management.basic.hotspotSSID.error-save'), '');
         }
       });
   }
@@ -145,7 +137,7 @@ class SimpleAdministration extends Component {
   handleSubmitTerms () {
     const { t } = this.props;
   
-    const request = axios.post(`${ROOT_URL}/api/portal/configuration`, {
+    const request = axios.put(`${ROOT_URL}/api/portal/configuration`, {
       configuration: this.state.portal
     }, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
@@ -158,7 +150,7 @@ class SimpleAdministration extends Component {
               toastr.success(t('management.basic.portalOptions.success-save'));
               break;
             case 'failed' :
-              toastr.error(t('management.basic.portalOptions.error-save'), response.data.result.code+'<br/>'+response.data.result.message);
+              toastr.error(t('management.basic.portalOptions.error-save'), response.data.code+'<br/>'+response.data.message);
               break;
           }
         } else {

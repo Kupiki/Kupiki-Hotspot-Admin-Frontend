@@ -107,7 +107,6 @@ class Login extends Component {
                 <Card className='p-4 bg-primary'>
                   <CardBody>
                     <h1>Login</h1>
-                    {/*<p className='text-muted'>Sign In to your account</p>*/}
                     <p>Sign In to your account</p>
                     <Form onSubmit={this.handleSubmit}>
                       <FormGroup>

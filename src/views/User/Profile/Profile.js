@@ -35,7 +35,7 @@ class UserProfile extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleSubmit(event, errors, values) {
+  handleSubmit(event, values, errors) {
     const { t } = this.props;
 
     const request = axios.put(`${ROOT_URL}/api/users/${this.state._id}/password`, {
@@ -49,7 +49,6 @@ class UserProfile extends Component {
         toastr.success(t('user.password.title'), t('user.password.success'));
       })
       .catch(error => {
-        console.log(error)
         if (error.response) {
           if (error.response.status === 403) {
             toastr.error('Authorization error', 'Invalid password');
@@ -100,7 +99,7 @@ class UserProfile extends Component {
                     </AvGroup>
                 </CardBody>
                 <CardFooter>
-                  <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> {t('actions.submit')}</Button>
+                  <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"/> {t('actions.submit')}</Button>
                 </CardFooter>
               </AvForm>
             </Card>

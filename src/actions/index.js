@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { UNAUTH_USER, AUTH_USER, AUTH_ERROR, FETCH_MESSAGE } from './types'
 
-var Config = require('Config');
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 export function authError(error) {
@@ -24,8 +24,7 @@ export function logoutUser() {
 export function loginUser({username, password}) {
   
   return function (dispatch) {
-    // submit username and password to server
-    const request = axios.post(`${ROOT_URL}/auth/local`, {username, password});
+    const request = axios.post(`${ROOT_URL}/api/auth/login`, {username, password});
     request
       .then(response => {
         // -Save the JWT token and username
@@ -40,7 +39,7 @@ export function loginUser({username, password}) {
             localStorage.setItem('_id', response.data._id);
   
             // -if request is good, we need to update state to indicate user is authenticated
-            dispatch({type: AUTH_USER, username: username})
+            dispatch({type: AUTH_USER, username: username, token: localStorage.token})
           })
           .catch(function (error) {
             console.log(error);
@@ -50,7 +49,8 @@ export function loginUser({username, password}) {
       
       // If request is bad...
       // -Show an error to the user
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         console.log('Error authentication');
         dispatch(authError('bad login info'))
       });

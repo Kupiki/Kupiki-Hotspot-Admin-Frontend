@@ -87,7 +87,7 @@ class AdvancedAdministration extends Component {
     const { t } = this.props;
   
     this.toggleAll(false);
-    const request = axios.post(`${ROOT_URL}/api/hotspot/configuration`, {
+    const request = axios.put(`${ROOT_URL}/api/hotspot/configuration`, {
       configuration: this.state.configuration,
       restart: this.state.restartService
     }, {
@@ -99,10 +99,10 @@ class AdvancedAdministration extends Component {
           if (response.data.status === 'success') {
             toastr.success(t('management.advanced.save.success-save'));
           } else {
-            toastr.error(t('management.advanced.save.error-save'), response.data.result.message);
+            toastr.error(t('management.advanced.save.error-save'), response.data.message);
           }
         } else {
-          toastr.success(t('management.advanced.save.success-save'));
+          toastr.success(t('management.advanced.save.error-save'));
         }
       })
       .catch(error => {
@@ -123,7 +123,7 @@ class AdvancedAdministration extends Component {
       this.setState({ content: undefined });
     }
     
-    let apiURL = ROOT_URL + '/api/hotspot/configuration';
+    let apiURL = ROOT_URL + '/api/hotspot';
     if (reset) {
       apiURL = ROOT_URL + '/api/hotspot/default';
     }
@@ -134,7 +134,7 @@ class AdvancedAdministration extends Component {
     request
       .then(response => {
         if (response.data && response.data.status === 'success') {
-          this.setState({ configuration: response.data.result.message });
+          this.setState({ configuration: response.data.message });
           this.extendConfiguration();
         } else {
           toastr.error(t('management.advanced.load.load-error'));
@@ -154,8 +154,8 @@ class AdvancedAdministration extends Component {
     });
     request
       .then(response => {
-        this.setState({ hotspotConfFields: response.data.result.message });
-        parent.hotspotConfFields = response.data.result.message;
+        this.setState({ hotspotConfFields: response.data.message });
+        parent.hotspotConfFields = response.data.message;
         this.state.configuration.forEach((elt, i) => {
           if (this.state.hotspotConfFields[elt.field]) {
             this.state.configuration[i] = Object.assign({},elt, this.state.hotspotConfFields[elt.field]);
@@ -164,17 +164,6 @@ class AdvancedAdministration extends Component {
             }
           }
         });
-/*
-        for (let i in this.state.configuration) {
-          let elt = this.state.configuration[i];
-          if (this.state.hotspotConfFields[elt.field]) {
-            this.state.configuration[i] = Object.assign({},elt, this.state.hotspotConfFields[elt.field]);
-            if (this.state.configuration[i].type === 'number') {
-              this.state.configuration[i].value = parseInt(this.state.configuration[i].value);
-            }
-          }
-        }
-*/
         this.setState({ content: this.buildDisplayConfiguration() });
         toastr.info(t('management.advanced.load.success-load'));
       });

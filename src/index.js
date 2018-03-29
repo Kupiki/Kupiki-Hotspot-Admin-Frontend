@@ -10,7 +10,7 @@ import { AUTH_USER, UNAUTH_USER } from './actions/types';
 import { PrivateRoute } from './components/Auth/PrivateRoute';
 import ReduxToastr from 'react-redux-toastr';
 import ReduxSocket from './components/ReduxSocket/ReduxSocket';
-
+import jwt from 'jsonwebtoken'
 import { I18nextProvider } from 'react-i18next';
 import i18n from './components/i18n';
 
@@ -30,19 +30,35 @@ const token = localStorage.getItem('token');
 const username = localStorage.getItem('username');
 
 import axios from 'axios';
-axios.interceptors.response.use(undefined, function (error) {
+axios.interceptors.response.use(undefined, error => {
   if (error) {
     if(error.response.status === 401) {
       store.dispatch({type: UNAUTH_USER})
-      return Promise.reject(error);
-    } else {
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 });
+// if (token && username) {
+//   store.dispatch({type: AUTH_USER, username: username, token: token});
+// }
 
-if (token && username) {
-  store.dispatch({type: AUTH_USER, username: username});
+if (token) {
+  const decodedToken = jwt.decode(token, {complete: true});
+  // console.log(decodedToken)
+  const dateNow = new Date();
+  
+  // console.log(decodedToken.payload.exp*1000)
+  // console.log(dateNow.getTime())
+  const validToken = (dateNow.getTime() < decodedToken.payload.exp * 1000);
+  
+  // console.log('validToken : ' + validToken)
+  if (validToken && username) {
+    store.dispatch({type: AUTH_USER, username: username, token: token});
+  } else {
+    store.dispatch({type: UNAUTH_USER});
+  }
+} else {
+  store.dispatch({type: UNAUTH_USER});
 }
 
 // Containers

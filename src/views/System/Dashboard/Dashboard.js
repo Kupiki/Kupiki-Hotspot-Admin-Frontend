@@ -20,8 +20,11 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { toastr } from 'react-redux-toastr';
 import { translate } from 'react-i18next';
+// import * as actions from "../../../actions";
+import { connect } from 'react-redux';
 
-var Config = require('Config');
+
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 const kupikiChartOpts = {
@@ -89,7 +92,7 @@ class Dashboard extends Component {
     this.getData('services', 'servicesData');
     this.getData('information', 'informationData');
     this.getData('temperature', 'temperatureData');
-    this.getData('netflow/stats', 'netflowData');
+    this.getData('netflow', 'netflowData');
   }
   
   getData(apiRequest, stateValue) {
@@ -118,7 +121,7 @@ class Dashboard extends Component {
           apiData.uptimeLabel = duration.format('D[d] h[h] m[m]');
         }
         if (apiRequest === 'services') {
-          apiData.fullData = response.data.result.message;
+          apiData.fullData = response.data.message;
           let filterByName = function(service) {
             return Config.servicesFilters.includes(service.name);
           };
@@ -126,10 +129,10 @@ class Dashboard extends Component {
           apiData.currentData = apiData.fullData;
         }
         if (apiRequest === 'temperature') {
-          apiData.value=response.data.result.message;
+          apiData.value=response.data.message;
         }
-        if (apiRequest === 'netflow/stats') {
-          apiData.fullData = response.data.result.message;
+        if (apiRequest === 'netflow') {
+          apiData.fullData = response.data.message;
         }
         let newState = {};
         newState[stateValue] = apiData;
@@ -137,7 +140,6 @@ class Dashboard extends Component {
         component.setState(newState);
       })
       .catch(error => {
-        console.log(error)
         toastr.error(t('dashboard.service')+' ' + name, error.message);
       })
   
@@ -147,7 +149,7 @@ class Dashboard extends Component {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
     });
-    (this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData : this.state.servicesData.currentData = this.state.servicesData.filteredData;
+    this.state.servicesData.currentData = (this.state.servicesFiltered ? this.state.servicesData.fullData : this.state.servicesData.filteredData);
   }
   
   render() {
@@ -159,7 +161,7 @@ class Dashboard extends Component {
         <Row>
           <Col xs='6' sm='6' lg='3'>
             <div className='social-box linkedin'>
-              <i className='fa fa-heartbeat'></i>
+              <i className='fa fa-heartbeat'/>
               <div className='chart-wrapper'>
                 <Line data={this.state.cpuData.graph} options={kupikiChartOpts} height={90}/>
               </div>
@@ -178,7 +180,7 @@ class Dashboard extends Component {
 
           <Col xs='6' sm='6' lg='3'>
             <div className='social-box linkedin'>
-              <i className='fa fa-hdd-o'></i>
+              <i className='fa fa-hdd-o'/>
               <div className='chart-wrapper'>
                 <Line data={this.state.diskData.graph} options={kupikiChartOpts} height={90}/>
               </div>
@@ -197,7 +199,7 @@ class Dashboard extends Component {
 
           <Col xs='6' sm='6' lg='3'>
             <div className='social-box linkedin'>
-              <i className='fa fa-microchip'></i>
+              <i className='fa fa-microchip'/>
               <div className='chart-wrapper'>
                 <Line data={this.state.memoryData.graph} options={kupikiChartOpts} height={90}/>
               </div>
@@ -216,7 +218,7 @@ class Dashboard extends Component {
 
           <Col xs='6' sm='6' lg='2'>
             <div className='social-box social-box-single linkedin'>
-              <i className='fa fa-clock-o'></i>
+              <i className='fa fa-clock-o'/>
               <div className='chart-wrapper'>
               </div>
               <ul>
@@ -230,7 +232,7 @@ class Dashboard extends Component {
   
           <Col xs='6' sm='6' lg='1'>
             <div className='social-box social-box-single linkedin'>
-              <i className='fa fa-thermometer-empty'></i>
+              <i className='fa fa-thermometer-empty'/>
               <div className='chart-wrapper'>
               </div>
               <ul>
@@ -250,8 +252,8 @@ class Dashboard extends Component {
                 {t('dashboard.services')}
                 <Label className='switch switch-sm switch-text switch-info float-right mb-0'>
                   <Input type='checkbox' className='switch-input' onChange={this.toggleServicesFilter.bind(this)}/>
-                  <span className='switch-label' data-on='On' data-off='Off'></span>
-                  <span className='switch-handle'></span>
+                  <span className='switch-label' data-on='On' data-off='Off'/>
+                  <span className='switch-handle'/>
                 </Label>
               </CardHeader>
               <CardBody>
@@ -277,8 +279,8 @@ class Dashboard extends Component {
                             <Label className='switch switch-text switch-pill switch-primary-outline-alt switch-xs'>
                               {row.value && (<Input type='checkbox' disabled className='switch-input' defaultChecked/>)}
                               {!row.value && (<Input type='checkbox' disabled className='switch-input'/>)}
-                              <span className='switch-label' data-on='On' data-off='Off'></span>
-                              <span className='switch-handle'></span>
+                              <span className='switch-label' data-on='On' data-off='Off'/>
+                              <span className='switch-handle'/>
                             </Label>
                           </div>
                         )

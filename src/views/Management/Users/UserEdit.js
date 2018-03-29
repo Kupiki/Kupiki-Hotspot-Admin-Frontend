@@ -65,7 +65,7 @@ class UserEdit extends Component {
   handleSubmit () {
     const { t } = this.props;
   
-    const request = axios.post(`${ROOT_URL}/api/freeradius/user/radcheck`, {
+    const request = axios.post(`${ROOT_URL}/api/freeradius/radcheck`, {
       username: this.state.user.username,
       radcheck: [{
         username: this.state.user.username,
@@ -81,7 +81,7 @@ class UserEdit extends Component {
         if (response.data && response.data.status) {
           if (response.data.status === 'success') {
             // Save userinfo record
-            const requestInfo = axios.post(`${ROOT_URL}/api/freeradius//user/userinfo`, {
+            const requestInfo = axios.post(`${ROOT_URL}/api/freeradius/userinfo`, {
               userinfo: this.state.user
             }, {
               headers: { 'Authorization': `Bearer ${localStorage.token}` }

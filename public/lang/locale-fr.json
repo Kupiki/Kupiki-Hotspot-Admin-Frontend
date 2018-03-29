@@ -166,7 +166,7 @@
         "error-load": "Impossible de charge la configuration par défaut"
       },
       "load": {
-        "success-load": "Configuration par défaut chargée",
+        "success-load": "Configuration chargée",
         "error-load": "Impossible de charge la configuration actuelle"
       },
       "save": {

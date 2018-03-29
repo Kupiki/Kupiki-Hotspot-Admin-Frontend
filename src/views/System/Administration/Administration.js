@@ -71,9 +71,9 @@ class Administration extends Component {
       .then(response => {
         switch (response.data.status) {
           case 'success' :
-            if (parseInt(response.data.result.message) !== 0) {
+            if (parseInt(response.data.message) !== 0) {
               this.setState({
-                availableUpgrades: parseInt(response.data.result.message)
+                availableUpgrades: parseInt(response.data.message)
               });
               toastr.info(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.available', { availableUpgrades: this.state.availableUpgrades }));
             } else {
@@ -81,7 +81,7 @@ class Administration extends Component {
             }
             break;
           case 'failed' :
-            toastr.error(t('dashboard.systemupdate.error-information')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, t('dashboard.systemupdate.title'));
+            toastr.error(t('dashboard.systemupdate.error-information')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, t('dashboard.systemupdate.title'));
             break;
         }
       })
@@ -104,7 +104,7 @@ class Administration extends Component {
             toastr.success(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.confirm'));
             break;
           case 'failed':
-            toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-start')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, {
+            toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
               closeButton: true,
               allowHtml: true,
               timeOut: 0
@@ -131,7 +131,7 @@ class Administration extends Component {
             toastr.success(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.confirm'));
             break;
           case 'failed':
-            toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-start')+'<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message, {
+            toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
               closeButton: true,
               allowHtml: true,
               timeOut: 0
@@ -183,9 +183,8 @@ class Administration extends Component {
       const { t } = this.props;
   
       let {name, status} = service.original;
-      
-      const request = axios.post(`${ROOT_URL}/api/services`, {
-        service: name,
+  
+      const request = axios.put(`${ROOT_URL}/api/services/${name}`, {
         status: !status
       }, {
         headers: {'Authorization': `Bearer ${localStorage.token}`}
@@ -195,23 +194,22 @@ class Administration extends Component {
           let message = '';
           switch (response.data.status) {
             case 'success' :
-              let index = this.state.servicesData.fullData.indexOf(service.original)
+              let index = this.state.servicesData.fullData.indexOf(service.original);
               let servicesDataTmp = this.state.servicesData;
               servicesDataTmp.fullData[index].status = !servicesDataTmp.fullData[index].status;
               this.setState({
                 servicesData: servicesDataTmp
               });
-              this.refreshServices();
-              (status) ? message = t('dashboard.systemservices.success-stop', { service: name }) : message = t('dashboard.systemservices.success-start', { service: name });
+              status ? message = t('dashboard.systemservices.success-stop', { service: name }) : message = t('dashboard.systemservices.success-start', { service: name });
               toastr.success(t('dashboard.service')+' ' + name, message);
+              this.refreshServices();
               break;
             case 'failed' :
-              (status) ? message = t('dashboard.systemservices.error-stop', { service: name }) : message = t('dashboard.systemservices.error-start', { service: name });
-              message += '<br/>'+t('generic.Error')+' '+response.data.result.code+'<br/>'+response.data.result.message;
+              status ? message = t('dashboard.systemservices.error-stop', { service: name }) : message = t('dashboard.systemservices.error-start', { service: name });
+              message += '<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message;
               toastr.error(t('dashboard.service')+' ' + name, message);
               break;
           }
-          this.refreshServices();
         })
         .catch(error => {
           console.log(error);
@@ -227,12 +225,15 @@ class Administration extends Component {
   toggleFilter(e) {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
-    });
-    this.refreshServices()
+    }, function afterStateChange () { this.refreshServices() });
   }
   
   refreshServices() {
-    (!this.state.servicesFiltered) ? this.state.servicesData.currentData = this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.currentData = this.state.servicesData.fullData;
+    let servicesDataTmp = this.state.servicesData;
+    servicesDataTmp.currentData = this.state.servicesFiltered ? this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.fullData;
+    this.setState({
+      servicesData : servicesDataTmp
+    })
   }
   
   getGraphData(apiRequest) {
@@ -246,7 +247,7 @@ class Administration extends Component {
         let apiData = component.state[eltName];
         apiData.status = response.data.status;
         if (apiRequest === 'services') {
-          apiData.fullData = response.data.result.message;
+          apiData.fullData = response.data.message;
           apiData.currentData = apiData.fullData;
         }
         let newState = {};
@@ -271,7 +272,7 @@ class Administration extends Component {
               <CardHeader>
                 {t('dashboard.services')}
                 <Label className='switch switch-sm switch-text switch-info float-right mb-0'>
-                  <Input type='checkbox' className='switch-input' onChange={this.toggleFilter}/>
+                  <Input type='checkbox' className='switch-input' onChange={this.toggleFilter.bind(this)}/>
                   <span className='switch-label' data-on='On' data-off='Off'></span>
                   <span className='switch-handle'></span>
                 </Label>
