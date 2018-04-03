@@ -96,9 +96,6 @@ class UsersMgmt extends Component {
   deleteUser( username ) {
     const { t } = this.props;
   
-    // const request = axios.delete(`${ROOT_URL}/api/freeradius/${username}`, {
-    //   username: username,
-    // }, {
     const request = axios.delete(`${ROOT_URL}/api/freeradius/${username}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
