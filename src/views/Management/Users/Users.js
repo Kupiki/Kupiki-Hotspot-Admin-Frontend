@@ -8,16 +8,7 @@ import {
   CardBody,
   CardFooter,
   CardTitle,
-  Form,
-  FormFeedback,
-  FormGroup,
-  FormText,
-  Label,
-  Input,
   Table,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Badge,
   Modal,
   ModalHeader,
@@ -83,7 +74,6 @@ class UsersMgmt extends Component {
         if (response.data && response.data.status && response.data.status === 'success') {
           this.setState({ users: response.data.message });
           this.setState({ content: this.buildDisplayUsersList() });
-          // toastr.info(t('freeradius.users.success-load'));
         } else {
           toastr.error(t('freeradius.users.error-load'));
         }
@@ -108,7 +98,7 @@ class UsersMgmt extends Component {
         } else {
           toastr.error(t('freeradius.user.error-delete'));
         }
-      })
+			})
       .catch(error => {
         toastr.error(t('freeradius.user.error-delete')+' ' + name, error.message);
       });
@@ -122,13 +112,13 @@ class UsersMgmt extends Component {
         <tr key={userId}>
           <td>
             { user.username }
-            {/*{'  '}<Badge color="success">Active</Badge>*/}
           </td>
           <td>{ user.firstname }</td>
           <td>{ user.lastname }</td>
           <td>
             <Button color='danger' className={'float-right'} size='sm'onClick={ () => this.toggleDeleteModal(user.username) }><i className='fa fa-trash-o'/></Button>
             <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('edit', user.username) }><i className='fa fa-edit'/></Button>
+            <Badge color="success" className={'float-right'} pill>online</Badge>
           </td>
         </tr>
       )
@@ -164,18 +154,6 @@ class UsersMgmt extends Component {
                     { this.state.content }
                   </tbody>
                 </Table>
-                {/*<nav>*/}
-                  {/*<Pagination>*/}
-                    {/*<PaginationItem><PaginationLink previous href="#">Prev</PaginationLink></PaginationItem>*/}
-                    {/*<PaginationItem active>*/}
-                      {/*<PaginationLink href="#">1</PaginationLink>*/}
-                    {/*</PaginationItem>*/}
-                    {/*<PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>*/}
-                    {/*<PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>*/}
-                    {/*<PaginationItem><PaginationLink href="#">4</PaginationLink></PaginationItem>*/}
-                    {/*<PaginationItem><PaginationLink next href="#">Next</PaginationLink></PaginationItem>*/}
-                  {/*</Pagination>*/}
-                {/*</nav>*/}
               </CardBody>
             </Card>
           </Col>
@@ -198,5 +176,3 @@ class UsersMgmt extends Component {
 }
 
 export default translate()(UsersMgmt);
-
-
