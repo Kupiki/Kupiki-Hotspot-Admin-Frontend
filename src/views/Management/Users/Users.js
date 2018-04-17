@@ -71,9 +71,8 @@ class UsersMgmt extends Component {
     });
     request
       .then(response => {
-        if (response.data && response.data.status && response.data.status === 'success') {
+        if (response.data && response.data.status === 'success') {
           this.setState({ users: response.data.message });
-          this.setState({ content: this.buildDisplayUsersList() });
         } else {
           toastr.error(t('freeradius.users.error-load'));
         }
