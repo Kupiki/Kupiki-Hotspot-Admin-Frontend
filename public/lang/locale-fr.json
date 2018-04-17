@@ -27,6 +27,7 @@
     "simple": "Simple",
     "advanced": "Avancée",
     "management": "Gestion",
+    "statistics": "Statistiques",
     "users": "Utilisateurs"
   },
   "dashboard": {
@@ -140,42 +141,44 @@
       }
     },
     "advanced": {
-      "title": "Configuration avancée",
-      "generatedFile": "Fichier généré",
-      "fields": {
-        "interface": "Interface",
-        "driver": "Driver",
-        "ssid": "SSID",
-        "hw_mode": "Mode Wifi",
-        "channel": "Canal",
-        "auth_algs": "Authentification",
-        "beacon_int": "Intervalle de balise",
-        "dtim_period": "Delivery Traffic Information Message",
-        "max_num_sta": "Nombre maximum de clients",
-        "rts_threshold": "Seuil RTS",
-        "fragm_threshold": "Seuil de fragmentation"
-      },
-      "reload": {
-        "title": "Recharger la configuration de Hostapd",
-        "confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
-      },
-      "default": {
-        "title": "Configuration par défaut de Hostapd",
-        "confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
-        "success-load": "Configuration par défaut chargée",
-        "error-load": "Impossible de charge la configuration par défaut"
-      },
-      "load": {
-        "success-load": "Configuration chargée",
-        "error-load": "Impossible de charge la configuration actuelle"
-      },
-      "save": {
-        "title": "Configuration de Hostapd",
-        "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
-        "confirmService": "Redémarrer le service hostapd après la sauvegarde",
-        "success-save": "Configuration sauvegardée",
-        "error-save": "Erreur lors de la sauvegarde de la configuration"
-      }
+			"hostapd": {
+				"title": "Configuration avancée",
+				"generatedFile": "Fichier généré",
+				"fields": {
+					"interface": "Interface",
+					"driver": "Driver",
+					"ssid": "SSID",
+					"hw_mode": "Mode Wifi",
+					"channel": "Canal",
+					"auth_algs": "Authentification",
+					"beacon_int": "Intervalle de balise",
+					"dtim_period": "Delivery Traffic Information Message",
+					"max_num_sta": "Nombre maximum de clients",
+					"rts_threshold": "Seuil RTS",
+					"fragm_threshold": "Seuil de fragmentation"
+				},
+				"reload": {
+					"title": "Recharger la configuration de Hostapd",
+					"confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
+				},
+				"default": {
+					"title": "Configuration par défaut de Hostapd",
+					"confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
+					"success-load": "Configuration par défaut chargée",
+					"error-load": "Impossible de charge la configuration par défaut"
+				},
+				"load": {
+					"success-load": "Configuration chargée",
+					"error-load": "Impossible de charge la configuration actuelle"
+				},
+				"save": {
+					"title": "Configuration de Hostapd",
+					"confirm": "Confirmez la sauvegarde des nouveaux paramètres",
+					"confirmService": "Redémarrer le service hostapd après la sauvegarde",
+					"success-save": "Configuration sauvegardée",
+					"error-save": "Erreur lors de la sauvegarde de la configuration"
+				}
+			}
     }
   },
   "freeradius": {
@@ -184,12 +187,17 @@
       "error-load": "Erreur lors du chargement des utilisateurs",
       "list-header": "Liste des utilisateurs",
       "list-username": "Identifiant",
+      "list-status": "Connecté",
       "list-firstname": "Prénom",
       "list-lastname": "Nom",
-      "list-actions": ""
+			"menu-actions": "Actions",
+			"menu-edit": "Editer",
+			"menu-statistics": "Statistiques",
+			"menu-delete": "Supprimer"
     },
     "user": {
       "create": "Créer un nouvel utilisateur",
+			"statistics": "Statistiques",
       "username-label": "Identifiant de connexion",
       "delete": "Suppression de l'utilisateur {{username}}",
       "delete-confirm": "Etes vous sur de vouloir supprimer l'utilisateur {{username}} ?",
@@ -220,7 +228,12 @@
       "country-label": "Pays",
       "zip-label": "Code postal",
       "notes-label": "Notes"
-    }
+    },
+		"statistics": {
+			"card-statistics-user-header": "Statistique de l'utilisateur {{user}}",
+			"card-octets-header": "Statistiques de transfert",
+			"card-sessions-header": "Statistiques de session"
+		}
   },
   "generic": {
     "Error": "Erreur",

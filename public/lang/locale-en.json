@@ -27,6 +27,7 @@
     "simple": "Simple",
     "advanced": "Advanced",
     "management": "Management",
+    "statistics": "Statistics",
     "users": "Users"
   },
   "dashboard": {
@@ -136,56 +137,63 @@
       }
     },
     "advanced": {
-      "title": "Advanced configuration",
-      "generatedFile": "Generated file",
-      "fields": {
-        "interface": "Interface",
-        "driver": "Driver",
-        "ssid": "SSID",
-        "hw_mode": "Wifi mode",
-        "channel": "Channel",
-        "auth_algs": "Authentication",
-        "beacon_int": "Beacon interval",
-        "dtim_period": "Delivery Traffic Information Message",
-        "max_num_sta": "Maximum clients",
-        "rts_threshold": "RTS threshold",
-        "fragm_threshold": "Fragmentation threshold"
-      },
-      "reload": {
-        "title": "Reload hostapd configuration",
-        "confirm": "Confirm that you want to reload current Hostapd configuration"
-      },
-      "default": {
-        "title": "Hostapd default configuration",
-        "confirm": "Confirm that you want to load default configuration",
-        "success-load": "Configuration loaded",
-        "error-load": "Unable to load default configuration"
-      },
-      "load": {
-        "success-load": "Configuration loaded",
-        "error-load": "Unable to load current configuration"
-      },
-      "save": {
-        "title": "Hostapd configuration",
-        "confirm": "Save new parameters",
-        "confirmService": "Restart hostapd service",
-        "success-save": "Configuration saved",
-        "error-save": "Error while saving the configuration"
-      }
+			"hostapd": {
+				"title": "Advanced configuration",
+				"generatedFile": "Generated file",
+				"fields": {
+					"interface": "Interface",
+					"driver": "Driver",
+					"ssid": "SSID",
+					"hw_mode": "Wifi mode",
+					"channel": "Channel",
+					"auth_algs": "Authentication",
+					"beacon_int": "Beacon interval",
+					"dtim_period": "Delivery Traffic Information Message",
+					"max_num_sta": "Maximum clients",
+					"rts_threshold": "RTS threshold",
+					"fragm_threshold": "Fragmentation threshold"
+				},
+				"reload": {
+					"title": "Reload hostapd configuration",
+					"confirm": "Confirm that you want to reload current Hostapd configuration"
+				},
+				"default": {
+					"title": "Hostapd default configuration",
+					"confirm": "Confirm that you want to load default configuration",
+					"success-load": "Configuration loaded",
+					"error-load": "Unable to load default configuration"
+				},
+				"load": {
+					"success-load": "Configuration loaded",
+					"error-load": "Unable to load current configuration"
+				},
+				"save": {
+					"title": "Hostapd configuration",
+					"confirm": "Save new parameters",
+					"confirmService": "Restart hostapd service",
+					"success-save": "Configuration saved",
+					"error-save": "Error while saving the configuration"
+				}
+			}
     }
   },
   "freeradius": {
     "users": {
       "success-load": "Users loaded",
       "error-load": "Unable to load users",
-      "list-header": "Users",
+			"list-header": "Users",
+			"list-status": "Online",
       "list-username": "Username",
       "list-firstname": "Firstname",
       "list-lastname": "Lastname",
-      "list-actions": ""
+      "menu-actions": "Actions",
+			"menu-edit": "Edit",
+			"menu-statistics": "Statistics",
+			"menu-delete": "Delete"
     },
     "user": {
       "create": "Add user",
+			"statistics": "Statistics",
       "username-label": "Username",
       "delete": "Delete user {{username}}",
       "delete-confirm": "Are you sure that you want delete user {{username}} ?",
@@ -216,7 +224,12 @@
       "country-label": "Country",
       "zip-label": "Zip code",
       "notes-label": "Notes"
-    }
+		},
+		"statistics": {
+			"card-statistics-user-header": "Statistics of the user {{user}}",
+			"card-octets-header": "Transfert statistics",
+			"card-sessions-header": "Sessions statistics"
+		}
   },
   "generic": {
     "Error": "Error",

@@ -216,7 +216,7 @@ class Dashboard extends Component {
             </div>
           </Col>
 
-          <Col xs='6' sm='6' lg='2'>
+          <Col xs='6' sm='6' lg={ this.state.temperatureData['value'] !== '' ? '2' : '3' }>
             <div className='social-box social-box-single linkedin'>
               <i className='fa fa-clock-o'/>
               <div className='chart-wrapper'>
@@ -229,20 +229,22 @@ class Dashboard extends Component {
               </ul>
             </div>
           </Col>
-  
-          <Col xs='6' sm='6' lg='1'>
-            <div className='social-box social-box-single linkedin'>
-              <i className='fa fa-thermometer-empty'/>
-              <div className='chart-wrapper'>
-              </div>
-              <ul>
-                <li>
-                  <strong>{this.state.temperatureData['value']}</strong>
-                  <span>°C</span>
-                </li>
-              </ul>
-            </div>
-          </Col>
+	
+					{this.state.temperatureData['value'] !== '' && (
+						<Col xs='6' sm='6' lg='1'>
+							<div className='social-box social-box-single linkedin'>
+								<i className='fa fa-thermometer-empty'/>
+								<div className='chart-wrapper'>
+								</div>
+								<ul>
+									<li>
+										<strong>{this.state.temperatureData['value']}</strong>
+										<span>°C</span>
+									</li>
+								</ul>
+							</div>
+						</Col>
+					)}
         </Row>
 
         <Row>

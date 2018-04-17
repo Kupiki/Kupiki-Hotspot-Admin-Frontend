@@ -52,6 +52,11 @@ export default {
       url: '/management/users',
       icon: 'icon-people'
     },
+    {
+      name: 'sidebar.statistics',
+      url: '/management/statistics',
+      icon: 'icon-chart'
+    },
     
   /*  {
       name: 'Components',

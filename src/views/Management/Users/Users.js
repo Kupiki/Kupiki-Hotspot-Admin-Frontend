@@ -8,20 +8,28 @@ import {
   CardBody,
   CardFooter,
   CardTitle,
-  Table,
-  Badge,
+	Table,
+	Label,
+	Input,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+	ModalFooter,
+	Dropdown,
+	DropdownMenu,
+	DropdownItem,
+	DropdownToggle
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import axios from 'axios';
+import { Redirect } from 'react-router';
 import { toastr } from 'react-redux-toastr';
 import { translate, i18next } from 'react-i18next';
 import UserEdit from './UserEdit';
 
-var Config = require('Config');
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 class UsersMgmt extends Component {
@@ -29,26 +37,43 @@ class UsersMgmt extends Component {
     super(props);
     
     this.state = {
-      users: [],
+			users: [],
+			dropdownOpen: [],
       modalUserOpen: false,
-      modalDeleteUserOpen: false
+			modalUserDeleteOpen: false,
+			goToUserStatistics: false
     };
   
     this.toggleUserModal = this.toggleUserModal.bind(this);
-    this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+    this.toggleUserDeleteModal = this.toggleUserDeleteModal.bind(this);
+    this.dropdownToggle = this.dropdownToggle.bind(this);
   }
   
   componentDidMount() {
     this.loadUsers();
   }
-  
-  toggleDeleteModal(username) {
+	
+	dropdownToggle(e) {
+		if (typeof e.currentTarget.id === 'undefined') {
+			this.setState({
+				dropdownOpen: []
+			});				
+		} else {
+			let drop = this.state.dropdownOpen
+			drop[e.currentTarget.id] = !drop[e.currentTarget.id]
+			this.setState({
+				dropdownOpen: drop
+			});
+		}
+	}
+
+  toggleUserDeleteModal(username) {
     this.setState({
-      modalDeleteUserOpen: !this.state.modalDeleteUserOpen,
+      modalUserDeleteOpen: !this.state.modalUserDeleteOpen,
       deleteUser: username
     });
   }
-  
+	
   toggleUserModal(action, username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -61,8 +86,8 @@ class UsersMgmt extends Component {
     if (!this.state.modalUserOpen) {
       this.loadUsers();
     }
-  }
-  
+	}
+	
   loadUsers () {
     const { t } = this.props;
     
@@ -91,7 +116,7 @@ class UsersMgmt extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          this.toggleDeleteModal();
+          this.toggleUserDeleteModal();
           this.loadUsers();
           toastr.info(t('freeradius.user.success-delete'));
         } else {
@@ -104,30 +129,15 @@ class UsersMgmt extends Component {
   
   }
   
-  buildDisplayUsersList () {
-    let contentDisplay = [];
-    this.state.users.forEach((user, userId) => {
-      contentDisplay.push(
-        <tr key={userId}>
-          <td>
-            { user.username }
-          </td>
-          <td>{ user.firstname }</td>
-          <td>{ user.lastname }</td>
-          <td>
-            <Button color='danger' className={'float-right'} size='sm'onClick={ () => this.toggleDeleteModal(user.username) }><i className='fa fa-trash-o'/></Button>
-            <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('edit', user.username) }><i className='fa fa-edit'/></Button>
-            <Badge color="success" className={'float-right'} pill>online</Badge>
-          </td>
-        </tr>
-      )
-    });
-    return contentDisplay;
-  }
-  
   render() {
     const { t } = this.props;
-    
+		
+		if (this.state.goToUserStatistics) {
+			return <Redirect to={{
+				pathname: '/management/statistics/'+this.state.goToUserStatistics
+			}}/>
+		}
+
     return (
       <div className='animated fadeIn'>
         <br/>
@@ -139,26 +149,75 @@ class UsersMgmt extends Component {
                 <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('create') }><i className='fa fa-user-plus'></i></Button>
                 <UserEdit action={ this.state.modalUserAction } user={ this.state.modalUser } existingUsers={ this.state.users } modalUserOpen={ this.state.modalUserOpen } callback={ this.toggleUserModal }/>
               </CardHeader>
-              <CardBody>
-                <Table hover striped responsive size='sm'>
-                  <thead>
-                  <tr>
-                    <th>{t('freeradius.users.list-username')}</th>
-                    <th>{t('freeradius.users.list-firstname')}</th>
-                    <th>{t('freeradius.users.list-lastname')}</th>
-                    <th>{t('freeradius.users.list-actions')}</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    { this.state.content }
-                  </tbody>
-                </Table>
+							<CardBody>
+							<ReactTable
+								data={this.state.users}
+								columns={[
+									{
+										Header: t('freeradius.users.list-username'),
+										accessor: 'username'
+									},{
+										Header: t('freeradius.users.list-status'),
+										accessor: 'status',
+										style: { textAlign: 'center' },
+										maxWidth: 200,
+										Cell: row => (
+											<span>
+												<span style={{
+													color: row.value === 0 ? '#ff2e00' : '#57d500',
+													transition: 'all .3s ease'
+												}}>
+													<i className='fa fa-circle'></i>
+												</span> { row.value === 0 ? 'Offline' : 'Online' }
+											</span>
+										)
+									},{
+										Header: t('freeradius.users.list-firstname'),
+										accessor: 'firstname'
+									},{
+										Header: t('freeradius.users.list-lastname'),
+										accessor: 'lastname'
+									},{
+										Header: '',
+										maxWidth: 50,
+										accessor: 'username',
+										style: { textAlign: 'center', overflow: 'visible' },
+										Cell: row => (
+											<span>
+												<Dropdown isOpen={ this.state.dropdownOpen[row.value] } toggle={ this.dropdownToggle }>
+													<DropdownToggle tag="span" id={row.value}><i className='fa fa-ellipsis-h'/></DropdownToggle>
+													<DropdownMenu>
+														<DropdownItem header>{ t('freeradius.users.menu-actions') } - { row.value }</DropdownItem>
+														<DropdownItem id={row.value} onClick={ () => this.toggleUserModal('edit', row.value) }>
+															<span>
+																<i className='fa fa-edit'/> {t('freeradius.users.menu-edit')}
+															</span>
+														</DropdownItem>
+														<DropdownItem id={row.value} onClick={ () => this.setState({ goToUserStatistics: row.value }) }>
+															<span>
+																<i className='fa fa-bar-chart-o'/> {t('freeradius.users.menu-statistics')}
+															</span>
+														</DropdownItem>
+														<DropdownItem divider />
+														<DropdownItem id={row.value} onClick={ () => this.toggleUserDeleteModal(row.value) }>
+															<span>
+																<i className='fa fa-trash-o' style={{color: '#f86c6b'}}/> {t('freeradius.users.menu-delete')}
+															</span>
+														</DropdownItem>
+													</DropdownMenu>
+												</Dropdown>
+											</span>
+										)
+									}
+								]}
+								defaultPageSize={10}
+								className='-striped -highlight' style={{'overflow': 'visible !important'}}/>
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <Modal size='lg' isOpen={ this.state.modalDeleteUserOpen } toggle={ this.toggleDeleteModal } className={'modal-danger'}>
-          <ModalHeader toggle={ this.toggleDeleteModal }>
+        <Modal size='lg' isOpen={ this.state.modalUserDeleteOpen } toggle={ this.toggleUserDeleteModal } className={'modal-danger'}>
+          <ModalHeader toggle={ this.toggleUserDeleteModal }>
             {t('freeradius.user.delete', { username: this.state.deleteUser })}
           </ModalHeader>
           <ModalBody>
@@ -166,7 +225,7 @@ class UsersMgmt extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color='danger' size='sm' onClick={ () => this.deleteUser(this.state.deleteUser) }><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
-            <Button color='secondary' size='sm' onClick={ this.toggleDeleteModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
+            <Button color='secondary' size='sm' onClick={ this.toggleUserDeleteModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
           </ModalFooter>
         </Modal>
       </div>

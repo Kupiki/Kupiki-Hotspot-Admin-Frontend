@@ -47,7 +47,9 @@ class UserEdit extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
+		if (nextProps.action === 'create') {
+      this.setState({ user: {} });
+		} else if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
       this.setState({ user: nextProps.user });
     }
   }
@@ -93,10 +95,10 @@ class UserEdit extends Component {
                     toastr.success(t('freeradius.user.success-save'));
                     this.props.callback();
                   } else {
-                    toastr.error(t('freeradius.user.error-save'), response.data.result.message);
+                    toastr.error(t('freeradius.user.error-save'), response.data.message);
                   }
                 } else {
-                  toastr.error(t('freeradius.user.error-save'), response.data.result.message)
+                  toastr.error(t('freeradius.user.error-save'), response.data.message)
                 }
               })
               .catch(error => {
@@ -104,10 +106,10 @@ class UserEdit extends Component {
                 toastr.error(t('freeradius.user.error-save'), error.message);
               });
           } else {
-            toastr.error(t('freeradius.user.error-save'), response.data.result.message);
+            toastr.error(t('freeradius.user.error-save'), response.data.message);
           }
         } else {
-          toastr.error(t('freeradius.user.error-save'), response.data.result.message)
+          toastr.error(t('freeradius.user.error-save'), response.data.message)
         }
       })
       .catch(error => {
@@ -118,7 +120,7 @@ class UserEdit extends Component {
   
   validateUniqueUser (value, ctx, input, cb) {
     const { t } = this.props;
-    let user = this.props.existingUsers.find(function(element) {
+    let user = this.props.existingUsers.find( element => {
       return element.username === value;
     });
     cb((typeof user !== 'undefined' && this.props.action === 'create') ? t('freeradius.user.error-username-exists') : true)
@@ -167,19 +169,8 @@ class UserEdit extends Component {
                 </AvGroup>
               </Col>
             </Row>
-            <div className='kupiki-collapse-line' onClick={this.toggleAdvanced}>
-              <span className='kupiki-collapse-title'>
-                &nbsp;&nbsp;{t('freeradius.user.advancedconfiguration')}&nbsp;&nbsp;
-              </span>
-              { !this.state.collapseAdvanced && (
-                <i className='fa fa-chevron-right kupiki-collapse-chevron float-right'></i>
-              )}
-              { this.state.collapseAdvanced && (
-                <i className='fa fa-chevron-down kupiki-collapse-chevron float-right'></i>
-              )}
-            </div>
             <Collapse isOpen={this.state.collapseAdvanced}>
-              <AvGroup>
+							<AvGroup>
                 <Label htmlFor='firstname'>{t('freeradius.user.firstname-label')}</Label>
                 <AvField id='firstname' name='firstname' onChange={ this.handleChange.bind(this) } value={ this.state.user.firstname }/>
               </AvGroup>
@@ -241,8 +232,9 @@ class UserEdit extends Component {
             </Collapse>
           </ModalBody>
           <ModalFooter>
-            <Button type='submit' color='primary' size='sm'><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.save')}</Button>{' '}
-            <Button color='secondary' size='sm' onClick={ this.toggleModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
+						<Button color='secondary' size='sm' onClick={this.toggleAdvanced} className='mr-auto'><i className='fa fa-plus-circle'></i>{' '}{t('freeradius.user.advancedconfiguration')}</Button>{' '}
+						<Button type='submit' color='primary' size='sm'><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.save')}</Button>{' '}
+						<Button color='secondary' size='sm' onClick={ this.toggleModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
           </ModalFooter>
         </AvForm>
       </Modal>

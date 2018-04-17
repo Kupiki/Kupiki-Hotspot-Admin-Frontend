@@ -153,6 +153,7 @@ class Administration extends Component {
     });
     request
       .then(response => {
+				// Nothing to do. Wait for an event from the backend
       })
       .catch(error => {
         console.log(error);

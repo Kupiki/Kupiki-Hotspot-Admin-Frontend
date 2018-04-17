@@ -97,17 +97,17 @@ class AdvancedAdministration extends Component {
       .then(response => {
         if (response.data && response.data.status) {
           if (response.data.status === 'success') {
-            toastr.success(t('management.advanced.save.success-save'));
+            toastr.success(t('management.advanced.hostapd.save.success-save'));
           } else {
-            toastr.error(t('management.advanced.save.error-save'), response.data.message);
+            toastr.error(t('management.advanced.hostapd.save.error-save'), response.data.message);
           }
         } else {
-          toastr.success(t('management.advanced.save.error-save'));
+          toastr.success(t('management.advanced.hostapd.save.error-save'));
         }
       })
       .catch(error => {
         console.log(error);
-        toastr.error(t('management.advanced.save.error-save'), error.message);
+        toastr.error(t('management.advanced.hostapd.save.error-save'), error.message);
       });
   }
   
@@ -137,12 +137,12 @@ class AdvancedAdministration extends Component {
           this.setState({ configuration: response.data.message });
           this.extendConfiguration();
         } else {
-          toastr.error(t('management.advanced.load.load-error'));
+          toastr.error(t('management.advanced.hostapd.load.load-error'));
         }
       })
       .catch(error => {
         console.log(error);
-        toastr.error(t('management.advanced.load.load-error'), error.message);
+        toastr.error(t('management.advanced.hostapd.load.load-error'), error.message);
       });
   }
   
@@ -165,7 +165,7 @@ class AdvancedAdministration extends Component {
           }
         });
         this.setState({ content: this.buildDisplayConfiguration() });
-        toastr.info(t('management.advanced.load.success-load'));
+        // toastr.info(t('management.advanced.hostapd.load.success-load'));
       });
   }
   
@@ -179,16 +179,6 @@ class AdvancedAdministration extends Component {
         </AvGroup>
       )
     });
-/*
-    for (let i in this.state.configuration) {
-      contentDisplay.push(
-        <AvGroup key={i}>
-          <Label htmlFor="{this.state.configuration[i]['field']}">{this.state.configuration[i]['display']}</Label>
-          { this.renderField(i) }
-        </AvGroup>
-      )
-    }
-*/
     return (
       <div>
         { contentDisplay }
@@ -205,13 +195,6 @@ class AdvancedAdministration extends Component {
           <option key={i} value={elt['value']}>{elt['text']}</option>
         )
       });
-/*
-      for (let i in displayedField.data) {
-        options.push(
-          <option key={i} value={displayedField.data[i]['value']}>{displayedField.data[i]['text']}</option>
-        )
-      }
-*/
       return (
         <AvField
           type='select'
@@ -285,15 +268,15 @@ class AdvancedAdministration extends Component {
             <Card>
               <AvForm color='warning' onValidSubmit={this.toggleSave}>
                 <CardHeader>
-                  {t('management.advanced.title')}
+                  {t('management.advanced.hostapd.title')}
                 </CardHeader>
                 <CardBody>
                   <Modal isOpen={ this.state.modalSave } toggle={ this.toggleSave } className={'modal-danger'}>
-                    <ModalHeader toggle={ this.toggleSave }>{t('management.advanced.save.title')}</ModalHeader>
+                    <ModalHeader toggle={ this.toggleSave }>{t('management.advanced.hostapd.save.title')}</ModalHeader>
                     <ModalBody>
-                      <p>{t('management.advanced.save.confirm')}</p>
+                      <p>{t('management.advanced.hostapd.save.confirm')}</p>
                       <p style={{marginLeft:20+'px'}}>
-                        <Input type='checkbox' id='restart' name='restart' defaultChecked={this.state.restartService} onChange={ this.handleChangeRestart.bind(this) }/>{' '}{t('management.advanced.save.confirmService')}
+                        <Input type='checkbox' id='restart' name='restart' defaultChecked={this.state.restartService} onChange={ this.handleChangeRestart.bind(this) }/>{' '}{t('management.advanced.hostapd.save.confirmService')}
                       </p>
                     </ModalBody>
                     <ModalFooter>
@@ -317,9 +300,9 @@ class AdvancedAdministration extends Component {
                     <Button size='sm' color='secondary' onClick={this.toggleReload}><i className='fa fa-ban'></i> {t('actions.reload')}</Button>
                     <Modal isOpen={ this.state.modalReload } toggle={this.toggleReload}
                            className={'modal-secondary ' + this.props.className}>
-                      <ModalHeader toggle={this.toggleReload}>{t('management.advanced.reload.title')}</ModalHeader>
+                      <ModalHeader toggle={this.toggleReload}>{t('management.advanced.hostapd.reload.title')}</ModalHeader>
                       <ModalBody>
-                        {t('management.advanced.reload.confirm')}
+                        {t('management.advanced.hostapd.reload.confirm')}
                       </ModalBody>
                       <ModalFooter>
                         <Button color='primary' size='sm' onClick={this.loadHostapdConfiguration}><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
@@ -330,9 +313,9 @@ class AdvancedAdministration extends Component {
                     <Button size='sm' color='danger' onClick={this.toggleReset}><i className='fa fa-download'></i> {t('actions.reset')}</Button>
                     <Modal isOpen={ this.state.modalReset } toggle={this.toggleReset}
                            className={'modal-danger ' + this.props.className}>
-                      <ModalHeader toggle={this.toggleReset}>{t('management.advanced.default.title')}</ModalHeader>
+                      <ModalHeader toggle={this.toggleReset}>{t('management.advanced.hostapd.default.title')}</ModalHeader>
                       <ModalBody>
-                        {t('management.advanced.default.confirm')}
+                        {t('management.advanced.hostapd.default.confirm')}
                       </ModalBody>
                       <ModalFooter>
                         <Button color='danger' size='sm' onClick={this.loadDefaultHostapdConfiguration}><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
