@@ -1,3 +1,6 @@
+**v1.3**
+- Add capabilities to activate MAC authentication and define associated password
+
 **v1.2**
 - Improve UI / UX
 - Add users list and actions

@@ -38,7 +38,7 @@
   "dependencies": {
     "availity-reactstrap-validation": "^2.0.0-alpha.1",
     "axios": "^0.17.1",
-    "bootstrap": "4.0.0-beta.2",
+    "bootstrap": "^4.1.1",
     "chart.js": "2.7.2",
     "font-awesome": "4.7.0",
     "history": "4.7.2",
@@ -58,7 +58,7 @@
     "react-spinkit": "^3.0.0",
     "react-table": "^6.7.5",
     "react-transition-group": "2.2.1",
-    "reactstrap": "5.0.0-alpha.4",
+    "reactstrap": "^6.0.1",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
     "redux-thunk": "^2.2.0",

@@ -1,4 +1,10 @@
 {
+  "login": {
+    "title": "Identification",
+    "username": "Username",
+    "password": "Password",
+    "connect": "Sign in"
+  },
   "user": {
     "account": "Compte",
     "profile": "Profil",
@@ -141,44 +147,56 @@
       }
     },
     "advanced": {
-			"hostapd": {
-				"title": "Configuration avancée",
-				"generatedFile": "Fichier généré",
-				"fields": {
-					"interface": "Interface",
-					"driver": "Driver",
-					"ssid": "SSID",
-					"hw_mode": "Mode Wifi",
-					"channel": "Canal",
-					"auth_algs": "Authentification",
-					"beacon_int": "Intervalle de balise",
-					"dtim_period": "Delivery Traffic Information Message",
-					"max_num_sta": "Nombre maximum de clients",
-					"rts_threshold": "Seuil RTS",
-					"fragm_threshold": "Seuil de fragmentation"
-				},
-				"reload": {
-					"title": "Recharger la configuration de Hostapd",
-					"confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
-				},
-				"default": {
-					"title": "Configuration par défaut de Hostapd",
-					"confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
-					"success-load": "Configuration par défaut chargée",
-					"error-load": "Impossible de charge la configuration par défaut"
-				},
-				"load": {
-					"success-load": "Configuration chargée",
-					"error-load": "Impossible de charge la configuration actuelle"
-				},
-				"save": {
-					"title": "Configuration de Hostapd",
-					"confirm": "Confirmez la sauvegarde des nouveaux paramètres",
-					"confirmService": "Redémarrer le service hostapd après la sauvegarde",
-					"success-save": "Configuration sauvegardée",
-					"error-save": "Erreur lors de la sauvegarde de la configuration"
-				}
-			}
+      "coova": {
+        "title": "Configuration de Coova Chilli",
+        "macAuthentication": {
+          "active": "Activer l'authentification par adresse MAC",
+          "save": {
+            "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
+            "confirmService": "Redémarrer le service Coova Chilli après la sauvegarde",
+            "success-save": "Configuration sauvegardée",
+            "error-save": "Impossible de sauvegarder la configuration"
+          }
+        }
+      },
+      "hostapd": {
+        "title": "Configuration de Hostapd",
+        "generatedFile": "Fichier généré",
+        "fields": {
+          "interface": "Interface",
+          "driver": "Driver",
+          "ssid": "SSID",
+          "hw_mode": "Mode Wifi",
+          "channel": "Canal",
+          "auth_algs": "Authentification",
+          "beacon_int": "Intervalle de balise",
+          "dtim_period": "Delivery Traffic Information Message",
+          "max_num_sta": "Nombre maximum de clients",
+          "rts_threshold": "Seuil RTS",
+          "fragm_threshold": "Seuil de fragmentation"
+        },
+        "reload": {
+          "title": "Recharger la configuration de Hostapd",
+          "confirm": "Confirmez que vous souhaitez recharger la configuration actuelle"
+        },
+        "default": {
+          "title": "Configuration par défaut de Hostapd",
+          "confirm": "Confirmez que vous souhaitez charger la configuration par défaut",
+          "success-load": "Configuration par défaut chargée",
+          "error-load": "Impossible de charge la configuration par défaut"
+        },
+        "load": {
+          "success-load": "Configuration chargée",
+          "error-load": "Impossible de charge la configuration actuelle"
+        },
+        "save": {
+          "title": "Configuration de Hostapd",
+          "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
+          "confirmService": "Redémarrer le service hostapd après la sauvegarde",
+          "success-save": "Configuration sauvegardée",
+          "error-save": "Erreur lors de la sauvegarde de la configuration"
+        }
+      }
     }
   },
   "freeradius": {
@@ -190,14 +208,14 @@
       "list-status": "Connecté",
       "list-firstname": "Prénom",
       "list-lastname": "Nom",
-			"menu-actions": "Actions",
-			"menu-edit": "Editer",
-			"menu-statistics": "Statistiques",
-			"menu-delete": "Supprimer"
+      "menu-actions": "Actions",
+      "menu-edit": "Editer",
+      "menu-statistics": "Statistiques",
+      "menu-delete": "Supprimer"
     },
     "user": {
       "create": "Créer un nouvel utilisateur",
-			"statistics": "Statistiques",
+      "statistics": "Statistiques",
       "username-label": "Identifiant de connexion",
       "delete": "Suppression de l'utilisateur {{username}}",
       "delete-confirm": "Etes vous sur de vouloir supprimer l'utilisateur {{username}} ?",
@@ -229,11 +247,11 @@
       "zip-label": "Code postal",
       "notes-label": "Notes"
     },
-		"statistics": {
-			"card-statistics-user-header": "Statistique de l'utilisateur {{user}}",
-			"card-octets-header": "Statistiques de transfert",
-			"card-sessions-header": "Statistiques de session"
-		}
+    "statistics": {
+      "card-statistics-user-header": "Statistique de l'utilisateur {{user}}",
+      "card-octets-header": "Statistiques de transfert",
+      "card-sessions-header": "Statistiques de session"
+    }
   },
   "generic": {
     "Error": "Erreur",

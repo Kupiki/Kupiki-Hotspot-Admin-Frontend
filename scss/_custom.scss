@@ -70,7 +70,30 @@ body.modal-open #root {
   display: inline-block;
   border: solid 1px $gray-200;
   border-radius: 60px;
-  //box-shadow: 0px 0px 2px $gray-200;
   padding: 0.5em 0.6em;
   background-color: $white;
 }
+
+.kupiki-right-checkbox {
+  margin-left: 0.25em
+}
+
+.kupiki-right-checkbox-15em {
+  margin-left: 1.5em
+}
+
+.kupiki-table {
+  &-tooltip {
+    background: transparent !important;
+    font-size:16px;
+    margin: 0px 10px;
+  }
+
+  @each $color, $value in $theme-colors {
+    &-icon-#{$color} {
+      margin: 0px 5px;
+      color: $value;
+    }
+  }
+}
+

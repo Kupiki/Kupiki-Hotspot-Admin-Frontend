@@ -7,17 +7,7 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardTitle,
-  Form,
-  FormFeedback,
-  FormGroup,
-  FormText,
-  Label,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
+  Label
 } from 'reactstrap';
 import 'react-table/react-table.css';
 import Spinner from 'react-spinkit';
@@ -26,7 +16,7 @@ import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
 import axios from 'axios';
 
-var Config = require('Config');
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 class SimpleAdministration extends Component {
@@ -68,7 +58,7 @@ class SimpleAdministration extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          toastr.info(t('management.basic.portalOptions.success-load'));
+          // toastr.info(t('management.basic.portalOptions.success-load'));
           this.setState({ portal: response.data.message });
         } else {
           toastr.error(t('management.basic.portalOptions.error-load'));
@@ -88,7 +78,7 @@ class SimpleAdministration extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          toastr.info(t('management.basic.success-load'));
+          // toastr.info(t('management.basic.success-load'));
           this.setState({ hostapd: response.data.message });
           let index = this.state.hostapd.findIndex(elt => {
             return elt.field === 'ssid'
@@ -216,7 +206,7 @@ class SimpleAdministration extends Component {
                     <div>
                       <AvGroup>
                         <Label htmlFor='active'>{t('management.basic.portalOptions.termsDisplay')}</Label>
-                        <AvInput type='checkbox' name='active' value={ this.state.portal.options.terms.active } onChange={ this.handleTermsChange.bind(this) }/>
+                        <AvInput type='checkbox' name='active' value={ this.state.portal.options.terms.active } onChange={ this.handleTermsChange.bind(this) } className={ 'kupiki-right-checkbox' }/>
                       </AvGroup>
                       {this.state.portal.options.terms.active && (
                         <AvGroup>

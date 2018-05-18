@@ -38,20 +38,11 @@ axios.interceptors.response.use(undefined, error => {
     return Promise.reject(error);
   }
 });
-// if (token && username) {
-//   store.dispatch({type: AUTH_USER, username: username, token: token});
-// }
 
 if (token) {
   const decodedToken = jwt.decode(token, {complete: true});
-  // console.log(decodedToken)
   const dateNow = new Date();
-  
-  // console.log(decodedToken.payload.exp*1000)
-  // console.log(dateNow.getTime())
   const validToken = (dateNow.getTime() < decodedToken.payload.exp * 1000);
-  
-  // console.log('validToken : ' + validToken)
   if (validToken && username) {
     store.dispatch({type: AUTH_USER, username: username, token: token});
   } else {

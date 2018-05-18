@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon } from 'reactstrap';
-import { Form, FormGroup, Label } from 'reactstrap';
+import { Container, Row, Col, CardGroup, Card, CardHeader, CardBody, Label, Button, Input, InputGroup, InputGroupAddon, InputGroupButton } from 'reactstrap';
+import { Form, FormGroup } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 import BackgroundImage from '../../../components/BackgroundImage/';
+import { translate } from 'react-i18next';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 class Login extends Component {
   constructor(props) {
@@ -38,7 +40,6 @@ class Login extends Component {
   
   componentDidMount() {
     document.body.style.overflow = 'hidden';
-    // document.body.classList.toggle('overrideClass', true)
     this.timeoutVar = setTimeout(function () {
       this.changeImage();
     }.bind(this), 5000)
@@ -47,16 +48,13 @@ class Login extends Component {
   componentWillUnmount() {
     clearTimeout(this.timeoutVar);
     document.body.style.overflow = 'auto';
-    // document.body.classList.remove('overrideClass')
   }
   
   changeImage() {
     if (this.state.imageIndex === this.images.length - 1) {
-      // this.state.imageIndex = 0;
       this.setState({ imageIndex: 0 });
     } else {
       this.setState({ imageIndex: this.state.imageIndex + 1 });
-      // this.state.imageIndex++;
     }
   
     this.timeoutVar = setTimeout(function () {
@@ -91,6 +89,8 @@ class Login extends Component {
   }
   
   render() {
+    const { t } = this.props;
+  
     return (this.props.authenticated) ?
       <Redirect to={{
         pathname: this.getRedirectPath(), state: {
@@ -105,31 +105,30 @@ class Login extends Component {
             <Col md='8'>
               <CardGroup>
                 <Card className='p-4 bg-primary'>
-                  <CardBody>
-                    <h1>Login</h1>
-                    <p>Sign In to your account</p>
-                    <Form onSubmit={this.handleSubmit}>
-                      <FormGroup>
-                        <InputGroup className='mb-3'>
-                          <InputGroupAddon><i className='icon-user'></i></InputGroupAddon>
-                          <Input type='text' name='username' placeholder='Username' required onChange={this.handleChange}/>
-                        </InputGroup>
-                      </FormGroup>
-                      <FormGroup>
-                        <InputGroup className='mb-3'>
-                          <InputGroupAddon><i className='icon-lock'></i></InputGroupAddon>
-                          <Input type='password' name='password' placeholder='Password' required onChange={this.handleChange}/>
-                        </InputGroup>
-                      </FormGroup>
-                      <Row>
-                        <FormGroup check row>
-                          <Col sm={{ size: 10, offset: 2 }}>
-                            <Button type='submit'>Login</Button>
-                          </Col>
-                        </FormGroup>
-                      </Row>
-                    </Form>
-                  </CardBody>
+                  <AvForm onValidSubmit={this.handleSubmit}>
+                    <CardBody>
+                      <h1>{ t('login.title') }</h1>
+                      <AvGroup>
+                        <Label htmlFor='username'>{t('login.username')}</Label>
+                        <AvField id='username' name='username' onChange={ this.handleChange }
+                                 validate={{
+                                   required: { errorMessage: t('login.usernameMissing') }
+                                 }}/>
+                      </AvGroup>
+                      <AvGroup>
+                        <Label htmlFor='password'>{t('login.password')}</Label>
+                        <AvField id='password' name='password' onChange={ this.handleChange }
+                                 validate={{
+                                   required: { errorMessage: t('login.passwordMissing') }
+                                 }}/>
+                      </AvGroup>
+                      { this.props.errorMessage && (
+                        <div className='text-danger' style={{fontWeight: 'bold'}}>{ this.props.errorMessage }</div>
+                      )}
+                      <Button type='submit' size='sm' color='secondary'><i className='fa fa-dot-circle-o'></i> {t('login.connect')}</Button>
+                    </CardBody>
+                    
+                  </AvForm>
                 </Card>
                 <Card className='text-white py-5 d-md-down-none' style={{width: 44 + '%'}}>
                   <CardBody className='text-center kupiki-logo'>
@@ -146,8 +145,12 @@ class Login extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    errorMessage: state.auth.error
+    errorMessage: state.auth.errorMessage
   }
 }
 
-export default connect(mapStateToProps, actions)(Login);
+// export default translate()(Login);
+
+export default translate()(connect(mapStateToProps, actions)(Login))
+
+// export default connect(mapStateToProps, actions)(Login);

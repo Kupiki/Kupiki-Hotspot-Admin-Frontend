@@ -42,17 +42,18 @@ export function loginUser({username, password}) {
             dispatch({type: AUTH_USER, username: username, token: localStorage.token})
           })
           .catch(function (error) {
-            console.log(error);
-            dispatch(authError('bad login info'));
+            // console.log(error);
+            dispatch(authError('Username or password incorrect'))
+            // dispatch(authError('bad login info'));
           });
       })
       
       // If request is bad...
       // -Show an error to the user
       .catch((err) => {
-        console.log(err)
-        console.log('Error authentication');
-        dispatch(authError('bad login info'))
+        // console.log(err)
+        // console.log('Error authentication');
+        dispatch(authError('Username or password incorrect'))
       });
   }
 }

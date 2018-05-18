@@ -3,17 +3,13 @@ import {
   Row,
   Col,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
 	CardTitle,
   Button,
-  ButtonToolbar,
-	ButtonGroup,
 	Progress
 } from 'reactstrap';
 import {Bar, Line} from 'react-chartjs-2';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
@@ -23,20 +19,16 @@ import moment from 'moment';
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
-const brandPrimary = '#20a8d8';
 const brandSuccess = '#4dbd74';
 const brandInfo = '#63c2de';
-const brandWarning = '#f8cb00';
-const brandDanger = '#f86c6b';
 
 function convertHex(hex, opacity) {
   hex = hex.replace('#', '');
-  var r = parseInt(hex.substring(0, 2), 16);
-  var g = parseInt(hex.substring(2, 4), 16);
-  var b = parseInt(hex.substring(4, 6), 16);
-
-  var result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
-  return result;
+  let r = parseInt(hex.substring(0, 2), 16);
+  let g = parseInt(hex.substring(2, 4), 16);
+  let b = parseInt(hex.substring(4, 6), 16);
+  
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
 }
 
 class StatisticsMgmt extends Component {
@@ -154,7 +146,7 @@ class StatisticsMgmt extends Component {
 		this.loadStatistics();
   }
 	
-	formatBytes(a,b) {if(0==a)return{value:0,unit:'Bytes'};var c=1024,d=b||2,e=['Bytes','KB','MB','GB','TB','PB','EB','ZB','YB'],f=Math.floor(Math.log(a)/Math.log(c));return {value:parseFloat((a/Math.pow(c,f)).toFixed(d)),unit:e[f]}}
+	formatBytes(a,b) {if(0===a)return{value:0,unit:'Bytes'};let c=1024,d=b||2,e=['Bytes','KB','MB','GB','TB','PB','EB','ZB','YB'],f=Math.floor(Math.log(a)/Math.log(c));return {value:parseFloat((a/Math.pow(c,f)).toFixed(d)),unit:e[f]}}
 
   loadStatistics () {
 		const { t } = this.props;
@@ -295,8 +287,6 @@ class StatisticsMgmt extends Component {
 									<Line data={this.state.sessionsChart} options={this.state.sessionsChartOptions} height={300}/>
 								</div>
 							</CardBody>
-              <CardFooter>
-							</CardFooter>
 						</Card>
 					</Col>
 				</Row>

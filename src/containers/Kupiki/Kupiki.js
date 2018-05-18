@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
-import {Container} from 'reactstrap';
+import React, { Component } from 'react';
+import { Switch, Redirect } from 'react-router-dom';
+import { Container } from 'reactstrap';
 import { PrivateRoute } from '../../components/Auth/PrivateRoute';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';

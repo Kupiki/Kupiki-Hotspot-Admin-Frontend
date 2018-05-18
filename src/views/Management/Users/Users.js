@@ -6,19 +6,11 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
-  CardTitle,
-	Table,
-	Label,
-	Input,
   Modal,
   ModalHeader,
   ModalBody,
 	ModalFooter,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
-	DropdownToggle
+  Tooltip
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import ReactTable from 'react-table';
@@ -38,7 +30,8 @@ class UsersMgmt extends Component {
     
     this.state = {
 			users: [],
-			dropdownOpen: [],
+      dropdownOpen: [],
+      tooltipOpen: [],
       modalUserOpen: false,
 			modalUserDeleteOpen: false,
 			goToUserStatistics: false
@@ -52,21 +45,29 @@ class UsersMgmt extends Component {
   componentDidMount() {
     this.loadUsers();
   }
-	
-	dropdownToggle(e) {
-		if (typeof e.currentTarget.id === 'undefined') {
-			this.setState({
-				dropdownOpen: []
-			});				
-		} else {
-			let drop = this.state.dropdownOpen
-			drop[e.currentTarget.id] = !drop[e.currentTarget.id]
-			this.setState({
-				dropdownOpen: drop
-			});
-		}
-	}
-
+  
+  dropdownToggle(e) {
+    if (typeof e.currentTarget.id === 'undefined') {
+      this.setState({
+        dropdownOpen: []
+      });
+    } else {
+      let drop = this.state.dropdownOpen
+      drop[e.currentTarget.id] = !drop[e.currentTarget.id]
+      this.setState({
+        dropdownOpen: drop
+      });
+    }
+  }
+  
+  tooltipToggle(rowId) {
+    let tooltip = this.state.tooltipOpen;
+    tooltip[rowId] = !tooltip[rowId]
+    this.setState({
+      tooltipOpen: tooltip
+    });
+  }
+  
   toggleUserDeleteModal(username) {
     this.setState({
       modalUserDeleteOpen: !this.state.modalUserDeleteOpen,
@@ -183,29 +184,15 @@ class UsersMgmt extends Component {
 										accessor: 'username',
 										style: { textAlign: 'center', overflow: 'visible' },
 										Cell: row => (
-											<span>
-												<Dropdown isOpen={ this.state.dropdownOpen[row.value] } toggle={ this.dropdownToggle }>
-													<DropdownToggle tag="span" id={row.value}><i className='fa fa-ellipsis-h'/></DropdownToggle>
-													<DropdownMenu>
-														<DropdownItem header>{ t('freeradius.users.menu-actions') } - { row.value }</DropdownItem>
-														<DropdownItem id={row.value} onClick={ () => this.toggleUserModal('edit', row.value) }>
-															<span>
-																<i className='fa fa-edit'/> {t('freeradius.users.menu-edit')}
-															</span>
-														</DropdownItem>
-														<DropdownItem id={row.value} onClick={ () => this.setState({ goToUserStatistics: row.value }) }>
-															<span>
-																<i className='fa fa-bar-chart-o'/> {t('freeradius.users.menu-statistics')}
-															</span>
-														</DropdownItem>
-														<DropdownItem divider />
-														<DropdownItem id={row.value} onClick={ () => this.toggleUserDeleteModal(row.value) }>
-															<span>
-																<i className='fa fa-trash-o' style={{color: '#f86c6b'}}/> {t('freeradius.users.menu-delete')}
-															</span>
-														</DropdownItem>
-													</DropdownMenu>
-												</Dropdown>
+											<span id={ row.value }>
+                        <i className='fa fa-ellipsis-v' style={{padding: '0px 20px'}}/>
+                        <Tooltip innerClassName={'kupiki-table-tooltip'} hideArrow={ true } placement="left" isOpen={ this.state.tooltipOpen[row.value] } autohide={ false } target={ row.value } toggle={ () => this.tooltipToggle(row.value) }>
+                          <i title="Edit" className='fa fa-edit kupiki-table-icon-primary' onClick={ () => this.toggleUserModal('edit', row.value) }/>{' '}
+                          <i title="Statistics" className='fa fa-bar-chart-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
+                          <i title="Check connectivity" className='fa fa-check-square-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
+                          <i title="Disconnect" className='fa fa-sign-out kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
+                          <i title="Delete" className='fa fa-trash-o kupiki-table-icon-danger' onClick={ () => this.toggleUserDeleteModal(row.value) }/>
+                        </Tooltip>
 											</span>
 										)
 									}
