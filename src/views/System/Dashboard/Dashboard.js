@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import {Bar, Line} from 'react-chartjs-2';
+import { Line} from 'react-chartjs-2';
 import {
-  Badge,
   Row,
   Col,
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
-  CardTitle,
   Label,
   Input,
 } from 'reactstrap';
@@ -20,7 +17,6 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { toastr } from 'react-redux-toastr';
 import { translate } from 'react-i18next';
-// import * as actions from "../../../actions";
 import { connect } from 'react-redux';
 
 
@@ -105,7 +101,7 @@ class Dashboard extends Component {
       .then(response => {
         let apiData = component.state[stateValue];
       
-        apiData = Object.assign({}, apiData, response.data)
+        apiData = Object.assign({}, apiData, response.data);
       
         if (response.data.chartData) {
           let objData = JSON.parse(response.data.chartData);

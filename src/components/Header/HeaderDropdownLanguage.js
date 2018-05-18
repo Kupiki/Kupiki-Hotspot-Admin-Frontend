@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
 import {
-  Badge,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import {toastr} from 'react-redux-toastr'
 
 import { translate } from 'react-i18next';
 
-var Config = require('Config');
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 class HeaderDropdownLanguage extends Component {
@@ -45,7 +43,7 @@ class HeaderDropdownLanguage extends Component {
     });
     request
       .then(response => {
-        localStorage.setItem('language', language)
+        localStorage.setItem('language', language);
         this.setState({
           lng: language
         });

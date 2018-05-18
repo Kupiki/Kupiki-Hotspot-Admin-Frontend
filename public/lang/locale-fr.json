@@ -104,7 +104,7 @@
       "success-save": "Configuration sauvegardée avec succès",
       "error-save": "Impossible de sauvegarder la configuration",
       "hotspotSSID": {
-        "title": "Configuration simple",
+        "title": "Configuration simple du hotspot",
         "hotspotName": "Nom du point d'accès",
         "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès",
         "error-hotspotNameMissing": "Le nom du hotspot est obligatoire",
@@ -112,12 +112,12 @@
         "error-hotspotNameSave": "Erreur de sauvegarde",
         "success-hotspotName": "Le nom du hotspot a été mis à jour"
       },
-      "portalOptions": {
+      "portalTermsOptions": {
+        "title": "Options sur les conditions d'utilisation",
         "success-load": "Options du portail chargées avec succès",
         "error-load": "Impossible de charger les options du portail",
         "success-save": "Options du portail sauvegardées",
         "error-save": "Impossible de sauvegarder les options du portail",
-        "title": "Options du portail",
         "termsDisplay": "Afficher les conditions d'utilisation",
         "termsMessage": "Message à confirmer",
         "termsMessagePlaceholder": "Saisissez le message demandant la validation",

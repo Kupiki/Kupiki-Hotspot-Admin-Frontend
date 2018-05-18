@@ -7,20 +7,14 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardTitle,
-  Form,
-  FormFeedback,
-  FormGroup,
-  FormText,
-  Label,
-  Input
+  Label
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
 import { translate, i18next } from 'react-i18next';
 
-var Config = require('Config');
+const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
 class UserProfile extends Component {
@@ -45,7 +39,7 @@ class UserProfile extends Component {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
-      .then(response => {
+      .then(() => {
         toastr.success(t('user.password.title'), t('user.password.success'));
       })
       .catch(error => {

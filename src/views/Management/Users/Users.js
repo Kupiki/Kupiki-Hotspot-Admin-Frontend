@@ -52,8 +52,8 @@ class UsersMgmt extends Component {
         dropdownOpen: []
       });
     } else {
-      let drop = this.state.dropdownOpen
-      drop[e.currentTarget.id] = !drop[e.currentTarget.id]
+      let drop = this.state.dropdownOpen;
+      drop[e.currentTarget.id] = !drop[e.currentTarget.id];
       this.setState({
         dropdownOpen: drop
       });
@@ -62,7 +62,7 @@ class UsersMgmt extends Component {
   
   tooltipToggle(rowId) {
     let tooltip = this.state.tooltipOpen;
-    tooltip[rowId] = !tooltip[rowId]
+    tooltip[rowId] = !tooltip[rowId];
     this.setState({
       tooltipOpen: tooltip
     });

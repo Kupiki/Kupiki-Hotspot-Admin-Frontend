@@ -15,7 +15,7 @@ import {
 import 'react-table/react-table.css';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
 import axios from 'axios';
 
 const Config = require('Config');
@@ -91,14 +91,14 @@ class CoovaMacAuth extends Component {
       });
   }
   
-  handleCoovaServiceRestartChange(e) {
+  handleCoovaServiceRestartChange() {
     this.setState({ restartCoovaService: !this.state.restartCoovaService });
   }
   
   handleCoovaMacAuthFieldChange(e) {
     let coova = this.state.configuration;
     coova[e.target.name] = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
-    this.setState({ coova: coova });
+    this.setState({ configuration: coova });
   }
   
   toggleCoovaMacAuthModalSave() {

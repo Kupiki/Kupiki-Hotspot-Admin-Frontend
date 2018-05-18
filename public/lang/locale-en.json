@@ -106,7 +106,7 @@
       "success-save": "Configuration saved",
       "error-save": "Unable to save configuration",
       "hotspotSSID": {
-        "title": "Configuration",
+        "title": "Basic configuration of the hotspot",
         "hotspotName": "Access point name",
         "hotspotNamePlaceholder": "Name of your hotspot",
         "error-hotspotNameMissing": "Hotspot name is mandatory",
@@ -114,8 +114,8 @@
         "error-hotspotNameSave": "Error while saving",
         "success-hotspotName": "Hotspot name updated"
       },
-      "portalOptions": {
-        "title": "Portal options",
+      "portalTermsOptions": {
+        "title": "Terms & Conditions options",
         "termsDisplay": "Display terms",
         "termsMessage": "Message to ask validation",
         "termsMessagePlaceholder": "Input message that will ask confirmation",

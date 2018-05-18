@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardGroup, Card, CardHeader, CardBody, Label, Button, Input, InputGroup, InputGroupAddon, InputGroupButton } from 'reactstrap';
-import { Form, FormGroup } from 'reactstrap';
+import { Container, Row, Col, CardGroup, Card, CardBody, Label, Button } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
@@ -63,7 +62,7 @@ class Login extends Component {
   }
   
   getRedirectPath() {
-    const locationState = this.props.location.state
+    const locationState = this.props.location.state;
     if (locationState && locationState.from.pathname) {
       return locationState.from.pathname // redirects to referring url
     } else {
@@ -149,8 +148,4 @@ function mapStateToProps(state) {
   }
 }
 
-// export default translate()(Login);
-
 export default translate()(connect(mapStateToProps, actions)(Login))
-
-// export default connect(mapStateToProps, actions)(Login);

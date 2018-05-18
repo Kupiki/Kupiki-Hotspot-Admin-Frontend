@@ -9,7 +9,7 @@ import {
   Button,
 	Progress
 } from 'reactstrap';
-import {Bar, Line} from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
 import 'react-table/react-table.css';
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
@@ -192,7 +192,7 @@ class StatisticsMgmt extends Component {
 			this.state.statistics.octets.forEach( elt => {
 				octetsChart.labels.push(elt.startDay);
 				inputOctetsData.push(parseInt(elt.totalInputOctets));
-				totalInputOctets += parseInt(elt.totalInputOctets)
+				totalInputOctets += parseInt(elt.totalInputOctets);
 				outputOctetsData.push(parseInt(elt.totalOutputOctets));
 				totalOutputOctets += parseInt(elt.totalOutputOctets)	
 			});

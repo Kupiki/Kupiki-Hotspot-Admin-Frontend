@@ -15,7 +15,7 @@ import {
 import Spinner from 'react-spinkit';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
-import { toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr';
 import axios from 'axios';
 
 const Config = require('Config');
@@ -112,7 +112,7 @@ class Hostapd extends Component {
     
     if (e) {
       this.toggleHostapdAll(false);
-      this.setState({ content: undefined });
+      this.setState({ content: null });
     }
     
     let apiURL = ROOT_URL + '/api/hotspot';
@@ -139,8 +139,6 @@ class Hostapd extends Component {
   }
   
   extendHostapdConfiguration () {
-    const { t } = this.props;
-    
     const request = axios.get(`${ROOT_URL}/api/hotspot/configurationFields`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -157,7 +155,6 @@ class Hostapd extends Component {
           }
         });
         this.setState({ content: this.buildDisplayConfiguration() });
-        // toastr.info(t('management.advanced.hostapd.load.success-load'));
       });
   }
   
@@ -239,7 +236,7 @@ class Hostapd extends Component {
     )
   }
   
-  handleHostapdChangeRestart(e) {
+  handleHostapdChangeRestart() {
     this.setState({ restartHostapdService: !this.state.restartHostapdService });
   }
   

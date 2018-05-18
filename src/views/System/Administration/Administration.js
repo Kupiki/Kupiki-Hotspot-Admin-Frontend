@@ -6,12 +6,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
-  CardTitle,
-  Form,
-  FormFeedback,
-  FormGroup,
-  FormText,
   Label,
   Input,
   Modal,
@@ -180,7 +174,7 @@ class Administration extends Component {
   }
   
   toggleService(service) {
-    return event => {
+    return (event) => {
       const { t } = this.props;
   
       let {name, status} = service.original;
@@ -223,10 +217,10 @@ class Administration extends Component {
     }
   }
   
-  toggleFilter(e) {
+  toggleFilter() {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
-    }, function afterStateChange () { this.refreshServices() });
+    }, () => { this.refreshServices() });
   }
   
   refreshServices() {

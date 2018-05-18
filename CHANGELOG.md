@@ -1,3 +1,6 @@
+**v1.3.1**
+- Code cleaning
+
 **v1.3**
 - Add capabilities to activate MAC authentication and define associated password
 

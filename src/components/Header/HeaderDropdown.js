@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {
-  Badge,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import i18next from 'i18next';
 import XHR from 'i18next-xhr-backend';
 
