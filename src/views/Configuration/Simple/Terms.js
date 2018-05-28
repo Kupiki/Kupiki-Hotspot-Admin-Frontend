@@ -49,7 +49,7 @@ class Terms extends Component {
         if (response.data && response.data.status && response.data.status === 'success') {
           this.setState({ portal: response.data.message });
         } else {
-          toastr.error(t('management.basic.portalTermsOptions.error-load'));
+          toastr.error(t('management.basic.portalTermsOptions.error-load'), response.data.message);
         }
       })
       .catch(error => {

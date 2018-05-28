@@ -6,10 +6,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Modal,
-  ModalHeader,
-  ModalBody,
-	ModalFooter,
   Tooltip
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
@@ -20,6 +16,9 @@ import { Redirect } from 'react-router';
 import { toastr } from 'react-redux-toastr';
 import { translate, i18next } from 'react-i18next';
 import UserEdit from './UserEdit';
+import UserDelete from './UserDelete';
+import UserCheck from './UserCheck';
+import UserDisconnect from './UserDisconnect';
 
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
@@ -33,31 +32,20 @@ class UsersMgmt extends Component {
       dropdownOpen: [],
       tooltipOpen: [],
       modalUserOpen: false,
+      modalUserCheckOpen: false,
 			modalUserDeleteOpen: false,
+      modalUserDisconnectOpen: false,
 			goToUserStatistics: false
     };
   
     this.toggleUserModal = this.toggleUserModal.bind(this);
+    this.toggleUserCheckModal = this.toggleUserCheckModal.bind(this);
     this.toggleUserDeleteModal = this.toggleUserDeleteModal.bind(this);
-    this.dropdownToggle = this.dropdownToggle.bind(this);
+    this.toggleUserDisconnectModal = this.toggleUserDisconnectModal.bind(this);
   }
   
   componentDidMount() {
     this.loadUsers();
-  }
-  
-  dropdownToggle(e) {
-    if (typeof e.currentTarget.id === 'undefined') {
-      this.setState({
-        dropdownOpen: []
-      });
-    } else {
-      let drop = this.state.dropdownOpen;
-      drop[e.currentTarget.id] = !drop[e.currentTarget.id];
-      this.setState({
-        dropdownOpen: drop
-      });
-    }
   }
   
   tooltipToggle(rowId) {
@@ -68,13 +56,39 @@ class UsersMgmt extends Component {
     });
   }
   
-  toggleUserDeleteModal(username) {
+  toggleUserDisconnectModal(username) {
+    let user = this.state.users.find(function(element) {
+      return element.username === username;
+    });
     this.setState({
-      modalUserDeleteOpen: !this.state.modalUserDeleteOpen,
-      deleteUser: username
+      modalUserDisconnect: user,
+      modalUserDisconnectOpen: !this.state.modalUserDisconnectOpen
     });
   }
-	
+  
+  toggleUserCheckModal(username) {
+    let user = this.state.users.find(function(element) {
+      return element.username === username;
+    });
+    this.setState({
+      modalUserCheck: user,
+      modalUserCheckOpen: !this.state.modalUserCheckOpen
+    });
+  }
+  
+  toggleUserDeleteModal(username) {
+    let user = this.state.users.find(function(element) {
+      return element.username === username;
+    });
+    this.setState({
+      modalUserDeleteOpen: !this.state.modalUserDeleteOpen,
+      modalUserDelete: user
+    });
+    if (!this.state.modalUserDeleteOpen) {
+      this.loadUsers();
+    }
+  }
+  
   toggleUserModal(action, username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -99,6 +113,7 @@ class UsersMgmt extends Component {
       .then(response => {
         if (response.data && response.data.status === 'success') {
           this.setState({ users: response.data.message });
+          console.log(response.data.message)
         } else {
           toastr.error(t('freeradius.users.error-load'));
         }
@@ -106,28 +121,6 @@ class UsersMgmt extends Component {
       .catch(error => {
         toastr.error(t('freeradius.users.error-load')+' ' + name, error.message);
       });
-  }
-  
-  deleteUser( username ) {
-    const { t } = this.props;
-  
-    const request = axios.delete(`${ROOT_URL}/api/freeradius/${username}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.token}` }
-    });
-    request
-      .then(response => {
-        if (response.data && response.data.status && response.data.status === 'success') {
-          this.toggleUserDeleteModal();
-          this.loadUsers();
-          toastr.info(t('freeradius.user.success-delete'));
-        } else {
-          toastr.error(t('freeradius.user.error-delete'));
-        }
-			})
-      .catch(error => {
-        toastr.error(t('freeradius.user.error-delete')+' ' + name, error.message);
-      });
-  
   }
   
   render() {
@@ -148,7 +141,24 @@ class UsersMgmt extends Component {
               <CardHeader>
                 <i className='fa fa-users'/>{' '}{t('freeradius.users.list-header')}
                 <Button color='primary' className={'float-right'} size='sm' onClick={ () => this.toggleUserModal('create') }><i className='fa fa-user-plus'></i></Button>
-                <UserEdit action={ this.state.modalUserAction } user={ this.state.modalUser } existingUsers={ this.state.users } modalUserOpen={ this.state.modalUserOpen } callback={ this.toggleUserModal }/>
+                <UserEdit
+                  action={ this.state.modalUserAction }
+                  user={ this.state.modalUser }
+                  existingUsers={ this.state.users }
+                  modalUserOpen={ this.state.modalUserOpen }
+                  callback={ this.toggleUserModal }/>
+                <UserDelete
+                  user={ this.state.modalUserDelete }
+                  modalUserDeleteOpen={ this.state.modalUserDeleteOpen }
+                  callback={ this.toggleUserDeleteModal }/>
+                <UserCheck
+                  user={ this.state.modalUserCheck }
+                  modalUserCheckOpen={ this.state.modalUserCheckOpen }
+                  callback={ this.toggleUserCheckModal }/>
+                <UserDisconnect
+                  user={ this.state.modalUserDisconnect }
+                  modalUserDisconnectOpen={ this.state.modalUserDisconnectOpen }
+                  callback={ this.toggleUserDisconnectModal }/>
               </CardHeader>
 							<CardBody>
 							<ReactTable
@@ -189,8 +199,10 @@ class UsersMgmt extends Component {
                         <Tooltip innerClassName={'kupiki-table-tooltip'} hideArrow={ true } placement="left" isOpen={ this.state.tooltipOpen[row.value] } autohide={ false } target={ row.value } toggle={ () => this.tooltipToggle(row.value) }>
                           <i title="Edit" className='fa fa-edit kupiki-table-icon-primary' onClick={ () => this.toggleUserModal('edit', row.value) }/>{' '}
                           <i title="Statistics" className='fa fa-bar-chart-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
-                          <i title="Check connectivity" className='fa fa-check-square-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
-                          <i title="Disconnect" className='fa fa-sign-out kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
+                          <i title="Check connectivity" className='fa fa-check-square-o kupiki-table-icon-primary' onClick={ () => this.toggleUserCheckModal(row.value) }/>{' '}
+                          {this.state.users.find(x => x.username === row.value).status===1 && (
+                            <i title="Disconnect" className='fa fa-sign-out kupiki-table-icon-primary' onClick={ () => this.toggleUserDisconnectModal(row.value) }>{' '}</i>
+                          )}
                           <i title="Delete" className='fa fa-trash-o kupiki-table-icon-danger' onClick={ () => this.toggleUserDeleteModal(row.value) }/>
                         </Tooltip>
 											</span>
@@ -203,18 +215,6 @@ class UsersMgmt extends Component {
             </Card>
           </Col>
         </Row>
-        <Modal size='lg' isOpen={ this.state.modalUserDeleteOpen } toggle={ this.toggleUserDeleteModal } className={'modal-danger'}>
-          <ModalHeader toggle={ this.toggleUserDeleteModal }>
-            {t('freeradius.user.delete', { username: this.state.deleteUser })}
-          </ModalHeader>
-          <ModalBody>
-            {t('freeradius.user.delete-confirm', { username: this.state.deleteUser })}
-          </ModalBody>
-          <ModalFooter>
-            <Button color='danger' size='sm' onClick={ () => this.deleteUser(this.state.deleteUser) }><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.confirm')}</Button>{' '}
-            <Button color='secondary' size='sm' onClick={ this.toggleUserDeleteModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
-          </ModalFooter>
-        </Modal>
       </div>
     )
   }

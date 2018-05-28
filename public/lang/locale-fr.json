@@ -107,6 +107,7 @@
         "title": "Configuration simple du hotspot",
         "hotspotName": "Nom du point d'accès",
         "hotspotNamePlaceholder": "Saisissez le nom de votre point d'accès",
+        "error-load": "Impossible de charger la configuration",
         "error-hotspotNameMissing": "Le nom du hotspot est obligatoire",
         "error-hotspotNameLength": "Le nom du hotspot est trop court",
         "error-hotspotNameSave": "Erreur de sauvegarde",
@@ -150,6 +151,7 @@
       "coova": {
         "title": "Configuration de Coova Chilli",
         "macAuthentication": {
+          "password": "Mot de passe à associer aux utilisateurs",
           "active": "Activer l'authentification par adresse MAC",
           "save": {
             "confirm": "Confirmez la sauvegarde des nouveaux paramètres",
@@ -214,6 +216,18 @@
       "menu-delete": "Supprimer"
     },
     "user": {
+      "check": {
+        "title": "Test de connectivité de l'utilisateur {{username}}",
+        "inprogress": "Test en cours",
+        "success-check": "Test de l'utilisateur {{username}} concluant",
+        "error-check": "Test de l'utilisateur {{username}} en erreur"
+      },
+      "disconnect": {
+        "title": "Déconnexion de l'utilisateur {{username}}",
+        "confirm": "Etes vous sur de vouloir déconnecter l'utilisateur {{username}}",
+        "success-disconnect": "L'utilisateur {{username}} a été déconnecté",
+        "error-disconnect": "Impossible de déconnecter l'utilisateur {{username}}"
+      },
       "create": "Créer un nouvel utilisateur",
       "statistics": "Statistiques",
       "username-label": "Identifiant de connexion",

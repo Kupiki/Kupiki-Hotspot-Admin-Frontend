@@ -174,7 +174,7 @@ class Administration extends Component {
   }
   
   toggleService(service) {
-    return (event) => {
+    return event => {
       const { t } = this.props;
   
       let {name, status} = service.original;
@@ -220,7 +220,7 @@ class Administration extends Component {
   toggleFilter() {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
-    }, () => { this.refreshServices() });
+    }, () => { this.refreshServices(); });
   }
   
   refreshServices() {

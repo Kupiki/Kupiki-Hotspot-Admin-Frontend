@@ -19,7 +19,6 @@ import { toastr } from 'react-redux-toastr';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 
-
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
 
@@ -54,7 +53,6 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.toggleServicesFilter = this.toggleServicesFilter.bind(this);
     const dataSetTemplate = {
       graph: {
         labels: [],
@@ -76,8 +74,9 @@ class Dashboard extends Component {
       diskData: JSON.parse(JSON.stringify(dataSetTemplate)),
       memoryData: JSON.parse(JSON.stringify(dataSetTemplate)),
       uptimeData: JSON.parse(JSON.stringify(dataSetTemplate)),
-      temperatureData: {},
       servicesData: {},
+      informationData: {},
+      temperatureData: {},
       netflowData: {}
     };
   
@@ -89,6 +88,9 @@ class Dashboard extends Component {
     this.getData('information', 'informationData');
     this.getData('temperature', 'temperatureData');
     this.getData('netflow', 'netflowData');
+  
+    this.toggleServicesFilter = this.toggleServicesFilter.bind(this);
+  
   }
   
   getData(apiRequest, stateValue) {
@@ -99,41 +101,48 @@ class Dashboard extends Component {
     });
     request
       .then(response => {
-        let apiData = component.state[stateValue];
-      
-        apiData = Object.assign({}, apiData, response.data);
-      
-        if (response.data.chartData) {
-          let objData = JSON.parse(response.data.chartData);
-          apiData.graph.datasets[0].data = [];
-          apiData.graph.labels = [];
-          for (let i = 0; i < objData.length; i++) {
-            apiData.graph.labels.push(objData[i][0]);
-            apiData.graph.datasets[0].data.push(objData[i][1]);
+        if (response.data.status === 'success') {
+          let apiData = component.state[stateValue];
+  
+          apiData = Object.assign({}, apiData, response.data.message);
+  
+          if (response.data.message.chartData) {
+            let objData = JSON.parse(response.data.message.chartData);
+            apiData.graph.datasets[0].data = [];
+            apiData.graph.labels = [];
+            for (let i = 0; i < objData.length; i++) {
+              apiData.graph.labels.push(objData[i][0]);
+              apiData.graph.datasets[0].data.push(objData[i][1]);
+            }
           }
+          if (apiRequest === 'information') {
+            apiData = response.data.message;
+          }
+          if (apiRequest === 'uptime') {
+            let duration = moment.duration(parseInt(response.data.message.uptime), 'seconds');
+            apiData.uptimeLabel = duration.format('D[d] h[h] m[m]');
+          }
+          if (apiRequest === 'services') {
+            apiData.fullData = response.data.message;
+            let filterByName = function (service) {
+              return Config.servicesFilters.includes(service.name);
+            };
+            apiData.filteredData = apiData.fullData.filter(filterByName);
+            apiData.currentData = apiData.fullData;
+          }
+          if (apiRequest === 'temperature') {
+            apiData.value = response.data.message;
+          }
+          if (apiRequest === 'netflow') {
+            apiData.fullData = response.data.message;
+          }
+          let newState = {};
+          newState[stateValue] = apiData;
+  
+          component.setState(newState);
+        } else {
+          toastr.error(t('dashboard.service')+' ' + name, response.data.message);
         }
-        if (apiRequest === 'uptime' && response.data.uptime) {
-          let duration = moment.duration(parseInt(response.data.uptime), 'seconds');
-          apiData.uptimeLabel = duration.format('D[d] h[h] m[m]');
-        }
-        if (apiRequest === 'services') {
-          apiData.fullData = response.data.message;
-          let filterByName = function(service) {
-            return Config.servicesFilters.includes(service.name);
-          };
-          apiData.filteredData = apiData.fullData.filter(filterByName);
-          apiData.currentData = apiData.fullData;
-        }
-        if (apiRequest === 'temperature') {
-          apiData.value=response.data.message;
-        }
-        if (apiRequest === 'netflow') {
-          apiData.fullData = response.data.message;
-        }
-        let newState = {};
-        newState[stateValue] = apiData;
-      
-        component.setState(newState);
       })
       .catch(error => {
         toastr.error(t('dashboard.service')+' ' + name, error.message);
@@ -255,13 +264,10 @@ class Dashboard extends Component {
                 </Label>
               </CardHeader>
               <CardBody>
-                {!this.state.servicesData.status && (
+                {!this.state.servicesData.fullData && (
                   <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                 )}
-                {this.state.servicesData.status === 'failed' && (
-                  <span>Error</span>
-                )}
-                {this.state.servicesData.status === 'success' && (
+                {this.state.servicesData.fullData && (
                   <ReactTable
                     data={this.state.servicesData.currentData}
                     columns={[
@@ -299,9 +305,9 @@ class Dashboard extends Component {
                 {!this.state.informationData && (
                   <Spinner id='spinner' name='ball-grid-pulse' color='#4875b4'/>
                 )}
-                {this.state.informationData && (
+                {this.state.informationData.length > 0 && (
                   <ReactTable
-                    data={this.state.informationData.information}
+                    data={this.state.informationData}
                     columns={[
                       {
                         accessor: 'name'
@@ -311,7 +317,7 @@ class Dashboard extends Component {
                       }
                     ]}
                     showPagination={false}
-                    defaultPageSize={this.state.informationData.information.length}
+                    defaultPageSize={this.state.informationData.length}
                     className='-striped -highlight'/>
                 )}
               </CardBody>

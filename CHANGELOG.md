@@ -1,3 +1,8 @@
+**v1.3.2**
+- Code cleaning again
+- Bugs fixing
+- Improvements of API calls
+
 **v1.3.1**
 - Code cleaning
 

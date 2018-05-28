@@ -47,18 +47,18 @@ class HotspotName extends Component {
     request
       .then(response => {
         if (response.data && response.data.status && response.data.status === 'success') {
-          // toastr.info(t('management.basic.success-load'));
           this.setState({ configuration: response.data.message });
           let index = this.state.configuration.findIndex(elt => {
             return elt.field === 'ssid'
           });
           this.setState({ ssidIndex: index });
         } else {
-          toastr.error(t('management.basic.error-load'));
+          toastr.error(t('management.basic.hotspotSSID.error-load'), response.data.message);
         }
       })
       .catch(error => {
-        toastr.error(t('management.basic.error-load')+' ' + name, error.message);
+        console.log(error)
+        toastr.error(t('management.basic.hotspotSSID.error-load')+' ' + name, error.message);
       });
   }
   
@@ -86,7 +86,6 @@ class HotspotName extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
         if (error.response) {
           toastr.error(t('management.basic.hotspotSSID.error-save'), '');
         }
