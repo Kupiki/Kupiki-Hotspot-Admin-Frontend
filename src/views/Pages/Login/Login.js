@@ -116,7 +116,7 @@ class Login extends Component {
                       </AvGroup>
                       <AvGroup>
                         <Label htmlFor='password'>{t('login.password')}</Label>
-                        <AvField id='password' name='password' onChange={ this.handleChange }
+                        <AvField type="password" id='password' name='password' onChange={ this.handleChange }
                                  validate={{
                                    required: { errorMessage: t('login.passwordMissing') }
                                  }}/>

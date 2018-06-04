@@ -1,3 +1,6 @@
+**v1.3.3**
+- Password type for field in the login screen
+
 **v1.3.2**
 - Code cleaning again
 - Bugs fixing
