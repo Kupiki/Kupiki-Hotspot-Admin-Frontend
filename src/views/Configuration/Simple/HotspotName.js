@@ -57,7 +57,7 @@ class HotspotName extends Component {
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
         toastr.error(t('management.basic.hotspotSSID.error-load')+' ' + name, error.message);
       });
   }

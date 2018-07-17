@@ -4,7 +4,6 @@ import {
   ModalHeader,
   ModalBody
 } from 'reactstrap';
-import 'react-table/react-table.css';
 import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
 import axios from 'axios';
@@ -27,7 +26,6 @@ class UserCheck extends Component {
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
       this.setState({ user: nextProps.user }, () => {
-        console.log(this.state.user);
         this.checkUser()
       });
     }
@@ -53,7 +51,7 @@ class UserCheck extends Component {
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
         toastr.error(t('freeradius.user.check.error-check', {username : this.state.user.username})+' ' + name, error.message);
       });
   }

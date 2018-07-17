@@ -1,3 +1,9 @@
+**v1.4**
+- User attributes edition
+- Locales updates
+- Styles updates
+- Split of some implementation to improve readability and maintenance
+
 **v1.3.3**
 - Password type for field in the login screen
 

@@ -146,7 +146,7 @@ class StatisticsMgmt extends Component {
 		this.loadStatistics();
   }
 	
-	formatBytes(a,b) {if(0===a)return{value:0,unit:'Bytes'};let c=1024,d=b||2,e=['Bytes','KB','MB','GB','TB','PB','EB','ZB','YB'],f=Math.floor(Math.log(a)/Math.log(c));return {value:parseFloat((a/Math.pow(c,f)).toFixed(d)),unit:e[f]}}
+	static formatBytes(a, b) {if(0===a)return{value:0,unit:'Bytes'};let c=1024,d=b||2,e=['Bytes','KB','MB','GB','TB','PB','EB','ZB','YB'],f=Math.floor(Math.log(a)/Math.log(c));return {value:parseFloat((a/Math.pow(c,f)).toFixed(d)),unit:e[f]}}
 
   loadStatistics () {
 		const { t } = this.props;
@@ -200,9 +200,9 @@ class StatisticsMgmt extends Component {
 			octetsChart.datasets[1].data = outputOctetsData;
 			statistics.totalInputOctets = totalInputOctets;
 			statistics.totalOutputOctets = totalOutputOctets;
-			let volume = this.formatBytes(totalInputOctets,0);
+			let volume = StatisticsMgmt.formatBytes(totalInputOctets,0);
 			statistics.totalInputOctetsFormatted = volume.value + ' ' + volume.unit;
-			volume = this.formatBytes(totalOutputOctets,0);
+			volume = StatisticsMgmt.formatBytes(totalOutputOctets,0);
 			statistics.totalOutputOctetsFormatted = volume.value + ' ' + volume.unit;
 		// sessionsChart
 			let sessionsChart = this.state.sessionsChart; sessionsChart.labels = [];

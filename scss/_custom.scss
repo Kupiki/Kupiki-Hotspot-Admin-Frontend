@@ -84,7 +84,9 @@ body.modal-open #root {
 
 .kupiki-table {
   &-tooltip {
-    background: transparent !important;
+    background: $gray-100 !important;
+    opacity: 1 !important;
+    border-radius: 2px;
     font-size:16px;
     margin: 0px 10px;
   }
@@ -97,3 +99,6 @@ body.modal-open #root {
   }
 }
 
+.modal-xl {
+  max-width: 1200px;
+}

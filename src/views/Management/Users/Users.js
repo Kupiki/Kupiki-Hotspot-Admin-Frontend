@@ -19,6 +19,7 @@ import UserEdit from './UserEdit';
 import UserDelete from './UserDelete';
 import UserCheck from './UserCheck';
 import UserDisconnect from './UserDisconnect';
+import UserAttributes from './UserAttributes';
 
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
@@ -35,6 +36,7 @@ class UsersMgmt extends Component {
       modalUserCheckOpen: false,
 			modalUserDeleteOpen: false,
       modalUserDisconnectOpen: false,
+      modalUserAttributesOpen: false,
 			goToUserStatistics: false
     };
   
@@ -42,6 +44,7 @@ class UsersMgmt extends Component {
     this.toggleUserCheckModal = this.toggleUserCheckModal.bind(this);
     this.toggleUserDeleteModal = this.toggleUserDeleteModal.bind(this);
     this.toggleUserDisconnectModal = this.toggleUserDisconnectModal.bind(this);
+    this.toggleUserAttributesModal = this.toggleUserAttributesModal.bind(this);
   }
   
   componentDidMount() {
@@ -89,6 +92,16 @@ class UsersMgmt extends Component {
     }
   }
   
+  toggleUserAttributesModal(username) {
+    let user = this.state.users.find(function(element) {
+      return element.username === username;
+    });
+    this.setState({
+      modalUserAttributesOpen: !this.state.modalUserAttributesOpen,
+      modalUserAttributes: user
+    });
+  }
+  
   toggleUserModal(action, username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -113,7 +126,6 @@ class UsersMgmt extends Component {
       .then(response => {
         if (response.data && response.data.status === 'success') {
           this.setState({ users: response.data.message });
-          console.log(response.data.message)
         } else {
           toastr.error(t('freeradius.users.error-load'));
         }
@@ -131,7 +143,15 @@ class UsersMgmt extends Component {
 				pathname: '/management/statistics/'+this.state.goToUserStatistics
 			}}/>
 		}
-
+		
+    // let options = [];
+    // options.push(
+    //   { value : 'value1', label: 'label1'}
+    // );
+    // options.push(
+    //   { value : 'value2', label: 'label2'}
+    // );
+    
     return (
       <div className='animated fadeIn'>
         <br/>
@@ -159,9 +179,13 @@ class UsersMgmt extends Component {
                   user={ this.state.modalUserDisconnect }
                   modalUserDisconnectOpen={ this.state.modalUserDisconnectOpen }
                   callback={ this.toggleUserDisconnectModal }/>
+                <UserAttributes
+                  user={ this.state.modalUserAttributes }
+                  modalUserAttributesOpen={ this.state.modalUserAttributesOpen }
+                  callback={ this.toggleUserAttributesModal }/>
               </CardHeader>
 							<CardBody>
-							<ReactTable
+                <ReactTable
 								data={this.state.users}
 								columns={[
 									{
@@ -170,14 +194,14 @@ class UsersMgmt extends Component {
 									},{
 										Header: t('freeradius.users.list-status'),
 										accessor: 'status',
-										style: { textAlign: 'center' },
+										style: { textAlign: 'center', overflow: 'visible' },
 										maxWidth: 200,
 										Cell: row => (
-											<span>
+                      <span>
 												<span style={{
-													color: row.value === 0 ? '#ff2e00' : '#57d500',
-													transition: 'all .3s ease'
-												}}>
+                          color: row.value === 0 ? '#ff2e00' : '#57d500',
+                          transition: 'all .3s ease'
+                        }}>
 													<i className='fa fa-circle'></i>
 												</span> { row.value === 0 ? 'Offline' : 'Online' }
 											</span>
@@ -185,10 +209,18 @@ class UsersMgmt extends Component {
 									},{
 										Header: t('freeradius.users.list-firstname'),
 										accessor: 'firstname'
-									},{
-										Header: t('freeradius.users.list-lastname'),
-										accessor: 'lastname'
-									},{
+                  },{
+                    Header: t('freeradius.users.list-lastname'),
+                    accessor: 'lastname'
+                  },{
+                    Header: t('freeradius.users.count-radcheck'),
+                    accessor: 'countRadcheck',
+                    style: { textAlign: 'center' },
+                  },{
+                    Header: t('freeradius.users.count-radreply'),
+                    accessor: 'countRadreply',
+                    style: { textAlign: 'center' },
+                  },{
 										Header: '',
 										maxWidth: 50,
 										accessor: 'username',
@@ -198,6 +230,7 @@ class UsersMgmt extends Component {
                         <i className='fa fa-ellipsis-v' style={{padding: '0px 20px'}}/>
                         <Tooltip innerClassName={'kupiki-table-tooltip'} hideArrow={ true } placement="left" isOpen={ this.state.tooltipOpen[row.value] } autohide={ false } target={ row.value } toggle={ () => this.tooltipToggle(row.value) }>
                           <i title="Edit" className='fa fa-edit kupiki-table-icon-primary' onClick={ () => this.toggleUserModal('edit', row.value) }/>{' '}
+                          <i title="Attributes" className='fa fa-id-card kupiki-table-icon-primary' onClick={ () => this.toggleUserAttributesModal(row.value) }/>{' '}
                           <i title="Statistics" className='fa fa-bar-chart-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
                           <i title="Check connectivity" className='fa fa-check-square-o kupiki-table-icon-primary' onClick={ () => this.toggleUserCheckModal(row.value) }/>{' '}
                           {this.state.users.find(x => x.username === row.value).status===1 && (

@@ -10,7 +10,6 @@ import {
   ModalFooter,
   Collapse
 } from 'reactstrap';
-import 'react-table/react-table.css';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
@@ -25,8 +24,7 @@ class UserEdit extends Component {
     
     this.state = {
       user: {},
-      modalAddUser: false,
-      modalEditUser: false,
+      editUser: false,
       collapseAdvanced: false
     };
   
@@ -38,9 +36,9 @@ class UserEdit extends Component {
   
   componentWillReceiveProps(nextProps) {
 		if (nextProps.action === 'create') {
-      this.setState({ user: {} });
+      this.setState({ user: {}, editUser: false, collapseAdvanced: false });
 		} else if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
-      this.setState({ user: nextProps.user });
+      this.setState({ user: nextProps.user, editUser: true, collapseAdvanced: false });
     }
   }
   
@@ -126,7 +124,14 @@ class UserEdit extends Component {
     return (
       <Modal size='lg' isOpen={ modalUserOpen } toggle={ this.toggleModal } className={'modal-primary'}>
         <AvForm onValidSubmit={ this.handleSubmit }>
-          <ModalHeader toggle={ this.toggleModal }>{t('freeradius.user.create')}</ModalHeader>
+          <ModalHeader toggle={ this.toggleModal }>
+            {!this.state.editUser && (
+              <span>{t('freeradius.user.create')}</span>
+            )}
+            {this.state.editUser && (
+              <span>{t('freeradius.user.edit')}</span>
+            )}
+          </ModalHeader>
           <ModalBody>
             <AvGroup>
               <Label htmlFor='username'>{t('freeradius.user.username-label')}</Label>
@@ -222,7 +227,12 @@ class UserEdit extends Component {
             </Collapse>
           </ModalBody>
           <ModalFooter>
-						<Button color='secondary' size='sm' onClick={this.toggleAdvanced} className='mr-auto'><i className='fa fa-plus-circle'></i>{' '}{t('freeradius.user.advancedconfiguration')}</Button>{' '}
+            {!this.state.collapseAdvanced && (
+              <Button color='secondary' size='sm' onClick={this.toggleAdvanced} className='mr-auto'><i className='fa fa-plus-circle'></i>{' '}{t('freeradius.user.advancedconfiguration')}</Button>
+            )}
+            {this.state.collapseAdvanced && (
+              <Button color='secondary' size='sm' onClick={this.toggleAdvanced} className='mr-auto'><i className='fa fa-plus-circle'></i>{' '}{t('freeradius.user.basicconfiguration')}</Button>
+            )}{' '}
 						<Button type='submit' color='primary' size='sm'><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.save')}</Button>{' '}
 						<Button color='secondary' size='sm' onClick={ this.toggleModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
           </ModalFooter>
