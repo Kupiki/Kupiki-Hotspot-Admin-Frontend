@@ -143,14 +143,6 @@ class UsersMgmt extends Component {
 				pathname: '/management/statistics/'+this.state.goToUserStatistics
 			}}/>
 		}
-		
-    // let options = [];
-    // options.push(
-    //   { value : 'value1', label: 'label1'}
-    // );
-    // options.push(
-    //   { value : 'value2', label: 'label2'}
-    // );
     
     return (
       <div className='animated fadeIn'>

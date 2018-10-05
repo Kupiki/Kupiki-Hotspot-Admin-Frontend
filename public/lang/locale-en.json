@@ -112,8 +112,8 @@
         "error-load": "Unable to load configuration",
         "error-hotspotNameMissing": "Hotspot name is mandatory",
         "error-hotspotNameLength": "Hotspot name too short",
-        "error-hotspotNameSave": "Error while saving",
-        "success-hotspotName": "Hotspot name updated"
+        "error-save": "Error while saving",
+        "success-save": "Hotspot name updated"
       },
       "portalTermsOptions": {
         "title": "Terms & Conditions options",

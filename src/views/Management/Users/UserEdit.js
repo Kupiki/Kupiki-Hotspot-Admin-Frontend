@@ -22,7 +22,7 @@ class UserEdit extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {
+		this.state = {
       user: {},
       editUser: false,
       collapseAdvanced: false
@@ -31,7 +31,7 @@ class UserEdit extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.validateUniqueUser = this.validateUniqueUser.bind(this);
-    this.toggleAdvanced = this.toggleAdvanced.bind(this);
+		this.toggleAdvanced = this.toggleAdvanced.bind(this);
   }
   
   componentWillReceiveProps(nextProps) {
@@ -54,10 +54,9 @@ class UserEdit extends Component {
   
   handleSubmit () {
     const { t } = this.props;
-  
     const request = axios.post(`${ROOT_URL}/api/freeradius/radcheck`, {
-      username: this.state.user.username,
-      radcheck: [{
+			username: this.state.user.username,
+      attributes: [{
         username: this.state.user.username,
         attribute: 'Cleartext-Password',
         op: ':=',
@@ -65,7 +64,8 @@ class UserEdit extends Component {
       }]
     }, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
-    });
+		});
+		
     request
       .then(response => {
         if (response.data && response.data.status) {
@@ -78,13 +78,9 @@ class UserEdit extends Component {
             });
             requestInfo
               .then(response => {
-                if (response.data && response.data.status) {
-                  if (response.data.status === 'success') {
+                if (response.data && response.data.status && response.data.status === 'success') {
                     toastr.success(t('freeradius.user.success-save'));
                     this.props.callback();
-                  } else {
-                    toastr.error(t('freeradius.user.error-save'), response.data.message);
-                  }
                 } else {
                   toastr.error(t('freeradius.user.error-save'), response.data.message)
                 }
@@ -103,7 +99,7 @@ class UserEdit extends Component {
       .catch(error => {
         console.log(error);
         toastr.error(t('freeradius.user.error-save'), error.message);
-      });
+			});
   }
   
   validateUniqueUser (value, ctx, input, cb) {

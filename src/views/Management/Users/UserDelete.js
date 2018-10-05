@@ -7,6 +7,7 @@ import {
   ModalFooter
 } from 'reactstrap';
 import { translate } from 'react-i18next';
+import { toastr } from 'react-redux-toastr'
 import axios from 'axios';
 
 const Config = require('Config');

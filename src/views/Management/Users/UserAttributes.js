@@ -21,6 +21,7 @@ import axios from 'axios';
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import UserAttributesByTab from './UserAttributesByTab';
+import UserAttributesGeneric from './UserAttributesGeneric';
 
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
@@ -30,7 +31,7 @@ class UserAttributes extends Component {
     super(props);
     
     this.state = {
-      activeTab: 'radcheck',
+      activeTab: 'generic',
       user: {},
       attributes: {
         'radcheck': {
@@ -93,20 +94,14 @@ class UserAttributes extends Component {
     };
   
     for(let attrType in this.state.attributes) {
-      // console.log(attrType)
-      // console.log(this.state.attributes[attrType].updated)
       if (this.state.attributes[attrType].updated) {
-      // if (newAttributes[attrType].length > 0) {
         this.state.attributes[attrType].values.forEach(elt => {
           if (elt['attribute'] !== '' && elt['op'] !== '' && elt['value'] !== '') {
             newAttributes[attrType].push(elt)
           }
         });
-        
-        // console.log(newAttributes[attrType])
-        // console.log(newAttributes[attrType].length)
 
-        let request = axios.post(`${ROOT_URL}/api/freeradius/${attrType}`, {
+				let request = axios.post(`${ROOT_URL}/api/freeradius/${attrType}`, {
           username: this.state.user.username,
           attributes: newAttributes[attrType]
         }, {
@@ -168,13 +163,7 @@ class UserAttributes extends Component {
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId='generic'>
-                <Row>
-                  <div>Simultaneous-use := 1</div>
-                  <div></div>
-                  <div>Limite download - Session/Total</div>
-                  <div>Limite upload - Session/Total</div>
-                  <div>Limite horaire - debut/fin</div>
-                </Row>
+								<UserAttributesGeneric user={this.state.user} onChange={this.onAttributesChange}/>
               </TabPane>
               <TabPane tabId='radcheck'>
                 <UserAttributesByTab user={this.state.user} attributesType={'radcheck'} onChange={this.onAttributesChange}/>

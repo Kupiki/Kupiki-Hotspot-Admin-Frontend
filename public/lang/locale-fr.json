@@ -1,8 +1,10 @@
 {
   "login": {
     "title": "Identification",
-    "username": "Username",
-    "password": "Password",
+		"username": "Identifiant",
+		"usernameMissing": "Identifiant nécessaire",
+    "password": "Mot de passe",
+    "passwordMissing": "Mot de passe nécessaire",
     "connect": "Sign in"
   },
   "user": {
@@ -110,8 +112,8 @@
         "error-load": "Impossible de charger la configuration",
         "error-hotspotNameMissing": "Le nom du hotspot est obligatoire",
         "error-hotspotNameLength": "Le nom du hotspot est trop court",
-        "error-hotspotNameSave": "Erreur de sauvegarde",
-        "success-hotspotName": "Le nom du hotspot a été mis à jour"
+        "error-save": "Erreur de sauvegarde",
+        "success-save": "Le nom du hotspot a été mis à jour"
       },
       "portalTermsOptions": {
         "title": "Options sur les conditions d'utilisation",
@@ -240,7 +242,8 @@
         "radreply-success-save": "Attributs radreply sauvegardés",
         "radreply-error-save": "Impossible de sauvegarder les attributs radreply",
         "radcheck-description": "Quand une requête arrive au serveur et est exécutée par le module SQL, Freeradius recherche dans la table radcheck les attributs associés à l'utilisateur",
-        "radreply-description": "Si des attributs de contrôle sont trouvés (radcheck) et qu'ils correspondent à la demande, les attributs de réponse (radreply) sont extraits puis ajoutés à la réponse"
+				"radreply-description": "Si des attributs de contrôle sont trouvés (radcheck) et qu'ils correspondent à la demande, les attributs de réponse (radreply) sont extraits puis ajoutés à la réponse",
+				"simultaneous-use": "Usages simultanés"
       },
       "create": "Créer un nouvel utilisateur",
       "edit": "Editer l'utilisateur",

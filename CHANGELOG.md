@@ -1,3 +1,9 @@
+**v1.5**
+- Improve oerformances
+- Bug fixing
+- Locales updates
+- User check from radius
+
 **v1.4**
 - User attributes edition
 - Locales updates

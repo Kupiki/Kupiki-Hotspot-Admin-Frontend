@@ -40,7 +40,7 @@ class UserCheck extends Component {
   
     const request = axios.get(`${ROOT_URL}/api/freeradius/check/${this.state.user.username}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
-    });
+		});
     request
       .then(response => {
         this.toggleModal();
