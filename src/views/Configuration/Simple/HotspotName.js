@@ -20,27 +20,27 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class HotspotName extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       configuration: {}
     };
-  
+
     this.handleSubmitSSID = this.handleSubmitSSID.bind(this);
   }
-  
+
   componentDidMount() {
     this.loadHostapdConfiguration();
   }
-  
+
   handleChange(e) {
     let configuration = this.state.configuration;
     configuration[this.state.ssidIndex].value = e.target.value;
     this.setState({ configuration: configuration });
   }
-  
+
   loadHostapdConfiguration () {
     const { t } = this.props;
-    
+
     const request = axios.get(`${ROOT_URL}/api/hotspot`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -61,10 +61,10 @@ class HotspotName extends Component {
         toastr.error(t('management.basic.hotspotSSID.error-load')+' ' + name, error.message);
       });
   }
-  
+
   handleSubmitSSID () {
     const { t } = this.props;
-    
+
     const request = axios.put(`${ROOT_URL}/api/hotspot/configuration`, {
       configuration: this.state.configuration
     }, {
@@ -91,10 +91,10 @@ class HotspotName extends Component {
         }
       });
   }
-  
+
   render() {
     const { t } = this.props;
-    
+
     return (
       <Card>
         <AvForm onValidSubmit={this.handleSubmitSSID}>

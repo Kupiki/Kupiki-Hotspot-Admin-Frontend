@@ -229,12 +229,19 @@
         "attribute": "Attribute",
         "op": "Operator",
         "value": "Value",
+        "all-success-save": "Attributes saved",
+        "all-error-save": "Unable to save attributes",
+        "all-success-load": "Attributes loaded",
+        "all-error-load": "Unable to load attributes",
         "radcheck-success-save": "Attributes radcheck saved",
         "radcheck-error-save": "Unable to save radcheck attributes",
         "radreply-success-save": "Attributes radreply saved",
         "radreply-error-save": "Unable to save radreply attributes",
         "radcheck-description": "When a request comes into the server and is processed by the SQL module, Freeradius searchs the radcheck table for any check attributes specific to the user",
-        "radreply-description": "If check attributes are found, and there's a match, pull the reply items from the radreply table for this user and add them to the reply"
+        "radreply-description": "If check attributes are found, and there's a match, pull the reply items from the radreply table for this user and add them to the reply",
+        "generic": {
+          "simultaneous-use": "Simultaneous authorized connections"
+        }
       },
       "create": "Add user",
       "edit": "Edit user",

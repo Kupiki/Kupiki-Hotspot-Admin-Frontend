@@ -20,15 +20,15 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       lng: localStorage.getItem('language'),
       _id: localStorage.getItem('_id'),
     };
-    
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   handleSubmit(event, values, errors) {
     const { t } = this.props;
 
@@ -54,10 +54,10 @@ class UserProfile extends Component {
         }
       });
   }
-  
+
   render() {
     const { t } = this.props;
-  
+
     return (
       <div className="animated fadeIn">
         <br/>

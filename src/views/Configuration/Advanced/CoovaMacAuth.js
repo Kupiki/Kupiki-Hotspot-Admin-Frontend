@@ -24,28 +24,28 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class CoovaMacAuth extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       configuration: {},
       modalCoovaMacAuthSave: false,
       restartCoovaService : false,
     };
-  
+
     this.loadCoovaMacAuthConfiguration = this.loadCoovaMacAuthConfiguration.bind(this);
     this.saveCoovaMacAuthConfiguration = this.saveCoovaMacAuthConfiguration.bind(this);
     this.handleCoovaMacAuthFieldChange = this.handleCoovaMacAuthFieldChange.bind(this);
     this.toggleCoovaMacAuthModalSave = this.toggleCoovaMacAuthModalSave.bind(this);
   }
-  
+
   componentDidMount() {
     this.loadCoovaMacAuthConfiguration();
   }
-  
+
   loadCoovaMacAuthConfiguration () {
     const { t } = this.props;
-    
+
     let apiURL = ROOT_URL + '/api/coova/macauth';
-    
+
     const request = axios.get(`${apiURL}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -62,10 +62,10 @@ class CoovaMacAuth extends Component {
         toastr.error(t('management.advanced.hostapd.load.load-error'), error.message);
       });
   }
-  
+
   saveCoovaMacAuthConfiguration () {
     const {t} = this.props;
-    
+
     this.toggleCoovaMacAuthModalSave();
     const request = axios.put(`${ROOT_URL}/api/coova/macauth`, {
       configuration: this.state.configuration,
@@ -90,26 +90,26 @@ class CoovaMacAuth extends Component {
         toastr.error(t('management.advanced.coova.macAuthentication.save.error-save'), error.message);
       });
   }
-  
+
   handleCoovaServiceRestartChange() {
     this.setState({ restartCoovaService: !this.state.restartCoovaService });
   }
-  
+
   handleCoovaMacAuthFieldChange(e) {
     let coova = this.state.configuration;
     coova[e.target.name] = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
     this.setState({ configuration: coova });
   }
-  
+
   toggleCoovaMacAuthModalSave() {
     this.setState({
       modalCoovaMacAuthSave: !this.state.modalCoovaMacAuthSave
     });
   }
-  
+
   render() {
     const { t } = this.props;
-    
+
     return (
       <Card>
         <AvForm color='warning' onValidSubmit={this.toggleCoovaMacAuthModalSave}>

@@ -1,5 +1,10 @@
+**v1.6**
+- Update of the gitignore file
+- Improve attributes management for users
+- Add a generic view of attributes management. Should be improved in time to add basic or standard services even if admin does not know about attributes.
+
 **v1.5**
-- Improve oerformances
+- Improve performances
 - Bug fixing
 - Locales updates
 - User check from radius

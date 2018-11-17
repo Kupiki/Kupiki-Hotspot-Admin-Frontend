@@ -34,7 +34,7 @@ const attributesOperators = [
 class UserAttributesByTab extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       user: {},
       attributes: [],
@@ -43,26 +43,24 @@ class UserAttributesByTab extends Component {
         unique: []
       }
     };
-  
+
     this.renderAttributeEditable = this.renderAttributeEditable.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
-    if ( nextProps.user.username !== this.state.user.username) {
-      this.setState({user: nextProps.user, attributesType: nextProps.attributesType}, () => {
-        this.loadUserAttributes();
-        this.loadDictionary();
-      });
-    }
+    let attributes = nextProps.attributes[nextProps.attributesType];
+    this.setState({user: nextProps.user, attributesType: nextProps.attributesType, attributes: attributes}, () => {
+      this.loadDictionary();
+    });
   }
-  
+
   loadDictionary() {
     const { t } = this.props;
-    
+
     const requestDictionary = axios.get(`${ROOT_URL}/api/freeradius/dictionary/${this.state.attributesType}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
-    
+
     requestDictionary
       .then(response => {
         if (response.data && response.data.status === 'success') {
@@ -77,7 +75,7 @@ class UserAttributesByTab extends Component {
         toastr.error(t('freeradius.dictionary.error-load')+' ' + name, error.message);
       });
   }
-  
+
   prepareDictionnary() {
     let uniqueBy = (arr, fn) => {
       let unique = {};
@@ -93,57 +91,57 @@ class UserAttributesByTab extends Component {
       });
       return distinct;
     };
-    
+
     let dictionaries = this.state.dictionaries;
     let originalDictionnary = dictionaries.original;
     dictionaries.unique = uniqueBy(originalDictionnary, function(x){return x['Attribute'];});
     this.setState({ dictionaries });
   }
-  
-  loadUserAttributes() {
-    const { t } = this.props;
-    
-    const request = axios.get(`${ROOT_URL}/api/freeradius/${this.state.attributesType}/${this.state.user.username}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.token}` }
-    });
-    
-    request
-      .then(response => {
-        if (response.data && response.data.status === 'success') {
-          this.setState({ attributes: response.data.message });
-        } else {
-          toastr.error(t('freeradius.user.attributes.'+this.state.user.username+'.error-load'));
-        }
-      })
-      .catch(error => {
-        toastr.error(t('freeradius.user.attributes.'+this.state.user.username+'.error-load')+' ' + name, error.message);
-      });
-  }
-  
+
+  // loadUserAttributes() {
+  //   const { t } = this.props;
+
+  //   const request = axios.get(`${ROOT_URL}/api/freeradius/${this.state.attributesType}/${this.state.user.username}`, {
+  //     headers: { 'Authorization': `Bearer ${localStorage.token}` }
+  //   });
+
+  //   request
+  //     .then(response => {
+  //       if (response.data && response.data.status === 'success') {
+  //         this.setState({ attributes: response.data.message });
+  //       } else {
+  //         toastr.error(t('freeradius.user.attributes.'+this.state.user.username+'.error-load'));
+  //       }
+  //     })
+  //     .catch(error => {
+  //       toastr.error(t('freeradius.user.attributes.'+this.state.user.username+'.error-load')+' ' + name, error.message);
+  //     });
+  // }
+
   handleChange(e) {
     let attributes = this.state.attributes;
     attributes[e.target.id][e.target.name] = e.target.value;
     this.setState({attributes}, () => { this.props.onChange(this.state.attributesType, this.state.attributes)} );
   }
-  
+
   handleSelectChange(value, element) {
     let attributes = this.state.attributes;
     attributes[element.index][element.column.id] = value.value;
     this.setState({attributes}, () => { this.props.onChange(this.state.attributesType, this.state.attributes)});
   }
-  
+
   deleteAttribute(row) {
     let attributes = this.state.attributes;
     attributes.splice(row.index, 1);
     this.setState({ attributes }, () => { this.props.onChange(this.state.attributesType, this.state.attributes)});
   }
-  
+
   addAttribute() {
     let attributes = this.state.attributes;
     attributes.push({'attribute': '', 'op': '', 'value': ''});
     this.setState({ attributes });
   }
-  
+
   renderAttributeEditable(cellInfo) {
     if (cellInfo.column.id === 'attribute') {
       return (
@@ -216,10 +214,10 @@ class UserAttributesByTab extends Component {
       />
     )
   }
-  
+
   render() {
     const { t } = this.props;
-    
+
     return (
       <div>
         <Row>

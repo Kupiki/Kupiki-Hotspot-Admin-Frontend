@@ -24,30 +24,30 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class Hostapd extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       configuration: {},
-  
+
       restartHostapdService : false,
       modalHostapdSave: false,
       modalHostapdReset: false,
       modalHostapdReload: false
     };
-  
+
     this.saveHostapdConfiguration = this.saveHostapdConfiguration.bind(this);
     this.loadHostapdConfiguration = this.loadHostapdConfiguration.bind(this);
     this.loadDefaultHostapdConfiguration = this.loadDefaultHostapdConfiguration.bind(this);
-  
+
     this.toggleHostapdSave = this.toggleHostapdSave.bind(this);
     this.toggleHostapdReset = this.toggleHostapdReset.bind(this);
     this.toggleHostapdReload = this.toggleHostapdReload.bind(this);
     this.toggleHostapdAll = this.toggleHostapdAll.bind(this);
   }
-  
+
   componentDidMount() {
     this.loadHostapdConfiguration();
   }
-  
+
   toggleHostapdAll(status) {
     this.setState({
       modalHostapdSave: status,
@@ -55,29 +55,29 @@ class Hostapd extends Component {
       modalHostapdReload: status
     });
   }
-  
+
   toggleHostapdSave() {
     this.setState({
       modalHostapdSave: !this.state.modalHostapdSave
     });
   }
-  
+
   toggleHostapdReset() {
     this.setState({
       modalHostapdReset: !this.state.modalHostapdReset
     });
   }
-  
+
   toggleHostapdReload() {
     this.setState({
       modalHostapdReload: !this.state.modalHostapdReload
     });
   }
-  
-  
+
+
   saveHostapdConfiguration () {
     const { t } = this.props;
-    
+
     this.toggleHostapdAll(false);
     const request = axios.put(`${ROOT_URL}/api/hotspot/configuration`, {
       configuration: this.state.configuration,
@@ -102,24 +102,24 @@ class Hostapd extends Component {
         toastr.error(t('management.advanced.hostapd.save.error-save'), error.message);
       });
   }
-  
+
   loadDefaultHostapdConfiguration (e) {
     this.loadHostapdConfiguration(e, true);
   }
-  
+
   loadHostapdConfiguration (e, reset) {
     const { t } = this.props;
-    
+
     if (e) {
       this.toggleHostapdAll(false);
       this.setState({ content: null });
     }
-    
+
     let apiURL = ROOT_URL + '/api/hotspot';
     if (reset) {
       apiURL = ROOT_URL + '/api/hotspot/default';
     }
-    
+
     const request = axios.get(`${apiURL}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -137,7 +137,7 @@ class Hostapd extends Component {
         toastr.error(t('management.advanced.hostapd.load.load-error'), error.message);
       });
   }
-  
+
   extendHostapdConfiguration () {
     const request = axios.get(`${ROOT_URL}/api/hotspot/configurationFields`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
@@ -157,7 +157,7 @@ class Hostapd extends Component {
         this.setState({ content: this.buildDisplayConfiguration() });
       });
   }
-  
+
   buildDisplayConfiguration() {
     let contentDisplay = [];
     this.state.configuration.forEach((elt, i) => {
@@ -174,7 +174,7 @@ class Hostapd extends Component {
       </div>
     );
   }
-  
+
   renderHostapdField(fieldId) {
     let displayedField = this.state.configuration[fieldId];
     if (displayedField.type === 'select') {
@@ -206,7 +206,7 @@ class Hostapd extends Component {
           value={displayedField.value}
           helpMessage={displayedField.help}
           onChange={ this.handleHostapdChange.bind(this) }>
-        
+
         </AvField>
       )
     }
@@ -220,7 +220,7 @@ class Hostapd extends Component {
           helpMessage={displayedField.help}
           validate={displayedField.data}
           onChange={ this.handleHostapdChange.bind(this) }>
-        
+
         </AvField>
       )
     }
@@ -231,22 +231,22 @@ class Hostapd extends Component {
         value={displayedField.value}
         helpMessage={displayedField.help}
         onChange={ this.handleHostapdChange.bind(this) }>
-      
+
       </AvField>
     )
   }
-  
+
   handleHostapdChangeRestart() {
     this.setState({ restartHostapdService: !this.state.restartHostapdService });
   }
-  
+
   handleHostapdChange(e) {
     const index = this.state.configuration.findIndex(item => item.field === e.target.id);
     let configurationTmp = this.state.configuration;
     configurationTmp[index].value = e.target.value;
     this.setState({ configuration: configurationTmp });
   }
-  
+
   render() {
     const {t} = this.props;
     return (
@@ -281,7 +281,7 @@ class Hostapd extends Component {
           { this.state.content && (
             <CardFooter>
               <Button type='submit' size='sm' color='primary'><i className='fa fa-dot-circle-o'></i> {t('actions.submit')}</Button>
-          
+
               <Button size='sm' color='secondary' onClick={this.toggleHostapdReload}><i className='fa fa-ban'></i> {t('actions.reload')}</Button>
               <Modal isOpen={ this.state.modalHostapdReload } toggle={this.toggleHostapdReload}
                      className={'modal-secondary ' + this.props.className}>
@@ -294,7 +294,7 @@ class Hostapd extends Component {
                   <Button color='secondary' size='sm' onClick={this.toggleHostapdReload}><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
                 </ModalFooter>
               </Modal>
-          
+
               <Button size='sm' color='danger' onClick={this.toggleHostapdReset}><i className='fa fa-download'></i> {t('actions.reset')}</Button>
               <Modal isOpen={ this.state.modalHostapdReset } toggle={this.toggleHostapdReset}
                      className={'modal-danger ' + this.props.className}>
@@ -318,4 +318,4 @@ class Hostapd extends Component {
 export default translate()(Hostapd);
 
 
-  
+

@@ -20,27 +20,27 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class Terms extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       portal: {}
     };
-  
+
     this.handleSubmitTerms = this.handleSubmitTerms.bind(this);
   }
-  
+
   componentDidMount() {
     this.loadPortalConfiguration();
   }
-  
+
   handleTermsChange(e) {
     let portal = this.state.portal;
     portal.options.terms[e.target.name] = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
     this.setState({ portal: portal });
   }
-  
+
   loadPortalConfiguration () {
     const { t } = this.props;
-    
+
     const request = axios.get(`${ROOT_URL}/api/portal`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -56,10 +56,10 @@ class Terms extends Component {
         toastr.error(t('management.basic.portalTermsOptions.error-load')+' ' + name, error.message);
       });
   }
-  
+
   handleSubmitTerms () {
     const { t } = this.props;
-    
+
     const request = axios.put(`${ROOT_URL}/api/portal/configuration`, {
       configuration: this.state.portal
     }, {
@@ -87,10 +87,10 @@ class Terms extends Component {
         }
       });
   }
-  
+
   render() {
     const { t } = this.props;
-  
+
     return (
       <Card>
         <AvForm onValidSubmit={this.handleSubmitTerms}>

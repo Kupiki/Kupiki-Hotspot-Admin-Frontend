@@ -15,14 +15,14 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserCheck extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       user: {}
     };
     this.toggleModal = this.toggleModal.bind(this);
-  
+
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
       this.setState({ user: nextProps.user }, () => {
@@ -30,14 +30,14 @@ class UserCheck extends Component {
       });
     }
   }
-  
+
   toggleModal() {
     this.props.callback();
   }
-  
+
   checkUser() {
     const { t } = this.props;
-  
+
     const request = axios.get(`${ROOT_URL}/api/freeradius/check/${this.state.user.username}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
 		});
@@ -55,10 +55,10 @@ class UserCheck extends Component {
         toastr.error(t('freeradius.user.check.error-check', {username : this.state.user.username})+' ' + name, error.message);
       });
   }
-  
+
   render() {
     const { t, modalUserCheckOpen } = this.props;
-  
+
     return (
       <Modal size='lg' isOpen={ modalUserCheckOpen } toggle={ this.toggleModal } className={'modal-primary'}>
         <ModalHeader>

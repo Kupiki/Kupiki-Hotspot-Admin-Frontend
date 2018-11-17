@@ -16,24 +16,24 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserDisconnect extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       user: {}
     };
-    
+
     this.toggleModal = this.toggleModal.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
       this.setState({ user: nextProps.user });
     }
   }
-  
+
   toggleModal() {
     this.props.callback();
   }
-  
+
   disconnectUser() {
     const { t } = this.props;
 
@@ -56,10 +56,10 @@ class UserDisconnect extends Component {
         toastr.error(t('freeradius.user.disconnect.error-disconnect', {username : this.state.user.username})+' ' + name, error.message);
       });
   }
-  
+
   render() {
     const { t, modalUserDisconnectOpen } = this.props;
-    
+
     return (
       <Modal size='lg' isOpen={ modalUserDisconnectOpen } toggle={ this.toggleModal } className={'modal-danger'}>
         <ModalHeader>

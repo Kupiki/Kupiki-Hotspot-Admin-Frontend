@@ -21,19 +21,19 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserEdit extends Component {
   constructor(props) {
     super(props);
-    
+
 		this.state = {
       user: {},
       editUser: false,
       collapseAdvanced: false
     };
-  
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.validateUniqueUser = this.validateUniqueUser.bind(this);
 		this.toggleAdvanced = this.toggleAdvanced.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
 		if (nextProps.action === 'create') {
       this.setState({ user: {}, editUser: false, collapseAdvanced: false });
@@ -41,17 +41,17 @@ class UserEdit extends Component {
       this.setState({ user: nextProps.user, editUser: true, collapseAdvanced: false });
     }
   }
-  
+
   toggleModal() {
     this.props.callback();
   }
-  
+
   handleChange(e) {
     let user = this.state.user;
     user[e.target.id] = e.target.value;
     this.setState({ user: user });
   }
-  
+
   handleSubmit () {
     const { t } = this.props;
     const request = axios.post(`${ROOT_URL}/api/freeradius/radcheck`, {
@@ -65,7 +65,7 @@ class UserEdit extends Component {
     }, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
 		});
-		
+
     request
       .then(response => {
         if (response.data && response.data.status) {
@@ -101,7 +101,7 @@ class UserEdit extends Component {
         toastr.error(t('freeradius.user.error-save'), error.message);
 			});
   }
-  
+
   validateUniqueUser (value, ctx, input, cb) {
     const { t } = this.props;
     let user = this.props.existingUsers.find( element => {
@@ -109,11 +109,11 @@ class UserEdit extends Component {
     });
     cb((typeof user !== 'undefined' && this.props.action === 'create') ? t('freeradius.user.error-username-exists') : true)
   }
-  
+
   toggleAdvanced() {
     this.setState({ collapseAdvanced: !this.state.collapseAdvanced });
   }
-  
+
   render() {
     const { t, action, modalUserOpen } = this.props;
 

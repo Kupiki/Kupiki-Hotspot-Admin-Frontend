@@ -27,7 +27,7 @@ function convertHex(hex, opacity) {
   let r = parseInt(hex.substring(0, 2), 16);
   let g = parseInt(hex.substring(2, 4), 16);
   let b = parseInt(hex.substring(4, 6), 16);
-  
+
   return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
 }
 
@@ -145,12 +145,12 @@ class StatisticsMgmt extends Component {
 	componentDidMount() {
 		this.loadStatistics();
   }
-	
+
 	static formatBytes(a, b) {if(0===a)return{value:0,unit:'Bytes'};let c=1024,d=b||2,e=['Bytes','KB','MB','GB','TB','PB','EB','ZB','YB'],f=Math.floor(Math.log(a)/Math.log(c));return {value:parseFloat((a/Math.pow(c,f)).toFixed(d)),unit:e[f]}}
 
   loadStatistics () {
 		const { t } = this.props;
-		
+
     const requestUsers = axios.get(`${ROOT_URL}/api/freeradius/users`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
 		});
@@ -182,7 +182,7 @@ class StatisticsMgmt extends Component {
 	    toastr.error(t('freeradius.users.error-load')+' ' + name, error.message);
 	  });
   }
-	
+
 	buildStatisticsSets() {
 		let totalInputOctets = 0;
 		let totalOutputOctets = 0;
@@ -194,7 +194,7 @@ class StatisticsMgmt extends Component {
 				inputOctetsData.push(parseInt(elt.totalInputOctets));
 				totalInputOctets += parseInt(elt.totalInputOctets);
 				outputOctetsData.push(parseInt(elt.totalOutputOctets));
-				totalOutputOctets += parseInt(elt.totalOutputOctets)	
+				totalOutputOctets += parseInt(elt.totalOutputOctets)
 			});
 			octetsChart.datasets[0].data = inputOctetsData;
 			octetsChart.datasets[1].data = outputOctetsData;
@@ -214,7 +214,7 @@ class StatisticsMgmt extends Component {
 			sessionsChart.datasets[0].data = inputSessionsData;
 
 		// Update state
-		this.setState({ 
+		this.setState({
 			octetsChart: octetsChart,
 			sessionsChart: sessionsChart,
 			statistics: statistics
@@ -224,7 +224,7 @@ class StatisticsMgmt extends Component {
 
 	render() {
     const { t } = this.props;
-    
+
     return (
       <div className='animated fadeIn'>
         <br/>

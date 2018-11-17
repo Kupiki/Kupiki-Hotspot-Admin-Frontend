@@ -27,7 +27,7 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UsersMgmt extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
 			users: [],
       dropdownOpen: [],
@@ -39,18 +39,18 @@ class UsersMgmt extends Component {
       modalUserAttributesOpen: false,
 			goToUserStatistics: false
     };
-  
+
     this.toggleUserModal = this.toggleUserModal.bind(this);
     this.toggleUserCheckModal = this.toggleUserCheckModal.bind(this);
     this.toggleUserDeleteModal = this.toggleUserDeleteModal.bind(this);
     this.toggleUserDisconnectModal = this.toggleUserDisconnectModal.bind(this);
     this.toggleUserAttributesModal = this.toggleUserAttributesModal.bind(this);
   }
-  
+
   componentDidMount() {
     this.loadUsers();
   }
-  
+
   tooltipToggle(rowId) {
     let tooltip = this.state.tooltipOpen;
     tooltip[rowId] = !tooltip[rowId];
@@ -58,7 +58,7 @@ class UsersMgmt extends Component {
       tooltipOpen: tooltip
     });
   }
-  
+
   toggleUserDisconnectModal(username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -68,7 +68,7 @@ class UsersMgmt extends Component {
       modalUserDisconnectOpen: !this.state.modalUserDisconnectOpen
     });
   }
-  
+
   toggleUserCheckModal(username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -78,7 +78,7 @@ class UsersMgmt extends Component {
       modalUserCheckOpen: !this.state.modalUserCheckOpen
     });
   }
-  
+
   toggleUserDeleteModal(username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -91,7 +91,7 @@ class UsersMgmt extends Component {
       this.loadUsers();
     }
   }
-  
+
   toggleUserAttributesModal(username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -100,8 +100,11 @@ class UsersMgmt extends Component {
       modalUserAttributesOpen: !this.state.modalUserAttributesOpen,
       modalUserAttributes: user
     });
+    if (!this.state.modalUserAttributesOpen) {
+      this.loadUsers();
+    }
   }
-  
+
   toggleUserModal(action, username) {
     let user = this.state.users.find(function(element) {
       return element.username === username;
@@ -115,10 +118,10 @@ class UsersMgmt extends Component {
       this.loadUsers();
     }
 	}
-	
+
   loadUsers () {
     const { t } = this.props;
-    
+
     const request = axios.get(`${ROOT_URL}/api/freeradius/users`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -134,16 +137,16 @@ class UsersMgmt extends Component {
         toastr.error(t('freeradius.users.error-load')+' ' + name, error.message);
       });
   }
-  
+
   render() {
     const { t } = this.props;
-		
+
 		if (this.state.goToUserStatistics) {
 			return <Redirect to={{
 				pathname: '/management/statistics/'+this.state.goToUserStatistics
 			}}/>
 		}
-    
+
     return (
       <div className='animated fadeIn'>
         <br/>

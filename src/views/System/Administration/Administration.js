@@ -28,7 +28,7 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class Administration extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       lng: localStorage.getItem('language'),
       _id: localStorage.getItem('_id'),
@@ -42,7 +42,7 @@ class Administration extends Component {
       },
       servicesFiltered: false
     };
-    
+
     this.getGraphData('services');
     this.getAvailableUpgrades();
     this.toggleUpdate = this.toggleUpdate.bind(this);
@@ -53,9 +53,9 @@ class Administration extends Component {
     this.executeUpgrade = this.executeUpgrade.bind(this);
     this.executeReboot = this.executeReboot.bind(this);
     this.executeShutdown = this.executeShutdown.bind(this);
-    
+
   }
-  
+
   getAvailableUpgrades() {
     const { t } = this.props;
     const request = axios.get(`${ROOT_URL}/api/system/upgrade`, {
@@ -84,7 +84,7 @@ class Administration extends Component {
         toastr.error(t('dashboard.service')+' ' + name, error.message);
       });
   }
-  
+
   executeReboot() {
     this.toggleReboot();
     const { t } = this.props;
@@ -111,7 +111,7 @@ class Administration extends Component {
         toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-execution'));
       });
   }
-  
+
   executeShutdown() {
     this.toggleShutdown();
     const { t } = this.props;
@@ -138,7 +138,7 @@ class Administration extends Component {
         toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-execution'));
       });
   }
-  
+
   executeUpgrade() {
     this.toggleUpdate();
     const { t } = this.props;
@@ -154,31 +154,31 @@ class Administration extends Component {
         toastr.error(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.error-start'));
       });
   }
-  
+
   toggleUpdate() {
     this.setState({
       updateModal: !this.state.updateModal
     });
   }
-  
+
   toggleReboot() {
     this.setState({
       rebootModal: !this.state.rebootModal
     });
   }
-  
+
   toggleShutdown() {
     this.setState({
       shutdownModal: !this.state.shutdownModal
     });
   }
-  
+
   toggleService(service) {
     return event => {
       const { t } = this.props;
-  
+
       let {name, status} = service.original;
-  
+
       const request = axios.put(`${ROOT_URL}/api/services/${name}`, {
         status: !status
       }, {
@@ -216,13 +216,13 @@ class Administration extends Component {
         });
     }
   }
-  
+
   toggleFilter() {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
     }, () => { this.refreshServices(); });
   }
-  
+
   refreshServices() {
     let servicesDataTmp = this.state.servicesData;
     servicesDataTmp.currentData = this.state.servicesFiltered ? this.state.servicesData.fullData.filter(this.state.filterByName) : this.state.servicesData.fullData;
@@ -230,7 +230,7 @@ class Administration extends Component {
       servicesData : servicesDataTmp
     })
   }
-  
+
   getGraphData(apiRequest) {
     let component = this;
     const request = axios.get(`${ROOT_URL}/api/${apiRequest}`, {
@@ -247,17 +247,17 @@ class Administration extends Component {
         }
         let newState = {};
         newState[eltName] = apiData;
-        
+
         component.setState(newState);
       })
       .catch(error => {
         console.log(error);
       });
   }
-  
+
   render() {
     const { t } = this.props;
-  
+
     return (
       <div className='animated fadeIn'>
         <br/>

@@ -16,27 +16,27 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserDelete extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       user: {}
     };
-  
+
     this.toggleModal = this.toggleModal.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.user !== 'undefined' && nextProps.user !== this.state.user) {
       this.setState({ user: nextProps.user });
     }
   }
-  
+
   toggleModal() {
     this.props.callback();
   }
-  
+
   deleteUser() {
     const { t } = this.props;
-    
+
     const request = axios.delete(`${ROOT_URL}/api/freeradius/${this.state.user.username}`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
@@ -53,10 +53,10 @@ class UserDelete extends Component {
         toastr.error(t('freeradius.user.error-delete')+' ' + name, error.message);
       });
   }
-  
+
   render() {
     const { t, modalUserDeleteOpen } = this.props;
-  
+
     return (
       <Modal size='lg' isOpen={ modalUserDeleteOpen } toggle={ this.toggleModal } className={'modal-danger'}>
         <ModalHeader toggle={ this.toggleModal }>

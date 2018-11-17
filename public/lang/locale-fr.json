@@ -237,13 +237,19 @@
         "attribute": "Attribut",
         "op": "Opérateur",
         "value": "Valeur",
+        "all-success-save": "Attributs sauvegardés",
+        "all-error-save": "Impossible de sauvegarder les attributs",
+        "all-success-load": "Attributs chargés",
+        "all-error-load": "Impossible de charger les attributs",
         "radcheck-success-save": "Attributs radcheck sauvegardés",
         "radcheck-error-save": "Impossible de sauvegarder les attributs radcheck",
         "radreply-success-save": "Attributs radreply sauvegardés",
         "radreply-error-save": "Impossible de sauvegarder les attributs radreply",
         "radcheck-description": "Quand une requête arrive au serveur et est exécutée par le module SQL, Freeradius recherche dans la table radcheck les attributs associés à l'utilisateur",
-				"radreply-description": "Si des attributs de contrôle sont trouvés (radcheck) et qu'ils correspondent à la demande, les attributs de réponse (radreply) sont extraits puis ajoutés à la réponse",
-				"simultaneous-use": "Usages simultanés"
+        "radreply-description": "Si des attributs de contrôle sont trouvés (radcheck) et qu'ils correspondent à la demande, les attributs de réponse (radreply) sont extraits puis ajoutés à la réponse",
+        "generic": {
+          "simultaneous-use": "Connexions simultanées autorisées"
+        }
       },
       "create": "Créer un nouvel utilisateur",
       "edit": "Editer l'utilisateur",

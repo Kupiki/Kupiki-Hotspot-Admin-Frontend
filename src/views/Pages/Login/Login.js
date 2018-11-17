@@ -10,7 +10,7 @@ import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstr
 class Login extends Component {
   constructor(props) {
     super(props);
-  
+
     this.images = [
       'img/backgrounds/0.jpg',
       'img/backgrounds/1.jpg',
@@ -19,12 +19,12 @@ class Login extends Component {
       'img/backgrounds/4.jpg',
       'img/backgrounds/5.jpg'
     ];
-  
+
     this.timeoutVar = null;
     this.state = {
       errors: [],
       background: {
-      
+
       },
       imageIndex: 0,
       user: {
@@ -36,31 +36,31 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.changeImage = this.changeImage.bind(this);
   }
-  
+
   componentDidMount() {
     document.body.style.overflow = 'hidden';
     this.timeoutVar = setTimeout(function () {
       this.changeImage();
     }.bind(this), 5000)
   }
-  
+
   componentWillUnmount() {
     clearTimeout(this.timeoutVar);
     document.body.style.overflow = 'auto';
   }
-  
+
   changeImage() {
     if (this.state.imageIndex === this.images.length - 1) {
       this.setState({ imageIndex: 0 });
     } else {
       this.setState({ imageIndex: this.state.imageIndex + 1 });
     }
-  
+
     this.timeoutVar = setTimeout(function () {
       this.changeImage();
     }.bind(this), 5000)
   }
-  
+
   getRedirectPath() {
     const locationState = this.props.location.state;
     if (locationState && locationState.from.pathname) {
@@ -69,27 +69,27 @@ class Login extends Component {
       return '/'
     }
   }
-  
+
   handleChange(event) {
     const field = event.target.name;
     const userTmp = this.state.user;
     userTmp[field] = event.target.value;
     return this.setState({user: userTmp});
   }
-  
+
   handleSubmit(event){
     event.preventDefault();
-  
+
     let payload={
       'username':this.state.user.username,
       'password':this.state.user.password
     };
     this.props.loginUser(payload);
   }
-  
+
   render() {
     const { t } = this.props;
-  
+
     return (this.props.authenticated) ?
       <Redirect to={{
         pathname: this.getRedirectPath(), state: {
@@ -126,7 +126,7 @@ class Login extends Component {
                       )}
                       <Button type='submit' size='sm' color='secondary'><i className='fa fa-dot-circle-o'></i> {t('login.connect')}</Button>
                     </CardBody>
-                    
+
                   </AvForm>
                 </Card>
                 <Card className='text-white py-5 d-md-down-none' style={{width: 44 + '%'}}>

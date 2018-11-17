@@ -79,7 +79,7 @@ class Dashboard extends Component {
       temperatureData: {},
       netflowData: {}
     };
-  
+
     this.getData('cpu', 'cpuData');
     this.getData('disk', 'diskData');
     this.getData('memory', 'memoryData');
@@ -88,11 +88,11 @@ class Dashboard extends Component {
     this.getData('information', 'informationData');
     this.getData('temperature', 'temperatureData');
     this.getData('netflow', 'netflowData');
-  
+
     this.toggleServicesFilter = this.toggleServicesFilter.bind(this);
-  
+
   }
-  
+
   getData(apiRequest, stateValue) {
     const { t } = this.props;
     let component = this;
@@ -103,9 +103,9 @@ class Dashboard extends Component {
       .then(response => {
         if (response.data.status === 'success') {
           let apiData = component.state[stateValue];
-  
+
           apiData = Object.assign({}, apiData, response.data.message);
-  
+
           if (response.data.message.chartData) {
             let objData = JSON.parse(response.data.message.chartData);
             apiData.graph.datasets[0].data = [];
@@ -138,7 +138,7 @@ class Dashboard extends Component {
           }
           let newState = {};
           newState[stateValue] = apiData;
-  
+
           component.setState(newState);
         } else {
           toastr.error(t('dashboard.service')+' ' + name, response.data.message);
@@ -147,19 +147,19 @@ class Dashboard extends Component {
       .catch(error => {
         toastr.error(t('dashboard.service')+' ' + name, error.message);
       })
-  
+
   }
-  
+
   toggleServicesFilter() {
     this.setState({
       servicesFiltered: !this.state.servicesFiltered
     });
     this.state.servicesData.currentData = (this.state.servicesFiltered ? this.state.servicesData.fullData : this.state.servicesData.filteredData);
   }
-  
+
   render() {
     const { t } = this.props;
-  
+
     return (
       <div className='animated fadeIn'>
         <br/>
@@ -234,7 +234,7 @@ class Dashboard extends Component {
               </ul>
             </div>
           </Col>
-	
+
 					{this.state.temperatureData['value'] !== '' && (
 						<Col xs='6' sm='6' lg='1'>
 							<div className='social-box social-box-single linkedin'>

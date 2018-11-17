@@ -18,8 +18,8 @@ import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
 import axios from 'axios';
 
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
+import 'react-select/dist/react-select.css';
+import 'react-virtualized-select/styles.css';
 import UserAttributesByTab from './UserAttributesByTab';
 import UserAttributesGeneric from './UserAttributesGeneric';
 
@@ -29,19 +29,14 @@ const ROOT_URL = Config.server_url+':'+Config.server_port;
 class UserAttributes extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       activeTab: 'generic',
       user: {},
       attributes: {
-        'radcheck': {
-          values: [],
-          updated: false
-        },
-        'radreply': {
-          values: [],
-          updated: false
-        }
+        updated: false,
+        'radcheck': [],
+        'radreply': []
       },
       dictionaries: {
         'radcheck': {
@@ -54,25 +49,76 @@ class UserAttributes extends Component {
         }
       }
     };
-  
+
     this.toggleTab = this.toggleTab.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.onAttributesChange = this.onAttributesChange.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
-    if (typeof nextProps.user !== 'undefined') {
-      this.setState({user: nextProps.user});
-  
-      let attributes = this.state.attributes;
-      for (let attrType in this.state.attributes) {
-        attributes[attrType].updated = false;
-      }
-      this.setState({ attributes });
+    if (typeof nextProps.user !== 'undefined' && nextProps.user != this.state.user) {
+      this.setState({user: nextProps.user}, () => {
+        this.loadUserAllAttributes();
+      });
+      // this.setState({user: nextProps.user}, () => {
+      //   let attributes = this.state.attributes;
+      //   for (let attrType in this.state.attributes) {
+      //     attributes[attrType].updated = false;
+      //   }
+      //   this.setState({ attributes }, () => {
+      //     this.loadUserAllAttributes();
+      //   });
+      // });
     }
   }
-  
+
+	loadUserAllAttributes() {
+    const { t } = this.props;
+
+    let attributes = this.state.attributes;
+    attributes.updated = false;
+
+    const request = axios.get(`${ROOT_URL}/api/freeradius/radcheck/${this.state.user.username}`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request
+      .then(response => {
+        if (response.data && response.data.status === 'success') {
+          attributes['radcheck'] = response.data.message;
+          this.setState({ attributes }, () => {
+            // console.log('** radcheck');
+            // console.log(attributes);
+          });
+        } else {
+          toastr.error(t('freeradius.user.attributes.all-error-load'));
+        }
+      })
+      .catch(error => {
+        toastr.error(t('freeradius.user.attributes.all-error-load')+' ' + name, error.message);
+      });
+
+    const request2 = axios.get(`${ROOT_URL}/api/freeradius/radreply/${this.state.user.username}`, {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    });
+    request2
+      .then(response => {
+        if (response.data && response.data.status === 'success') {
+          attributes['radreply'] = response.data.message;
+          this.setState({ attributes }, () => {
+            // console.log('** radreply');
+            // console.log(attributes);
+          });
+        } else {
+          toastr.error(t('freeradius.user.attributes.all-error-load'));
+        }
+      })
+      .catch(error => {
+        toastr.error(t('freeradius.user.attributes.all-error-load')+' ' + name, error.message);
+      });
+  }
+
+
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -80,26 +126,26 @@ class UserAttributes extends Component {
       });
     }
   }
-  
+
   toggleModal() {
     this.props.callback();
   }
-  
+
   handleSubmit () {
     const { t } = this.props;
-  
+
     let newAttributes = {
       'radcheck': [],
       'radreply': []
     };
-  
-    for(let attrType in this.state.attributes) {
-      if (this.state.attributes[attrType].updated) {
-        this.state.attributes[attrType].values.forEach(elt => {
-          if (elt['attribute'] !== '' && elt['op'] !== '' && elt['value'] !== '') {
-            newAttributes[attrType].push(elt)
-          }
+
+    if (this.state.attributes.updated) {
+      for(let attrType in newAttributes) {
+        this.state.attributes[attrType].forEach(elt => {
+          if (!Object.values(elt).every(x => (x === ''))) newAttributes[attrType].push(elt);
         });
+
+        console.log(newAttributes)
 
 				let request = axios.post(`${ROOT_URL}/api/freeradius/${attrType}`, {
           username: this.state.user.username,
@@ -121,15 +167,21 @@ class UserAttributes extends Component {
           });
       }
     }
+    this.toggleModal();
   }
-  
-  onAttributesChange(attributesType, newAttributes) {
-    let attributes = this.state.attributes;
-    attributes[attributesType].values = newAttributes;
-    attributes[attributesType].updated = true;
-    this.setState({ attributes });
+
+  // onAttributesChange(attributesType, newAttributes) {
+  onAttributesChange(newAttributes) {
+    console.log('*** Update in parent ***')
+    // console.log(newAttributes)
+    const attributes = this.state.attributes;
+    // attributes[attributesType] = newAttributes;
+    attributes.updated = true;
+    this.setState({ attributes }, () => {
+      // console.log(this.state.attributes)
+    });
   }
-  
+
   render() {
     const { t, modalUserAttributesOpen } = this.props;
 
@@ -150,31 +202,42 @@ class UserAttributes extends Component {
                 <NavLink
                   className={classnames({ active: this.state.activeTab === 'radcheck' })}
                   onClick={() => { this.toggleTab('radcheck'); }}>
-                  radcheck ({this.state.user.countRadcheck})
+                  radcheck ({this.state.attributes['radcheck'].length})
                 </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink
                   className={classnames({ active: this.state.activeTab === 'radreply' })}
                   onClick={() => { this.toggleTab('radreply'); }}>
-                  radreply ({this.state.user.countRadreply})
+                  radreply ({this.state.attributes['radreply'].length})
                 </NavLink>
               </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId='generic'>
-								<UserAttributesGeneric user={this.state.user} onChange={this.onAttributesChange}/>
+                <UserAttributesGeneric
+                  user={this.state.user}
+                  attributes={this.state.attributes}
+                  onChange={this.onAttributesChange}/>
               </TabPane>
               <TabPane tabId='radcheck'>
-                <UserAttributesByTab user={this.state.user} attributesType={'radcheck'} onChange={this.onAttributesChange}/>
+                <UserAttributesByTab
+                  user={this.state.user}
+                  attributesType={'radcheck'}
+                  attributes={this.state.attributes}
+                  onChange={this.onAttributesChange}/>
               </TabPane>
               <TabPane tabId='radreply'>
-                <UserAttributesByTab user={this.state.user} attributesType={'radreply'} onChange={this.onAttributesChange}/>
+                <UserAttributesByTab
+                  user={this.state.user}
+                  attributesType={'radreply'}
+                  attributes={this.state.attributes}
+                  onChange={this.onAttributesChange}/>
               </TabPane>
             </TabContent>
           </ModalBody>
           <ModalFooter>
-						<Button type='submit' color='primary' size='sm'><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.save')}</Button>{' '}
+						<Button type='submit' color='primary' size='sm' id='btnSave'><i className='fa fa-dot-circle-o'></i>{' '}{t('actions.save')}</Button>{' '}
 						<Button color='secondary' size='sm' onClick={ this.toggleModal }><i className='fa fa-times'></i>{' '}{t('actions.cancel')}</Button>
           </ModalFooter>
         </AvForm>
