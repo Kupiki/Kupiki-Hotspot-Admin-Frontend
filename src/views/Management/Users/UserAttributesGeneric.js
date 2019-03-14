@@ -10,7 +10,8 @@ import { translate } from 'react-i18next';
 import { toastr } from 'react-redux-toastr'
 import axios from 'axios';
 
-import { getObjWhenPropertyEquals, shallowCompare } from '../../../utils/Utils.js';
+// import { getObjWhenPropertyEquals, shallowCompare } from '../../../utils/Utils.js';
+import { getObjWhenPropertyEquals } from '../../../utils/Utils.js';
 
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
@@ -25,6 +26,12 @@ class UserAttributesGeneric extends Component {
         {
           id          : 'simultaneousUse',
           name        : 'Simultaneous-Use',
+          operator    : ':=',
+          type        : 'radcheck',
+          deleteValue : '0'
+        }, {
+          id          : 'CSInputOctetsDaily',
+          name        : 'CS-Input-Octets-Daily',
           operator    : ':=',
           type        : 'radcheck',
           deleteValue : '0'
@@ -46,18 +53,23 @@ class UserAttributesGeneric extends Component {
     });
   }
 
-  getSimultaneousUse() {
-    let currentSimultaneousUse = 0;
-    if (this.state.attributes['radcheck']) {
-      let attrSimUse = getObjWhenPropertyEquals(this.state.attributes['radcheck'], 'attribute', 'Simultaneous-Use');
-      currentSimultaneousUse = attrSimUse.value || 0;
+  getCurrentAttributeValue(attribute, attributeType) {
+    let currentValue = '';
+    // let currentSimultaneousUse = 0;
+    if (this.state.attributes[attributeType]) {
+      let attrSimUse = getObjWhenPropertyEquals(this.state.attributes[attributeType], 'attribute', attribute);
+      currentValue = attrSimUse.value || '';
     }
-    return currentSimultaneousUse;
+    return currentValue;
+  }
+
+  getLimitDownload() {
+    return 0;
   }
 
 	handleChange(e) {
-    // console.log(e.target.id)
-    // console.log(e.target.value)
+    console.log(e.target.id)
+    console.log(e.target.value)
     let genAttr = getObjWhenPropertyEquals(this.state.genericAttributes, 'id', e.target.id);
     // console.log(genAttr)
     let indexAttr = this.state.attributes[genAttr.type].map(function(e) { return e.attribute; }).indexOf(genAttr.name);
@@ -100,7 +112,19 @@ class UserAttributesGeneric extends Component {
               min='0'
               max='10'
               onChange={ this.handleChange.bind(this) }
-              value={ this.getSimultaneousUse.bind(this)() }/>
+              value={ this.getCurrentAttributeValue.bind(this)('Simultaneous-Use', 'radcheck') }/>
+					</AvGroup>
+				</Col>
+				<Col sm='12'>
+					<AvGroup>
+						<Label htmlFor='CSInputOctetsDaily'>{t('freeradius.user.attributes.generic.limit-input-daily')}</Label>
+            <AvField
+              type='number'
+              id='CSInputOctetsDaily'
+              name='CSInputOctetsDaily'
+              min='0'
+              onChange={ this.handleChange.bind(this) }
+              value={ this.getCurrentAttributeValue.bind(this)('CS-Input-Octets-Daily', 'radcheck') }/>
 					</AvGroup>
 				</Col>
 				{/*

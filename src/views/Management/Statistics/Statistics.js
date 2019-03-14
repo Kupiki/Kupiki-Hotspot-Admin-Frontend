@@ -186,32 +186,34 @@ class StatisticsMgmt extends Component {
 	buildStatisticsSets() {
 		let totalInputOctets = 0;
 		let totalOutputOctets = 0;
+
 		// octetsChart
-			let octetsChart = this.state.octetsChart; octetsChart.labels = [];
-			let inputOctetsData = [], outputOctetsData = [], statistics = {};
-			this.state.statistics.octets.forEach( elt => {
-				octetsChart.labels.push(elt.startDay);
-				inputOctetsData.push(parseInt(elt.totalInputOctets));
-				totalInputOctets += parseInt(elt.totalInputOctets);
-				outputOctetsData.push(parseInt(elt.totalOutputOctets));
-				totalOutputOctets += parseInt(elt.totalOutputOctets)
-			});
-			octetsChart.datasets[0].data = inputOctetsData;
-			octetsChart.datasets[1].data = outputOctetsData;
-			statistics.totalInputOctets = totalInputOctets;
-			statistics.totalOutputOctets = totalOutputOctets;
-			let volume = StatisticsMgmt.formatBytes(totalInputOctets,0);
-			statistics.totalInputOctetsFormatted = volume.value + ' ' + volume.unit;
-			volume = StatisticsMgmt.formatBytes(totalOutputOctets,0);
-			statistics.totalOutputOctetsFormatted = volume.value + ' ' + volume.unit;
+		let octetsChart = this.state.octetsChart; octetsChart.labels = [];
+		let inputOctetsData = [], outputOctetsData = [], statistics = {};
+		this.state.statistics.octets.forEach( elt => {
+			octetsChart.labels.push(elt.startDay);
+			inputOctetsData.push(parseInt(elt.totalInputOctets));
+			totalInputOctets += parseInt(elt.totalInputOctets);
+			outputOctetsData.push(parseInt(elt.totalOutputOctets));
+			totalOutputOctets += parseInt(elt.totalOutputOctets)
+		});
+		octetsChart.datasets[0].data = inputOctetsData;
+		octetsChart.datasets[1].data = outputOctetsData;
+		statistics.totalInputOctets = totalInputOctets;
+		statistics.totalOutputOctets = totalOutputOctets;
+		let volume = StatisticsMgmt.formatBytes(totalInputOctets,0);
+		statistics.totalInputOctetsFormatted = volume.value + ' ' + volume.unit;
+		volume = StatisticsMgmt.formatBytes(totalOutputOctets,0);
+		statistics.totalOutputOctetsFormatted = volume.value + ' ' + volume.unit;
+
 		// sessionsChart
-			let sessionsChart = this.state.sessionsChart; sessionsChart.labels = [];
-			let inputSessionsData = [];
-			this.state.statistics.sessionsPerDay.forEach( elt => {
-				sessionsChart.labels.push(elt.startDay);
-				inputSessionsData.push(parseInt(elt.countSessions));
-			});
-			sessionsChart.datasets[0].data = inputSessionsData;
+		let sessionsChart = this.state.sessionsChart; sessionsChart.labels = [];
+		let inputSessionsData = [];
+		this.state.statistics.sessionsPerDay.forEach( elt => {
+			sessionsChart.labels.push(elt.startDay);
+			inputSessionsData.push(parseInt(elt.countSessions));
+		});
+		sessionsChart.datasets[0].data = inputSessionsData;
 
 		// Update state
 		this.setState({
@@ -219,6 +221,7 @@ class StatisticsMgmt extends Component {
 			sessionsChart: sessionsChart,
 			statistics: statistics
 		});
+
 		console.log(this.state.statistics);
 	}
 

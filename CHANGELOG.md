@@ -1,3 +1,7 @@
+**v1.7**
+- Code cleaning
+- Update of some translations
+
 **v1.6**
 - Update of the gitignore file
 - Improve attributes management for users

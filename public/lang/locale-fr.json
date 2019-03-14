@@ -248,7 +248,8 @@
         "radcheck-description": "Quand une requête arrive au serveur et est exécutée par le module SQL, Freeradius recherche dans la table radcheck les attributs associés à l'utilisateur",
         "radreply-description": "Si des attributs de contrôle sont trouvés (radcheck) et qu'ils correspondent à la demande, les attributs de réponse (radreply) sont extraits puis ajoutés à la réponse",
         "generic": {
-          "simultaneous-use": "Connexions simultanées autorisées"
+          "simultaneous-use": "Connexions simultanées autorisées",
+          "limit-input-daily": "Limite de téléchargement quotidienne (en octets)"
         }
       },
       "create": "Créer un nouvel utilisateur",
