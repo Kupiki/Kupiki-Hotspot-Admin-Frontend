@@ -17,7 +17,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { toastr } from 'react-redux-toastr';
 import { translate } from 'react-i18next';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 const Config = require('Config');
 const ROOT_URL = Config.server_url+':'+Config.server_port;
@@ -141,11 +141,12 @@ class Dashboard extends Component {
 
           component.setState(newState);
         } else {
-          toastr.error(t('dashboard.service')+' ' + name, response.data.message);
+          toastr.error(t('dashboard.service')+' ' + apiRequest, response.data.message);
         }
       })
-      .catch(error => {
-        toastr.error(t('dashboard.service')+' ' + name, error.message);
+      .catch((error) => {
+        const errorMessage = (error && error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('dashboard.service')+' ' + apiRequest, errorMessage);
       })
 
   }

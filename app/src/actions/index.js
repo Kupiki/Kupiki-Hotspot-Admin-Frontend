@@ -22,7 +22,7 @@ export function logoutUser() {
 }
 
 export function loginUser({username, password}) {
-  
+
   return function (dispatch) {
     const request = axios.post(`${ROOT_URL}/api/auth/login`, {username, password});
     request
@@ -37,7 +37,7 @@ export function loginUser({username, password}) {
             localStorage.setItem('username', username);
             localStorage.setItem('language', response.data.language);
             localStorage.setItem('_id', response.data._id);
-  
+
             // -if request is good, we need to update state to indicate user is authenticated
             dispatch({type: AUTH_USER, username: username, token: localStorage.token});
           })
@@ -45,7 +45,7 @@ export function loginUser({username, password}) {
             dispatch(authError('Username or password incorrect'));
           });
       })
-      
+
       // If request is bad...
       // -Show an error to the user
       .catch(() => {

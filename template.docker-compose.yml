@@ -1,0 +1,15 @@
+version: '3'
+services:
+  admin-frontend:
+    build:
+      context: .
+      args:
+        - CLIENT_PROTOCOL=${CLIENT_PROTOCOL}
+        - CLIENT_HOST=${CLIENT_HOST}
+        - CLIENT_PORT=${CLIENT_PORT}
+        - SERVER_PROTOCOL=${SERVER_PROTOCOL}
+        - SERVER_HOST=${SERVER_HOST}
+        - SERVER_PORT=${SERVER_PORT}
+    ports:
+      - "${CLIENT_PORT}:80"
+    network_mode: "host"
