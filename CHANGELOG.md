@@ -1,3 +1,6 @@
+**v2.0**
+- Integration within Docker
+
 **v1.7**
 - Code cleaning
 - Update of some translations

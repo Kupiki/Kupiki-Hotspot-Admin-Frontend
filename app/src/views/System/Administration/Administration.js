@@ -53,12 +53,11 @@ class Administration extends Component {
     this.executeUpgrade = this.executeUpgrade.bind(this);
     this.executeReboot = this.executeReboot.bind(this);
     this.executeShutdown = this.executeShutdown.bind(this);
-
   }
 
   getAvailableUpgrades() {
     const { t } = this.props;
-    const request = axios.get(`${ROOT_URL}/api/system/upgrade`, {
+    const request = axios.get(`${ROOT_URL}/api/system/check`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
@@ -80,8 +79,8 @@ class Administration extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
-        toastr.error(t('dashboard.service')+' ' + name, error.message);
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('dashboard.service')+' ' + name, errorMessage);
       });
   }
 
@@ -95,7 +94,7 @@ class Administration extends Component {
       .then(response => {
         switch (response.data.status) {
           case 'success':
-            toastr.success(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.confirm'));
+            toastr.success(t('dashboard.systemreboot.title'), response.data.message);
             break;
           case 'failed':
             toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
@@ -122,7 +121,7 @@ class Administration extends Component {
       .then(response => {
         switch (response.data.status) {
           case 'success':
-            toastr.success(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.confirm'));
+            toastr.success(t('dashboard.systemshutdown.title'), response.data.message);
             break;
           case 'failed':
             toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
@@ -150,8 +149,8 @@ class Administration extends Component {
 				// Nothing to do. Wait for an event from the backend
       })
       .catch(error => {
-        console.log(error);
-        toastr.error(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.error-start'));
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('dashboard.systemupdate.title')+' ' + name, errorMessage);
       });
   }
 
@@ -207,7 +206,7 @@ class Administration extends Component {
           }
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           let message = t('dashboard.systemservices.error-start', { service: name });
           if (status) {
             message = t('dashboard.systemservices.error-stop', { service: name });

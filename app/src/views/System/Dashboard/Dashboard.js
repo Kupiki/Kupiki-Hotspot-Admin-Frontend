@@ -145,7 +145,7 @@ class Dashboard extends Component {
         }
       })
       .catch((error) => {
-        const errorMessage = (error && error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
         toastr.error(t('dashboard.service')+' ' + apiRequest, errorMessage);
       })
 
