@@ -51,7 +51,6 @@ class CoovaMacAuth extends Component {
     });
     request
       .then(response => {
-        console.log(response.data)
         if (response.data && response.data.status === 'success') {
           this.setState({ configuration : response.data.message });
         } else {
@@ -59,7 +58,6 @@ class CoovaMacAuth extends Component {
         }
       })
       .catch(error => {
-        console.log(error.response)
         const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
         toastr.error(t('management.advanced.hostapd.load.load-error'), errorMessage);
       });
