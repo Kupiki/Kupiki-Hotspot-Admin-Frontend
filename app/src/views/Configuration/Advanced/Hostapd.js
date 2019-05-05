@@ -98,7 +98,6 @@ class Hostapd extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
         toastr.error(t('management.advanced.hostapd.save.error-save'), error.message);
       });
   }
