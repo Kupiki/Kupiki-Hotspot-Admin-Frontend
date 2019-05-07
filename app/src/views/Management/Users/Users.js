@@ -6,7 +6,11 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Tooltip
+  Tooltip,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import ReactTable from 'react-table';
@@ -222,8 +226,30 @@ class UsersMgmt extends Component {
 										style: { textAlign: 'center', overflow: 'visible' },
 										Cell: row => (
 											<span id={ row.value }>
-                        <i className='fa fa-ellipsis-v' style={{padding: '0px 20px'}}/>
-                        <Tooltip innerClassName={'kupiki-table-tooltip'} hideArrow={ true } placement="left" isOpen={ this.state.tooltipOpen[row.value] } autohide={ false } target={ row.value } toggle={ () => this.tooltipToggle(row.value) }>
+                        <Dropdown
+                          direction="left"
+                          isOpen={ this.state.tooltipOpen[row.value] }
+                          toggle={() => this.tooltipToggle(row.value)}>
+                          <DropdownToggle
+                            tag="span"
+                            onClick={this.toggle}
+                            data-toggle="dropdown">
+                            <i className='fa fa-ellipsis-v' style={{padding: '0px 20px'}}/>
+                          </DropdownToggle>
+                          <DropdownMenu className='kupiki-table-tooltip'>
+                            <span onClick={this.toggle}>
+                              <i title="Edit" className='fa fa-edit kupiki-table-icon-primary' onClick={ () => this.toggleUserModal('edit', row.value) }/>{' '}
+                              <i title="Attributes" className='fa fa-id-card kupiki-table-icon-primary' onClick={ () => this.toggleUserAttributesModal(row.value) }/>{' '}
+                              <i title="Statistics" className='fa fa-bar-chart-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
+                              <i title="Check connectivity" className='fa fa-check-square-o kupiki-table-icon-primary' onClick={ () => this.toggleUserCheckModal(row.value) }/>{' '}
+                              {this.state.users.find(x => x.username === row.value).status===1 && (
+                                <i title="Disconnect" className='fa fa-sign-out kupiki-table-icon-primary' onClick={ () => this.toggleUserDisconnectModal(row.value) }>{' '}</i>
+                              )}
+                              <i title="Delete" className='fa fa-trash-o kupiki-table-icon-danger' onClick={ () => this.toggleUserDeleteModal(row.value) }/>
+                            </span>
+                          </DropdownMenu>
+                        </Dropdown>
+                        {/* <Tooltip container={ row.value } innerClassName={'kupiki-table-tooltip'} hideArrow={ true } placement="left" isOpen={ this.state.tooltipOpen[row.value] } autohide={ false } target={ row.value } toggle={ () => this.tooltipToggle(row.value) }>
                           <i title="Edit" className='fa fa-edit kupiki-table-icon-primary' onClick={ () => this.toggleUserModal('edit', row.value) }/>{' '}
                           <i title="Attributes" className='fa fa-id-card kupiki-table-icon-primary' onClick={ () => this.toggleUserAttributesModal(row.value) }/>{' '}
                           <i title="Statistics" className='fa fa-bar-chart-o kupiki-table-icon-primary' onClick={ () => this.setState({ goToUserStatistics: row.value }) }/>{' '}
@@ -232,7 +258,7 @@ class UsersMgmt extends Component {
                             <i title="Disconnect" className='fa fa-sign-out kupiki-table-icon-primary' onClick={ () => this.toggleUserDisconnectModal(row.value) }>{' '}</i>
                           )}
                           <i title="Delete" className='fa fa-trash-o kupiki-table-icon-danger' onClick={ () => this.toggleUserDeleteModal(row.value) }/>
-                        </Tooltip>
+                        </Tooltip> */}
 											</span>
 										)
 									}
