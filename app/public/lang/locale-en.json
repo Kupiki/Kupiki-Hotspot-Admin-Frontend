@@ -77,6 +77,20 @@
       "confirm": "Reboot system",
       "error-execution": "Unable to restart the system"
     },
+    "systemupgrade": {
+      "title": "System upgrade",
+      "buttonTitle": "Upgrade",
+      "available": "{{availableUpgrades}} upgrades available. Upgrade your system.",
+      "ask": "Confirm that you want to upgrade your system",
+      "confirm": "System up to date",
+      "error-start": "System upgrade cannot be started",
+      "error-status": "Unable to get upgrades",
+      "error-execution": "Unable to execute upgrade",
+      "error-information": "Unable to get upgrades",
+      "progress": "Upgrade in progress",
+      "alreadyprogress": "Upgrade already in progress",
+      "finished": "Upgrade finished"
+    },
     "systemupdate": {
       "title": "System update",
       "buttonTitle": "Update",

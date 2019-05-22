@@ -58,8 +58,8 @@ class CoovaMacAuth extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
-        toastr.error(t('management.advanced.hostapd.load.load-error'), error.message);
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('management.advanced.hostapd.load.load-error'), errorMessage);
       });
   }
 

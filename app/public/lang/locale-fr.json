@@ -77,6 +77,20 @@
       "confirm": "Le système est en cours de relance",
       "error-execution": "Impossible de redémarrer le système"
     },
+    "systemupgrade": {
+      "title": "Mise à jour de la distribution",
+      "buttonTitle": "Mise à jour",
+      "available": "{{availableUpgrades}} mises à jour disponibles. Mettez votre système à jour.",
+      "ask": "Confirmez que vous souhaitez mettre à jour le système (distribution)",
+      "confirm": "Le système est à jour",
+      "error-start": "La mise à jour du système ne peut pas être démarrée",
+      "error-status": "Impossible d'obtenir le statut des mises à jour",
+      "error-execution": "Impossible d'exécuter la mise à jour du système",
+      "error-information": "Impossible d'obtenir les informations de mise à jour",
+      "progress": "Mises à jour en cours",
+      "alreadyprogress": "Mises à jour déjà en cours",
+      "finished": "Mises à jour terminées"
+    },
     "systemupdate": {
       "title": "Mise à jour système",
       "buttonTitle": "Mise à jour",

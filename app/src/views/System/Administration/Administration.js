@@ -34,6 +34,7 @@ class Administration extends Component {
       _id: localStorage.getItem('_id'),
       servicesData: {},
       updateModal: false,
+      upgradeModal: false,
       rebootModal: false,
       shutdownModal: false,
       availableUpgrades: 0,
@@ -46,19 +47,19 @@ class Administration extends Component {
     this.getGraphData('services');
     this.getAvailableUpgrades();
     this.toggleUpdate = this.toggleUpdate.bind(this);
+    this.toggleUpgrade = this.toggleUpgrade.bind(this);
     this.toggleReboot = this.toggleReboot.bind(this);
     this.toggleShutdown = this.toggleShutdown.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.toggleService = this.toggleService.bind(this);
-    this.executeUpgrade = this.executeUpgrade.bind(this);
+    this.executeUpdate = this.executeUpdate.bind(this);
     this.executeReboot = this.executeReboot.bind(this);
     this.executeShutdown = this.executeShutdown.bind(this);
-
   }
 
   getAvailableUpgrades() {
     const { t } = this.props;
-    const request = axios.get(`${ROOT_URL}/api/system/upgrade`, {
+    const request = axios.get(`${ROOT_URL}/api/system/check`, {
       headers: { 'Authorization': `Bearer ${localStorage.token}` }
     });
     request
@@ -80,8 +81,8 @@ class Administration extends Component {
         }
       })
       .catch(error => {
-        console.log(error);
-        toastr.error(t('dashboard.service')+' ' + name, error.message);
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('dashboard.service')+' ' + name, errorMessage);
       });
   }
 
@@ -95,7 +96,7 @@ class Administration extends Component {
       .then(response => {
         switch (response.data.status) {
           case 'success':
-            toastr.success(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.confirm'));
+            toastr.success(t('dashboard.systemreboot.title'), response.data.message);
             break;
           case 'failed':
             toastr.error(t('dashboard.systemreboot.title'), t('dashboard.systemreboot.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
@@ -122,7 +123,7 @@ class Administration extends Component {
       .then(response => {
         switch (response.data.status) {
           case 'success':
-            toastr.success(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.confirm'));
+            toastr.success(t('dashboard.systemshutdown.title'), response.data.message);
             break;
           case 'failed':
             toastr.error(t('dashboard.systemshutdown.title'), t('dashboard.systemshutdown.error-start')+'<br/>'+t('generic.Error')+' '+response.data.code+'<br/>'+response.data.message, {
@@ -139,7 +140,7 @@ class Administration extends Component {
       });
   }
 
-  executeUpgrade() {
+  executeUpdate() {
     this.toggleUpdate();
     const { t } = this.props;
     const request = axios.get(`${ROOT_URL}/api/system/update`, {
@@ -150,14 +151,20 @@ class Administration extends Component {
 				// Nothing to do. Wait for an event from the backend
       })
       .catch(error => {
-        console.log(error);
-        toastr.error(t('dashboard.systemupdate.title'), t('dashboard.systemupdate.error-start'));
+        const errorMessage = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : error.message
+        toastr.error(t('dashboard.systemupdate.title')+' ' + name, errorMessage);
       });
   }
 
   toggleUpdate() {
     this.setState({
       updateModal: !this.state.updateModal
+    });
+  }
+
+  toggleUpgrade() {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal
     });
   }
 
@@ -207,7 +214,7 @@ class Administration extends Component {
           }
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           let message = t('dashboard.systemservices.error-start', { service: name });
           if (status) {
             message = t('dashboard.systemservices.error-stop', { service: name });
@@ -315,7 +322,7 @@ class Administration extends Component {
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col xs='12' sm='12' lg='4'>
+                <Col xs='12' sm='12' lg='6'>
                     <Button onClick={this.toggleUpdate} color='primary' className={'btn-block'}><i className='fa fa-chevron-circle-up'></i> {t('dashboard.systemupdate.buttonTitle')}</Button>
                     <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} className={'modal-primary ' + this.props.className}>
                       <ModalHeader toggle={this.toggleUpdate}>{t('dashboard.systemupdate.title')}</ModalHeader>
@@ -323,12 +330,34 @@ class Administration extends Component {
                         {t('dashboard.systemupdate.ask')}
                       </ModalBody>
                       <ModalFooter>
-                        <Button color='primary' onClick={this.executeUpgrade}>{t('actions.submit')}</Button>{' '}
+                        <Button color='primary' onClick={this.executeUpdate}>{t('actions.submit')}</Button>{' '}
                         <Button color='secondary' onClick={this.toggleUpdate}>{t('actions.cancel')}</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
-                  <Col xs='12' sm='12' lg='4'>
+                  <Col xs='12' sm='12' lg='6'>
+                    <Button onClick={this.toggleUpgrade} color='primary' className={'btn-block'}><i className='fa fa-angle-double-up'></i> {t('dashboard.systemupgrade.buttonTitle')}</Button>
+                    <Modal isOpen={this.state.upgradeModal} toggle={this.toggleUpgrade} className={'modal-primary ' + this.props.className}>
+                      <ModalHeader toggle={this.toggleUpgrade}>{t('dashboard.systemupgrade.title')}</ModalHeader>
+                      <ModalBody>
+                        {t('dashboard.systemupgrade.ask')}
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color='primary' onClick={this.executeUpgrade}>{t('actions.submit')}</Button>{' '}
+                        <Button color='secondary' onClick={this.toggleUpgrade}>{t('actions.cancel')}</Button>
+                      </ModalFooter>
+                    </Modal>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+            <Card>
+              <CardHeader>
+                {t('sidebar.system')}
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col xs='12' sm='12' lg='6'>
                     <Button onClick={this.toggleReboot} color='danger' className={'btn-block'}><i className='fa fa-refresh'></i> {t('dashboard.systemreboot.buttonTitle')}</Button>
                     <Modal isOpen={this.state.rebootModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
                       <ModalHeader toggle={this.toggleReboot}>{t('dashboard.systemreboot.title')}</ModalHeader>
@@ -341,7 +370,7 @@ class Administration extends Component {
                       </ModalFooter>
                     </Modal>
                   </Col>
-                  <Col xs='12' sm='12' lg='4'>
+                  <Col xs='12' sm='12' lg='6'>
                     <Button onClick={this.toggleShutdown} color='danger' className={'btn-block'}><i className='fa fa-power-off'></i> {t('dashboard.systemshutdown.buttonTitle')}</Button>
                     <Modal isOpen={this.state.shutdownModal} toggle={this.toggleReboot} className={'modal-danger ' + this.props.className}>
                       <ModalHeader toggle={this.toggleShutdown}>{t('dashboard.systemshutdown.title')}</ModalHeader>
@@ -365,5 +394,3 @@ class Administration extends Component {
 }
 
 export default translate()(Administration);
-
-
